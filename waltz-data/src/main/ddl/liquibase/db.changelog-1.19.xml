@@ -63,7 +63,10 @@
                     type="${provenance.type}">
                 <constraints nullable="false" />
             </column>
-            <column name="observed_at" type="TIMESTAMP"/>
+            <column name="last_observed_at"
+                    type="TIMESTAMP">
+                <constraints nullable="true" />
+            </column>
             <column name="created_at"
                     type="TIMESTAMP"
                     defaultValueComputed="${now.value}">
