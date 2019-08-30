@@ -23,7 +23,7 @@
                    logicalFilePath="db.changelog-1.19.xml">
 
     <changeSet author="alimuza"
-               id="4294-20190828-1">
+               id="4296-20190828-1">
         <comment>4294: Event Definition</comment>
         <createTable tableName="event_definition"
                      remarks="Event Definition">
@@ -89,7 +89,7 @@
     </changeSet>
 
     <changeSet author="alimuza"
-               id="4294-20190822-2">
+               id="4296-20190822-2">
         <comment>4294: Event Relationship</comment>
         <createTable tableName="event_relationship"
                      remarks="Event Relationship">
