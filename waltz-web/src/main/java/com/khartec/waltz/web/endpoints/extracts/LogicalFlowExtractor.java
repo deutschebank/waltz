@@ -159,7 +159,7 @@ public class LogicalFlowExtractor extends CustomDataExtractor {
                         targetAssetCodeField.as("Target Asset Code"),
                         targetOrgUnitNameField.as("Target Org Unit"))
                 .select(DATA_TYPE.NAME.as("Data Type"))
-                .select(FLOW_CLASSIFICATION.NAME.as("Authoritativeness"))
+                .select(FLOW_CLASSIFICATION.NAME.as("Flow Classification"))
                 .select(LOGICAL_FLOW.ID)
                 .from(LOGICAL_FLOW)
                 .leftJoin(sourceAppFlows)
