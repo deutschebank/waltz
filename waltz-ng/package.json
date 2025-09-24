@@ -63,6 +63,8 @@
         "moment": "2.29.1",
         "ng-tags-input": "3.2.0",
         "patch-package": "6.4.7",
+        "react": "^19.1.1",
+        "react-dom": "^19.1.1",
         "satellizer": "0.15.5",
         "showdown": "^2.1.0",
         "slickgrid": "^5.7.0",
@@ -76,6 +78,7 @@
     "devDependencies": {
         "@babel/core": "7.19.6",
         "@babel/preset-env": "7.19.4",
+        "@babel/preset-react": "^7.27.1",
         "@babel/register": "7.18.9",
         "babel-loader": "8.2.5",
         "chai": "4.3.4",

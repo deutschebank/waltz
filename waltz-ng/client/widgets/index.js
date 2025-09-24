@@ -53,6 +53,7 @@ import Toggle from "./toggle";
 import Twistie from "./twistie";
 import Warning from "./warning/warning"
 import SvelteComponent from "./svelte-component";
+import ReactComponent from "./react-component";
 
 
 export default () => {
@@ -70,6 +71,7 @@ export default () => {
     module.directive("waltzSectionActions", SectionActions);
     module.directive("waltzStepCount", StepCount);
     module.directive("waltzSvelteComponent", SvelteComponent);
+    module.directive("waltzReactComponent", ReactComponent);
 
 
     module
