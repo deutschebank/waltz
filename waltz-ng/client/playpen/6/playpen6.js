@@ -1,5 +1,5 @@
 import template from "./playpen6.html";
-import DummyComponent from "../DummyComponent";
+import DummyComponent from "../../react-cli/components/DummyComponent";
 import { initialiseData } from "../../common";
 
 const initialState = {
