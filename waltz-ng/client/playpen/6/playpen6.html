@@ -1,6 +1,14 @@
 <div>
+    <div ng-if="$ctrl.reactHidden">
     <waltz-react-component component="$ctrl.DummyComponent"
                            hello-text="'Hello, from props!'">
-
     </waltz-react-component>
+    </div>
+
+    <div class="waltz-basic-info-tile">
+        Angular Redux: {{ $ctrl.reduxStoreValue }}
+    </div>
+
+    <button class="btn btn-plain" ng-click="$ctrl.onClick()">Click Me</button>
+
 </div>
