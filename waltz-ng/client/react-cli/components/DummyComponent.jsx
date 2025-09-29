@@ -1,28 +1,28 @@
 import React, {useEffect, useState} from "react"
 import pageInfo from "../../svelte-stores/page-navigation-store";
-import store from "../../redux-store";
+import reduxStore from "../../redux-store";
 import {incremented} from "../../redux-slices/counter-slice";
+import {navigate} from "../../redux-slices/page-nav-slice";
 
 const DummyComponent = (props) => {
     const [value, setValue] = useState(0);
-    const [reduxVal, setReduxVal] = useState(store.getState().counter.value);
+    const [reduxVal, setReduxVal] = useState(reduxStore.getState().counter.value);
 
-    const onClick = () =>
-        pageInfo.set({
-            state: "main.physical-flow.view",
-            params: {
-                id: 22
-            }
-        });
+    const onClick = () => reduxStore.dispatch(navigate({
+        state: "main.physical-flow.view",
+        params: {
+            id: 22
+        },
+        isNotification: false
+    }));
 
     const onIncrement = () => setValue((prev) => prev + 1);
-    const onIncrementRedux = () => store.dispatch(incremented());
+    const onIncrementRedux = () => reduxStore.dispatch(incremented());
 
     useEffect(() => {
         console.log("react subscribed");
-        const unsubscribe = store.subscribe(() => setReduxVal(store.getState().counter.value));
+        const unsubscribe = reduxStore.subscribe(() => setReduxVal(reduxStore.getState().counter.value));
         return () => {
-            console.log("react unsubscribed");
             unsubscribe();
         };
     }, [])
