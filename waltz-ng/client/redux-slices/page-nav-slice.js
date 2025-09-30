@@ -1,5 +1,18 @@
 import {createSlice} from "@reduxjs/toolkit";
 
+/**
+ * If you want to navigate using redux, import the store to the component,
+ * and then use:-
+ *
+ * reduxStore.dispatch(navigate({
+ *     state: "main.your.state",
+ *     params: {id: 22},
+ *     isNotification: false, // (optional -> if true then will not navigate)
+ *     options: {} // angularjs options (optional)
+ * });
+ *
+ */
+
 const pageNavSlice = createSlice({
     name: 'pageNaV',
     initialState: {
