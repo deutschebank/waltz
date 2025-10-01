@@ -1,31 +1,36 @@
-import React, {useEffect, useState} from "react"
-import pageInfo from "../../svelte-stores/page-navigation-store";
+import React, {useState} from "react"
 import reduxStore from "../../redux-store";
 import {incremented} from "../../redux-slices/counter-slice";
 import {navigate} from "../../redux-slices/page-nav-slice";
+import pageInfo from "../../svelte-stores/page-navigation-store";
+import {sliceSelector} from "../../widgets/sliceSelector";
 
 const DummyComponent = (props) => {
     const [value, setValue] = useState(0);
-    const [reduxVal, setReduxVal] = useState(reduxStore.getState().counter.value);
+    const reduxVal = sliceSelector(state => state.counter.value);
 
     const onClick = () => reduxStore.dispatch(navigate({
-        state: "main.physical-flow.view",
+        state: "main.playpen.6",
         params: {
             id: 22
         },
         isNotification: false
     }));
 
+    // const onClick = () => {
+    //     pageInfo.set({
+    //         state: "main.playpen.6",
+    //         params: {
+    //             id: 22
+    //         },
+    //         isNotification: false
+    //     });
+    // }
+
     const onIncrement = () => setValue((prev) => prev + 1);
     const onIncrementRedux = () => reduxStore.dispatch(incremented());
 
-    useEffect(() => {
-        console.log("react subscribed");
-        const unsubscribe = reduxStore.subscribe(() => setReduxVal(reduxStore.getState().counter.value));
-        return () => {
-            unsubscribe();
-        };
-    }, [])
+    console.log("Rendering React");
 
     return (
         <div>

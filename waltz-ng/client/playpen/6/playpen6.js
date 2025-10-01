@@ -2,6 +2,8 @@ import template from "./playpen6.html";
 import DummyComponent from "../../react-cli/components/DummyComponent";
 import { initialiseData } from "../../common";
 import store from "../../redux-store";
+import {incremented2} from "../../redux-slices/counter-slice-2";
+import _ from 'lodash';
 
 const initialState = {
     DummyComponent,
@@ -13,16 +15,22 @@ function controller($scope) {
     const vm = initialiseData(this, initialState);
 
     vm.$onInit = () => {
-        vm.reduxStoreValue = store.getState().counter.value;
+        vm.reduxStoreValue = store.getState().counter2.value;
 
         console.log("ng subscribed");
         vm.unsubscribe = store.subscribe(() => {
-            vm.reduxStoreValue = store.getState().counter.value;
-            $scope.$applyAsync();
+            const newValue = store.getState().counter2.value;
+            if(vm.reduxStoreValue !== newValue) {
+                console.log('ng re renders')
+                vm.reduxStoreValue = store.getState().counter2.value;
+                $scope.$applyAsync();
+            }
         });
     }
 
     vm.onClick = () => vm.reactHidden = !vm.reactHidden;
+
+    vm.onIncrement = () => store.dispatch(incremented2());
 
     $scope.$on("$destroy", () => {
         console.log("ng unsubscribed");

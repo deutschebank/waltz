@@ -230,7 +230,7 @@ configureInactivityTimer.$inject = [
 
 // -- SETUP ---
 
-function configureSvelteStoreListener($transitions, $state) {
+function configureSvelteStoreListener($transitions, $state, $scope) {
 
     $transitions.onSuccess({}, (transition) => {
         const target = transition.targetState();
@@ -244,7 +244,11 @@ function configureSvelteStoreListener($transitions, $state) {
 
     pageInfo.subscribe((nextPg) => {
         if (nextPg && !nextPg.isNotification) {
-            $state.go(nextPg.state, nextPg.params, nextPg.options);
+            if(!$state.is(nextPg.state, nextPg.params)) {
+                $scope.$applyAsync(() => {
+                    $state.go(nextPg.state, nextPg.params, nextPg.options);
+                });
+            }
         }
     });
 }
@@ -264,9 +268,11 @@ function configureReduxStoreListener($transitions, $state, $scope) {
     const unsubscribe = reduxStore.subscribe(() => {
         const nextPg = reduxStore.getState().pageNav;
         if (nextPg && !nextPg.isNotification) {
-            $scope.$applyAsync(() => {
-                $state.go(nextPg.state, nextPg.params, nextPg.options);
-            });
+            if(!$state.is(nextPg.state, nextPg.params)) {
+                $scope.$applyAsync(() => {
+                    $state.go(nextPg.state, nextPg.params, nextPg.options);
+                });
+            }
         }
     });
 
@@ -275,14 +281,15 @@ function configureReduxStoreListener($transitions, $state, $scope) {
 
 configureSvelteStoreListener.$inject = [
     "$transitions",
-    "$state"
-]
+    "$state",
+    "$rootScope"
+];
 
 configureReduxStoreListener.$inject = [
     "$transitions",
     "$state",
     "$rootScope"
-]
+];
 
 function setup(module) {
     module
