@@ -26,7 +26,7 @@ const Icon = ({
     pullLeft = false,
     pullRight = false
 }: IconProps) => {
-    const classNames = [
+    const classNames: string = [
         "fa",
         `fa-${name}`,
         flip && `fa-flip-${flip}`,
