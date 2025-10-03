@@ -20,9 +20,9 @@ function controller($scope) {
         console.log("ng subscribed");
         vm.unsubscribe = store.subscribe(() => {
             const newValue = store.getState().counter2.value;
-            if(vm.reduxStoreValue !== newValue) {
+            if(!_.isEqual(newValue, vm.reduxStoreValue)) {
                 console.log('ng re renders')
-                vm.reduxStoreValue = store.getState().counter2.value;
+                vm.reduxStoreValue = newValue;
                 $scope.$applyAsync();
             }
         });
