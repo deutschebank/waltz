@@ -46,7 +46,7 @@ module.exports = {
             svelte: path.resolve("node_modules", "svelte"),
             react: path.resolve("node_modules", "react")
         },
-        extensions: [".svelte", ".js", ".jsx"],
+        extensions: [".svelte", ".js", ".jsx", ".ts", ".tsx"],
         mainFields: ["svelte", "react", "browser", "module", "main"]
     },
     optimization: {
@@ -107,7 +107,7 @@ module.exports = {
                 ],
 
             }, {
-                test: /(\.m?jsx?$)/,
+                test: /\.[jt]sx?$/,
                 use: ["babel-loader"]
             }, {
                 test: /\.s?css$/,

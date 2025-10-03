@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
-import reduxStore from "../redux-store";
+import reduxStore from "../../../redux-store";
+import {ReduxRootState} from "../../types/ReduxTypes";
 import _ from 'lodash';
 
-export const sliceSelector = (selector) => {
-    const [selected, setSelected] = useState(selector(reduxStore.getState()));
+export function useSliceSelector<T>(selector: (state: ReduxRootState) => T): T {
+    const [selected, setSelected] = useState(() => selector(reduxStore.getState()));
 
     useEffect(() => {
         return reduxStore.subscribe(() => {

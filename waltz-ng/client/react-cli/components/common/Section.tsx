@@ -1,8 +1,18 @@
 import React from 'react';
 import Icon from './Icon';
 
+interface SectionProps {
+    icon?: string;
+    name?: string;
+    small?: string;
+    children?: React.ReactNode;
+}
 
-const Section = ({ icon = "fw", name, small, children }) => {
+const Section = ({
+    icon = "fw",
+    name,
+    small,
+    children }: SectionProps) => {
     return (
         <div>
             <div className="waltz-section">

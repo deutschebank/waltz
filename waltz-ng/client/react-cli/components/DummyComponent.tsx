@@ -3,12 +3,17 @@ import reduxStore from "../../redux-store";
 import {incremented} from "../../redux-slices/counter-slice";
 import {navigate} from "../../redux-slices/page-nav-slice";
 import pageInfo from "../../svelte-stores/page-navigation-store";
-import {sliceSelector} from "../../widgets/sliceSelector";
+import {useSliceSelector} from "./common/useSliceSelector";
 import Section from "./common/Section";
 
-const DummyComponent = ({helloText}) => {
+interface DummyComponentProps {
+    helloText?: string;
+}
+
+const DummyComponent = ({
+    helloText}: DummyComponentProps) => {
     const [value, setValue] = useState(0);
-    const reduxVal = sliceSelector(state => state.counter.value);
+    const reduxVal = useSliceSelector(state => state.counter.value);
 
     const onClick = () => reduxStore.dispatch(navigate({
         state: "main.playpen.6",
