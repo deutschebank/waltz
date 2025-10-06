@@ -3,8 +3,12 @@ import reduxStore from "../../redux-store";
 import {incremented} from "../../redux-slices/counter-slice";
 import {navigate} from "../../redux-slices/page-nav-slice";
 import pageInfo from "../../svelte-stores/page-navigation-store";
-import {useSliceSelector} from "./common/useSliceSelector";
+import {useSliceSelector} from "../utils/useSliceSelector";
 import Section from "./common/Section";
+import Toggle from "./common/toggle/Toggle";
+import NoData from "./common/no-data/NoData";
+import DateTime from "./common/DateTime";
+import SubSection from "./common/sub-section/SubSection";
 
 interface DummyComponentProps {
     helloText?: string;
@@ -12,6 +16,7 @@ interface DummyComponentProps {
 
 const DummyComponent = ({
     helloText}: DummyComponentProps) => {
+    const [toggleState, setToggleState] = useState(false);
     const [value, setValue] = useState(0);
     const reduxVal = useSliceSelector(state => state.counter.value);
 
@@ -40,7 +45,7 @@ const DummyComponent = ({
 
     return (
         <div>
-            <div style={{ background: '#f0f0f0', borderRadius: '4px', padding: '16px' }}>
+            <div style={{ borderRadius: '4px', padding: '16px' }}>
                 <p>Hello from React!</p>
                 <button className="btn btn-default"
                         onClick={onIncrement}>
@@ -60,6 +65,15 @@ const DummyComponent = ({
                          small="Small Text"
                          children={<div>Hello Children</div>}>
                 </Section>
+                <Toggle onToggle={() => setToggleState((prev) => !prev)}
+                        state={toggleState}></Toggle>
+                <NoData>No Data</NoData>
+                <DateTime dateTime={new Date().toLocaleString()}
+                            relative={false}
+                            formatStr={"DD/MM/YYYY"}></DateTime>
+                <SubSection header={<p>Header</p>}
+                            content={<p>Content is here</p>}>
+                </SubSection>
             </div>
         </div>
 	);
