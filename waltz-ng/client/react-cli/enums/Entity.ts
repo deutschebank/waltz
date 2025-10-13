@@ -1,15 +1,15 @@
 export const enum EntityKind {
-    PERSON,
     APPLICATION,
     ACTOR,
+    DATABASE,
     END_USER_APPLICATION,
-    SERVER,
-    DATABASE
+    PERSON,
+    SERVER
 }
 
 export const enum EntityLifecycleStatus {
     ACTIVE,
     PENDING,
     REMOVED,
-    UNKNOWN
+    UNKNOWN// only for UI edge cases
 }
