@@ -41,5 +41,5 @@ Waltz API endpoints follow a predictable URL structure that makes it easy to fin
 
 -   Once you've identified the Java return type, create a corresponding TypeScript interface for it.
 -   Place this new type definition in a file within the `client/types/api/` directory.
--   The filename should be descriptive and relate to the API endpoint's domain (e.g., `PersonTypes.ts`).
+-   The filename should be descriptive and relate to the API endpoint's domain (e.g., `Person.ts`).
 -   This file can contain multiple related 

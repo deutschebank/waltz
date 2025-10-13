@@ -1,15 +1,11 @@
 import React from "react";
-import _ from "lodash";
 import { kindToViewState } from "../../../../common/link-utils";
 import ViewLink from "../view-link/ViewLink";
 import EntityLabel from "./EntityLabel";
+import {EntityReference} from "../../../types/Entity";
 
 interface EntityLinkProps {
-    ref: {
-        id: number;
-        kind: string;
-        name?: string;
-    } | null;
+    ref: EntityReference;
     isSecondaryLink?: boolean;
     showIcon?: boolean;
     children?: React.ReactNode;

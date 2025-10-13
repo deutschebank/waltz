@@ -1,13 +1,14 @@
-
 import * as React from "react";
 import {useCallback, useState} from "react";
-import _ from "lodash";
 import {mayRemove} from "./person-list-utils";
 import Icon from "./Icon";
 import {EntityLabel} from "./entity/EntityLabel";
 import {EntitySearchSelector} from "./entity-search-selector/EntitySearchSelector";
-import {usePersonStore} from "../../../svelte-stores/usePersonStore";
-import {Person} from "../../types/PersonTypes";
+import {Person} from "../../types/Person";
+import {mkRef} from "../../utils/mkRef";
+import {EntityReference} from "../../types/Entity";
+import personApi from "../../api/person"
+import {useQuery} from "@tanstack/react-query";
 
 
 const Modes = {
@@ -36,7 +37,7 @@ export const PersonList = ({
 }: PersonListProps) => {
 
     const [mode, setMode] = useState(Modes.LIST);
-    const {data: self} = usePersonStore().getSelf();
+    const {isPending, data: self} = useQuery(personApi.getSelf())
 
     const initiateAddition = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
@@ -54,17 +55,13 @@ export const PersonList = ({
     }, []);
 
 
-    const peopleList = _.map(
-        people,
-        p => ({
-            person: p,
-            isRemovable: mayRemove(p, self, {canRemove, canRemoveSelf})
-        }));
+    const peopleList = people
+        .map(p => ({person: p, isRemovable: mayRemove(p, self, {canRemove, canRemoveSelf})}));
 
-    const peopleIds = _.map(people, d => d.id);
+    const peopleIds = people.map(d => d.id);
 
-    function notAlreadyPicked(d: Person) {
-        return !_.includes(peopleIds, d.id);
+    function notAlreadyPicked(d: EntityReference) {
+        return !peopleIds.includes(d.id);
     }
 
     return (
@@ -89,7 +86,7 @@ export const PersonList = ({
                                 <Icon name="fw"/>
                             </button>
                             }
-                            <EntityLabel ref={p.person}
+                            <EntityLabel ref={mkRef(p.person)}
                                          showIcon={false}/>
                         </li>
                     ))}

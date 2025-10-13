@@ -1,6 +1,5 @@
 import * as React from "react";
-import _ from "lodash";
-import {entity} from "../../../../common/services/enums/entity";
+import {entity} from "../../../constants/entity";
 import Icon from "../Icon";
 
 export interface EntityIconProps {
@@ -9,8 +8,8 @@ export interface EntityIconProps {
 }
 
 export const EntityIcon = ({ kind, showName = false }: EntityIconProps) => {
-    const iconName = _.get(entity, [kind, "icon"], "circle-o");
-    const label = _.get(entity, [kind, "name"], "");
+    const iconName = entity[kind]?.icon || "circle-o";
+    const label = entity[kind]?.name || "";
 
     return (
         <>

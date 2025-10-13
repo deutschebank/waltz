@@ -6,7 +6,10 @@
 
 import React from "react";
 import { createRoot } from "react-dom/client";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import _ from "lodash";
+
+const queryClient = new QueryClient();
 
 function calcParamKeys(attrs) {
     return _.chain(attrs)
@@ -42,7 +45,11 @@ const directive = function () {
                     if (!root) {
                         root = createRoot(elem[0]);
                     }
-                    root.render(<ReactComponent {...currentProps} />);
+                    root.render(
+                        <QueryClientProvider client={queryClient}>
+                            <ReactComponent {...currentProps} />
+                        </QueryClientProvider>
+                    );
                 }
             }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {FAFlip, FARotate, FASize, FAStack} from "../../types/FATypes";
+import {FAFlip, FARotate, FASize, FAStack} from "../../types/FontAwesome";
 
 interface IconProps {
     name?: string;

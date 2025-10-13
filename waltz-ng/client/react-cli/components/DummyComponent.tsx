@@ -3,22 +3,21 @@ import reduxStore from "../../redux-store";
 import {incremented} from "../../redux-slices/counter-slice";
 import {navigate} from "../../redux-slices/page-nav-slice";
 import pageInfo from "../../svelte-stores/page-navigation-store";
-import {useSliceSelector} from "../utils/useSliceSelector";
+import {useSliceSelector} from "../hooks/useSliceSelector";
 import Section from "./common/Section";
 import Toggle from "./common/toggle/Toggle";
 import NoData from "./common/no-data/NoData";
 import DateTime from "./common/DateTime";
 import SubSection from "./common/sub-section/SubSection";
 import {PersonList} from "./common/PersonList";
-import {Person} from "../types/PersonTypes";
+import {Person} from "../types/Person";
 import PageHeader from "./common/page-header/PageHeader";
-import {marginLeft} from "html2canvas/dist/types/css/property-descriptors/margin";
-import ActorListView from "./actor/ActorListView";
 import ViewLink from "./common/view-link/ViewLink";
 
 interface DummyComponentProps {
     helloText?: string;
 }
+
 
 const samplePeople: Person[] = [
     {
@@ -54,6 +53,15 @@ const breadCrumbs = (
         <li>Dummy Component</li>
     </ol>
 );
+
+// export default function DummyComponent(props: DummyComponentProps) {
+//     return (
+//         <QueryClientProvider client={queryClient}>
+//             <DummyComponentInternal {...props}/>
+//         </QueryClientProvider>
+//     );
+// }
+// query client provider has been moved to react-component.js -> to reduce boilerplate
 
 const DummyComponent = ({
     helloText}: DummyComponentProps) => {
@@ -120,7 +128,7 @@ const DummyComponent = ({
                 <PersonList
                     people={people}
                     canAdd={true}
-                    canRemove={true}
+                    canRemove={false}
                     onAdd={onAddPerson}
                     onRemove={onRemovePerson}/>
                 <PageHeader name="Section"
@@ -131,5 +139,6 @@ const DummyComponent = ({
         </div>
 	);
 };
+
 
 export default DummyComponent;

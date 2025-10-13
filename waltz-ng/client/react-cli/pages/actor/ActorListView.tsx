@@ -2,12 +2,12 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { actorStore } from "../../../svelte-stores/actor-store";
 import { termSearch } from "../../../common";
-import _ from "lodash";
-import PageHeader from "../common/page-header/PageHeader";
-import ViewLink from "../common/view-link/ViewLink";
-import SearchInput from "../common/SearchInput";
-import EntityLink from "../common/entity/EntityLink";
-import DataExtractLink from "../common/data-extract-link/DataExtractLink";
+// import _ from "lodash";
+import PageHeader from "../../components/common/page-header/PageHeader";
+import ViewLink from "../../components/common/view-link/ViewLink";
+import SearchInput from "../../components/common/SearchInput";
+import EntityLink from "../../components/common/entity/EntityLink";
+import DataExtractLink from "../../components/common/data-extract-link/DataExtractLink";
 
 import styles from "./ActorListView.module.scss";
 
@@ -28,10 +28,10 @@ const ActorListView = () => {
         const actorsCall = actorStore.findAll();
         const subscription = actorsCall.subscribe(result => {
             if (result.data) {
-                const mappedActors = _.chain(result.data)
-                    .map(d => Object.assign({}, d, { externalString: d.isExternal ? "External" : "Internal" }))
-                    .orderBy(d => _.toLower(d.name))
-                    .value();
+                const mappedActors = result.data
+                    .map(d => ({...d, externalString: d.isExternal ? "External" : "Internal"}))
+                    .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+
                 setActors(mappedActors);
             }
         });
@@ -40,7 +40,7 @@ const ActorListView = () => {
     }, []);
 
     const actorList = useMemo(() => {
-        if (_.isEmpty(qry)) {
+        if (qry.length === 0) {
             return actors;
         }
         return termSearch(actors, qry, ["name", "description", "externalString"]);
@@ -71,9 +71,9 @@ const ActorListView = () => {
                             <SearchInput value={qry} onChange={setQry} />
                             <br />
                             <div className="help-block pull-right small" style={{ fontStyle: "italic" }}>
-                                {_.size(actorList) === _.size(actors) ?
-                                    `Displaying all ${_.size(actors)} actors` :
-                                    `Displaying ${_.size(actorList)} out of ${_.size(actors)} actors`
+                                {actorList.length === actors.length ?
+                                    `Displaying all ${actors.length} actors` :
+                                    `Displaying ${actorList.length} out of ${actors.length} actors`
                                 }
                             </div>
                             <div className="waltz-scroll-region-500">

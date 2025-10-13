@@ -18,7 +18,7 @@
 import template from "./actor-list-view.html";
 import {initialiseData} from "../../../common";
 // import ActorListView from "../../components/svelte/ActorListView.svelte"
-import ActorListView from "../../../react-cli/components/actor/ActorListView";
+import ActorListView from "../../../react-cli/pages/actor/ActorListView";
 const bindings = {}
 
 const initialState = {

@@ -1,15 +1,17 @@
 import * as React from "react";
-import {useState, useCallback, useEffect} from "react";
-import _ from "lodash";
-import {useEntitySearchStore} from "../../../../svelte-stores/useEntitySearchStore";
+import {useState} from "react";
+import entitySearchApi from "../../../api/entity-search";
 import {EntityLabel} from "../entity/EntityLabel";
 import styles from "./EntitySearchSelector.module.css";
+import {useQuery} from "@tanstack/react-query";
+import {EntityReference} from "../../../types/Entity";
+import {useDebounce} from "../../../hooks/useDebounce";
 
 export interface EntitySearchSelectorProps {
     entityKinds: string[];
     placeholder?: string;
     showIcon?: boolean;
-    selectionFilter?: (d: any) => boolean;
+    selectionFilter?: (d: EntityReference) => boolean;
     onSelect: (d: any) => void;
 }
 
@@ -17,40 +19,24 @@ export const EntitySearchSelector = ({
     entityKinds,
     placeholder = "Search...",
     showIcon = true,
-    selectionFilter = () => true,
+    selectionFilter = (d) => !!d.id,
     onSelect
 }: EntitySearchSelectorProps) => {
 
-    const entitySearchStore = useEntitySearchStore();
     const [query, setQuery] = useState("");
-    const [results, setResults] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
+    const debouncedQuery = useDebounce(query, 500);
 
-    const search = useCallback(_.debounce((q: string) => {
-        if (q) {
-            setLoading(true);
-            entitySearchStore.search(q, entityKinds)
-                .then(resp => {
-                    const filteredData = _.filter(resp.data, selectionFilter);
-                    setResults(filteredData);
-                    setLoading(false);
-                    setShowDropdown(true);
-                });
-        } else {
-            setResults([]);
-            setShowDropdown(false);
-        }
-    }, 300), [entityKinds, selectionFilter]);
+    const {isPending, data} = useQuery({
+        ...entitySearchApi.search(debouncedQuery, entityKinds),
+        enabled: debouncedQuery.length > 0
+    });
 
-    useEffect(() => {
-        search(query);
-    }, [query, search]);
+    const results = data?.filter(selectionFilter);
 
     const handleSelect = (selection: any) => {
         onSelect(selection);
         setQuery("");
-        setResults([]);
         setShowDropdown(false);
     };
 
@@ -62,14 +48,16 @@ export const EntitySearchSelector = ({
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={placeholder}
                 className="waltz-search-input"
-                onFocus={() => setShowDropdown(results.length > 0)}
+                onFocus={() => setShowDropdown(true)}
                 onBlur={() => setTimeout(() => setShowDropdown(false), 200)} // delay to allow click
             />
-            {showDropdown && (
+            {showDropdown && query.length > 0 && (
                 <ul className={styles.dropdownMenu}>
-                    {loading && <li className="loading-item">Loading...</li>}
-                    {!loading && results.length === 0 && <li className="no-results-item">No results found</li>}
-                    {!loading && results.map(item => (
+                    {isPending && <li className="loading-item">Loading...</li>}
+                    {!isPending && results.length === 0
+                        && <li className="no-results-item">No results found</li>
+                    }
+                    {!isPending && results.map(item => (
                         <li key={item.id} onMouseDown={() => handleSelect(item)}>
                             <EntityLabel ref={item} showIcon={showIcon}/>
                         </li>

@@ -1,3 +1,5 @@
+import {Person} from "../../types/Person";
+
 /**
  * Determines whether a user (self) can remove another person from a list.
  * The options object controls the behaviour and looks like:
@@ -12,8 +14,8 @@
  * @param options - what are the broad capabilities (`{canRemove, canRemoveSelf}`)
  * @returns boolean  - true iff the person may be removed
  */
-export function mayRemove(person,
-                          self,
+export function mayRemove(person: Person,
+                          self: Person,
                           options = { canRemove: false, canRemoveSelf: false}) {
 
     if (options.canRemove) {

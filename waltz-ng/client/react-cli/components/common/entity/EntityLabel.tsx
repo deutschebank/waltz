@@ -1,9 +1,11 @@
 import * as React from "react";
 import _ from "lodash";
 import EntityIcon from "./EntityIcon";
+import {EntityReference} from "../../../types/Entity";
+import {IsRemovedProvider} from "../../../types/Providers";
 
 export interface EntityLabelProps {
-    ref: any; // entity reference
+    ref: EntityReference & Partial<IsRemovedProvider>;
     showIcon?: boolean;
 }
 
@@ -13,7 +15,7 @@ const nameMap = {
 };
 
 export const EntityLabel = ({ ref, showIcon = true }: EntityLabelProps) => {
-    const name = _.get(ref, nameMap[ref?.kind] || "name", "unknown");
+    const name = ref[nameMap[ref.kind]] || ref?.name || "unknown";
     const isRemoved = ref?.entityLifecycleStatus === 'REMOVED' || ref?.isRemoved;
 
     const classes = ["force-wrap"];
