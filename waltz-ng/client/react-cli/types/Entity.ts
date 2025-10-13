@@ -16,8 +16,8 @@ export type EntityReference = {
 export type EntityDefinitionValue = {
     key: string
     name: string
-    icon: string
-    description: string
+    icon: string | undefined | null
+    description: string | undefined | null
     position: number
 }
 

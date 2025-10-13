@@ -1,3 +1,5 @@
+import {EntityKind} from "../enums/Entity";
+
 export interface Person {
     id: number;
     employeeId: string;
@@ -14,5 +16,5 @@ export interface Person {
     organisationalUnitId?: number;
     name: string;
     userId: string;
-    kind: "PERSON";
+    kind: EntityKind.PERSON;
 }

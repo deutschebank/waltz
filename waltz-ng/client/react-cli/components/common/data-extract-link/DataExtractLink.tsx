@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import _ from "lodash";
 import Icon from "../Icon";
 import toasts from "../../../../svelte-stores/toast-store";
-import { displayError } from "../../../../common/error-utils";
-import { downloadFile } from "../../../../common/file-utils";
-import { $http as http } from "../../../../common/WaltzHttp";
+import {displayError} from "../../../../common/error-utils";
+import {downloadFile} from "../../../../common/file-utils";
+import {$http as http} from "../../../../common/WaltzHttp";
+import {useQuery} from "@tanstack/react-query";
 import styles from "./DataExtractLink.module.scss";
 
 interface DataExtractLinkProps {

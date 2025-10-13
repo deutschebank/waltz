@@ -37,7 +37,7 @@ export const PersonList = ({
 }: PersonListProps) => {
 
     const [mode, setMode] = useState(Modes.LIST);
-    const {isPending, data: self} = useQuery(personApi.getSelf())
+    const {data: self} = useQuery(personApi.getSelf());
 
     const initiateAddition = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
@@ -55,7 +55,7 @@ export const PersonList = ({
     }, []);
 
 
-    const peopleList = people
+    const peopleList = self && people
         .map(p => ({person: p, isRemovable: mayRemove(p, self, {canRemove, canRemoveSelf})}));
 
     const peopleIds = people.map(d => d.id);
@@ -68,7 +68,7 @@ export const PersonList = ({
         <>
             {mode === Modes.LIST &&
                 <ul className="list-unstyled">
-                    {peopleList.map(p => (
+                    {peopleList?.map(p => (
                         <li key={p.person.id} className={`waltz-visibility-parent ${p.person.isRemoved ? "removed" : ""}`}>
                             {p.isRemovable &&
                             <button className="btn-skinny remove waltz-visibility-child-10"

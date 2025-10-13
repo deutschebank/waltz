@@ -54,10 +54,10 @@ export const EntitySearchSelector = ({
             {showDropdown && query.length > 0 && (
                 <ul className={styles.dropdownMenu}>
                     {isPending && <li className="loading-item">Loading...</li>}
-                    {!isPending && results.length === 0
+                    {!isPending && results?.length === 0
                         && <li className="no-results-item">No results found</li>
                     }
-                    {!isPending && results.map(item => (
+                    {!isPending && results?.map(item => (
                         <li key={item.id} onMouseDown={() => handleSelect(item)}>
                             <EntityLabel ref={item} showIcon={showIcon}/>
                         </li>

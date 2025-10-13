@@ -1,50 +1,35 @@
-
-import React, { useState, useMemo, useEffect } from "react";
-import { actorStore } from "../../../svelte-stores/actor-store";
-import { termSearch } from "../../../common";
-// import _ from "lodash";
+import React, { useState, useMemo } from "react";
 import PageHeader from "../../components/common/page-header/PageHeader";
 import ViewLink from "../../components/common/view-link/ViewLink";
 import SearchInput from "../../components/common/SearchInput";
 import EntityLink from "../../components/common/entity/EntityLink";
 import DataExtractLink from "../../components/common/data-extract-link/DataExtractLink";
-
+import {useQuery} from "@tanstack/react-query";
+import actorApi from "../../api/actor";
 import styles from "./ActorListView.module.scss";
-
-interface Actor {
-    id: number;
-    name: string;
-    description: string;
-    isExternal: boolean;
-    externalId?: string;
-    externalString?: string;
-}
+import {mkRef} from "../../utils/mkRef";
+import {useDebounce} from "../../hooks/useDebounce";
+import {locale} from "moment";
 
 const ActorListView = () => {
-    const [actors, setActors] = useState<Actor[]>([]);
     const [qry, setQry] = useState("");
+    const debouncedQry = useDebounce(qry, 400);
 
-    useEffect(() => {
-        const actorsCall = actorStore.findAll();
-        const subscription = actorsCall.subscribe(result => {
-            if (result.data) {
-                const mappedActors = result.data
-                    .map(d => ({...d, externalString: d.isExternal ? "External" : "Internal"}))
-                    .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
-
-                setActors(mappedActors);
-            }
-        });
-
-        return () => subscription.unsubscribe();
-    }, []);
+    const {isPending, data} = useQuery(actorApi.findAll());
+    const mappedActors = data?.map(d => ({...d, externalString: d.isExternal ? "External" : "Internal"}))
+            .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
     const actorList = useMemo(() => {
-        if (qry.length === 0) {
-            return actors;
+        if (debouncedQry.length === 0) {
+            return mappedActors;
         }
-        return termSearch(actors, qry, ["name", "description", "externalString"]);
-    }, [actors, qry]);
+        // return termSearch(mappedActors, qry, ["name", "description", "externalString"]);
+        return mappedActors
+            ?.filter(actor =>
+                actor.name.toLowerCase().includes(debouncedQry.toLowerCase())
+                || actor.description.toLowerCase().includes(debouncedQry.toLowerCase())
+                || actor.externalString.toLowerCase().includes(debouncedQry.toLowerCase()));
+    }, [mappedActors, debouncedQry]);
 
     const breadCrumbs =
         <div slot="breadcrumbs">
@@ -71,9 +56,9 @@ const ActorListView = () => {
                             <SearchInput value={qry} onChange={setQry} />
                             <br />
                             <div className="help-block pull-right small" style={{ fontStyle: "italic" }}>
-                                {actorList.length === actors.length ?
-                                    `Displaying all ${actors.length} actors` :
-                                    `Displaying ${actorList.length} out of ${actors.length} actors`
+                                {actorList?.length === mappedActors?.length ?
+                                    `Displaying all ${mappedActors?.length} actors` :
+                                    `Displaying ${actorList?.length} out of ${mappedActors?.length} actors`
                                 }
                             </div>
                             <div className="waltz-scroll-region-500">
@@ -93,10 +78,10 @@ const ActorListView = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {actorList.map(actor => (
-                                            <tr key={actor.id}>
+                                        {actorList?.map(actor => (
+                                            <tr key={actor?.id}>
                                                 <td>
-                                                    <EntityLink ref={actor} />
+                                                    <EntityLink ref={mkRef(actor)} />
                                                 </td>
                                                 <td className="force-wrap">{actor.description}</td>
                                                 <td>{actor.externalString}</td>
