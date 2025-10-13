@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import reduxStore from "../../redux-store";
-import {ReduxRootState} from "../types/ReduxTypes";
+import {ReduxRootState} from "../types/Redux";
 import _ from 'lodash';
 
 export function useSliceSelector<T>(selector: (state: ReduxRootState) => T): T {
