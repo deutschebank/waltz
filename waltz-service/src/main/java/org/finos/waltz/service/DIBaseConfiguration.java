@@ -28,7 +28,6 @@ import org.jooq.SQLDialect;
 import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -42,7 +41,7 @@ import javax.sql.DataSource;
 @Configuration
 @PropertySource(value = "classpath:waltz.properties", ignoreResourceNotFound = true)
 @PropertySource(value = "file:${user.home}/.waltz/waltz.properties", ignoreResourceNotFound = true)
-@PropertySource(value = "classpath:version.properties", ignoreResourceNotFound = true)
+//@PropertySource(value = "classpath:version.properties", ignoreResourceNotFound = true)
 @ComponentScan(value={"org.finos.waltz.data"})
 public class DIBaseConfiguration {
 
@@ -95,7 +94,6 @@ public class DIBaseConfiguration {
 
 
     @Bean
-    @Autowired
     public DSLContext dsl(DataSource dataSource) {
         try {
             SQLDialect.valueOf(dialect);

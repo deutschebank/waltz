@@ -26,7 +26,6 @@ import org.finos.waltz.model.settings.ImmutableSetting;
 import org.finos.waltz.model.settings.Setting;
 import org.finos.waltz.service.jmx.PersonMaintenance;
 import org.finos.waltz.service.person_hierarchy.PersonHierarchyService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -134,7 +133,6 @@ public class DIConfiguration implements SchedulingConfigurer {
 
 
     @Bean
-    @Autowired
     public PersonMaintenance personMaintenance(PersonHierarchyService personHierarchyService) {
         return new PersonMaintenance(personHierarchyService);
     }

@@ -13,7 +13,6 @@ import org.jooq.conf.RenderQuotedNames;
 import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.jmx.support.RegistrationPolicy;
 
@@ -52,7 +51,6 @@ public class DIInMemoryTestConfiguration {
 
 
     @Bean
-    @Autowired
     public DSLContext dsl(DataSource dataSource) {
         Settings dslSettings = new Settings()
                 .withRenderFormatted(true)
