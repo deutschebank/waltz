@@ -151,6 +151,19 @@ public class WebUtilities {
         }
     }
 
+    public static void requireRoleForSB(UserRoleService userRoleService,
+                                   String user,
+                                   Set<String> requiredRoles) {
+        if (StringUtilities.isEmpty(user)) {
+            LOG.warn("Required role check failed as no user, roles needed: " + requiredRoles);
+            throw new IllegalArgumentException("Not logged in");
+        }
+        if (! userRoleService.hasRole(user, requiredRoles)) {
+            LOG.warn("Required role check failed as user: " + user + ", did not have required roles: " + requiredRoles);
+            throw new NotAuthorizedException();
+        }
+    }
+
 
     public static void requireAnyRole(UserRoleService userRoleService,
                                       Request request,
