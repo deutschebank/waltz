@@ -1,6 +1,5 @@
-import _ from "lodash";
+import {isEmpty} from "lodash";
 import {RestMethod} from "../types/Http";
-import {objects} from "../../process-diagram/components/process-diagram/diagram-store";
 
 export const baseApiUrl = "api";
 export const headers: HeadersInit = {
@@ -10,7 +9,7 @@ export const headers: HeadersInit = {
 if (typeof window !== 'undefined') {
     const satellizerToken = localStorage.getItem("satellizer_token");
 
-    if (!_.isEmpty(satellizerToken)) {
+    if (!isEmpty(satellizerToken)) {
         headers["Authorization"] = `Bearer ${satellizerToken}`;
     }
 }
@@ -22,4 +21,12 @@ export async function fetchJSONList<T>(url: string, method: RestMethod = "GET", 
         body: data ? JSON.stringify(data) : null
     })
     .then(res => res.json());
+}
+
+export async function fetchResponse(url: string, method: RestMethod = "GET", data?: object): Promise<Response>{
+    return await fetch(url, {
+        method: method,
+        headers: headers,
+        body: data ? JSON.stringify(data) : null
+    });
 }

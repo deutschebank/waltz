@@ -1,53 +1,49 @@
-import React, { useState } from "react";
-import _ from "lodash";
+import React from "react";
 import Icon from "../Icon";
 import toasts from "../../../../svelte-stores/toast-store";
 import {displayError} from "../../../../common/error-utils";
 import {downloadFile} from "../../../../common/file-utils";
-import {$http as http} from "../../../../common/WaltzHttp";
-import {useQuery} from "@tanstack/react-query";
+import {useMutation} from "@tanstack/react-query";
 import styles from "./DataExtractLink.module.scss";
+import {RestMethod} from "../../../types/Http";
+import {DataExtractFileType} from "../../../types/DataExtract";
+import {DataExtractFileTypeEnum} from "../../../enums/DataExtract";
+import dataExtractApi from "../../../api/data-extract";
 
 interface DataExtractLinkProps {
-    format?: string | null;
+    format?: DataExtractFileType
     name?: string;
-    method?: "GET" | "POST" | "PUT";
+    method?: RestMethod;
     styling?: "button" | "link";
     filename?: string;
     requestBody?: any | null;
     extractUrl: string;
 }
 
-const base = "data-extract";
-
-function mkRequestOptions(method: string, format: string | null, requestBody: any | null) {
-    switch (method) {
-        case "GET":
-            return { method };
-        case "POST":
-        case "PUT":
-            return { method, body: JSON.stringify(requestBody) };
-        default:
-            throw `Unsupported extract method: ${method}`;
-    }
-}
-
-function mkFilename(filename: string, fmt: string) {
-    return `${filename}.${_.toLower(fmt)}`;
+function mkFilename(filename: string, fmt: DataExtractFileType) {
+    return `${filename}.${fmt.toLowerCase()}`;
 }
 
 const DataExtractLink: React.FC<DataExtractLinkProps> = ({
-    format = null,
+    format,
     name = "Export",
     method = "GET",
     styling = "button",
     filename = "extract",
     requestBody = null,
-    extractUrl,
+    extractUrl
 }) => {
-    const [extracting, setExtracting] = useState(false);
 
-    const url = `${base}/${extractUrl}`;
+    const { isPending: extracting, mutate } = useMutation<Response, Error, DataExtractFileType>({
+        mutationFn: (fmt: DataExtractFileType) => {
+            const { queryFn } = dataExtractApi.extract(extractUrl, method, fmt, filename, requestBody);
+            return queryFn();
+        },
+        onSuccess: (data, fmt) => {
+            invokeExport(data, fmt);
+        },
+        onError: (e) => displayError("Data export failure", e)
+    });
 
     const calcClasses = (styling: "button" | "link" = "button") => {
         switch (styling) {
@@ -60,41 +56,27 @@ const DataExtractLink: React.FC<DataExtractLinkProps> = ({
 
     const classes = calcClasses(styling);
 
-    const invokeExport = (fmt: string) => {
-        const options: any = {
-            params: { format: fmt },
-        };
-        if (fmt === "XLSX") {
-            options.responseType = "arraybuffer";
+    const invokeExport = (response: Response, fmt: DataExtractFileType) => {
+        try {
+            if (fmt === DataExtractFileTypeEnum.CSV) {
+                response
+                    .text()
+                    .then(data => downloadFile(data, mkFilename(filename, fmt), fmt))
+                    .then(_ => toasts.success("CSV file downloaded"))
+            } else {
+                response
+                    .blob()
+                    .then(data => downloadFile(data, mkFilename(filename, fmt), fmt))
+                    .then(_ => toasts.success("XLSX file downloaded"))
+            }
+        } catch (e) {
+            displayError("Data export failure", e);
         }
-
-        const requestOptions = mkRequestOptions(method, format, requestBody);
-
-        return http
-            .doFetch(`${url}?format=${fmt}`, requestOptions)
-            .then((r: any) => (fmt === "XLSX" ? r.blob() : r.text()))
-            .then((data: any) => downloadFile(data, mkFilename(filename, fmt), fmt));
     };
 
-    const doExport = (format: string) => {
+    const doExport = (format: DataExtractFileType) => {
         toasts.info("Exporting data");
-        setExtracting(true);
-        invokeExport(format)
-            .then(() => toasts.success("Data exported"))
-            .catch((e: any) => displayError("Data export failure", e))
-            .finally(() => setExtracting(false));
-    };
-
-    const exportAs = (fmt: string) => {
-        doExport(fmt);
-    };
-
-    const exportCsv = () => {
-        doExport("CSV");
-    };
-
-    const exportXlsx = () => {
-        doExport("XLSX");
+        mutate(format);
     };
 
     if (!format) {
@@ -108,13 +90,13 @@ const DataExtractLink: React.FC<DataExtractLinkProps> = ({
                     </button>
                     <ul className={styles.dropdown} role="menu">
                         <li role="menuitem">
-                            <button className="btn-link" onMouseDown={(e) => { e.preventDefault(); exportCsv(); }}>
+                            <button className="btn-link" onClick={(e) => { e.preventDefault(); doExport(DataExtractFileTypeEnum.CSV); }}>
                                 <Icon name="file-text-o" />
                                 Export as csv
                             </button>
                         </li>
                         <li role="menuitem">
-                            <button className="btn-link" onClick={(e) => { e.preventDefault(); exportXlsx(); }}>
+                            <button className="btn-link" onClick={(e) => { e.preventDefault(); doExport(DataExtractFileTypeEnum.XLSX); }}>
                                 <Icon name="file-excel-o" />
                                 Export as xlsx
                             </button>
@@ -125,7 +107,7 @@ const DataExtractLink: React.FC<DataExtractLinkProps> = ({
         );
     } else {
         return (
-            <button className={classes.join(" ")} onClick={() => exportAs(format)}>
+            <button className={classes.join(" ")} onClick={() => doExport(format)}>
                 <Icon name={extracting ? "refresh" : "cloud-download"} spin={extracting} />
                 {name}
             </button>
