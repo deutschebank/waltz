@@ -18,6 +18,7 @@
 
 package org.finos.waltz.web;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.finos.waltz.common.EnumUtilities;
 import org.finos.waltz.common.SetUtilities;
 import org.finos.waltz.common.StringUtilities;
@@ -165,10 +166,26 @@ public class WebUtilities {
             throw new NotAuthorizedException();
         }
     }
-
+    public static void requireAnyRoleForSB(UserRoleService userRoleService,
+                                           HttpServletRequest request,
+                                      SystemRole... requiredRoles) {
+        String user = getUsernameForSB(request);
+        if (StringUtilities.isEmpty(user)) {
+            LOG.warn("Required role check failed as no user, roles needed: " + Arrays.toString(requiredRoles));
+            throw new IllegalArgumentException("Not logged in");
+        }
+        if (!userRoleService.hasAnyRole(user, requiredRoles)) {
+            LOG.warn("Required role check failed as user: " + user + ", did not have any of required roles: " + Arrays.toString(requiredRoles));
+            throw new NotAuthorizedException();
+        }
+    }
 
     public static String getUsername(Request request) {
         return AuthenticationUtilities.getUsername(request);
+    }
+
+    public static String getUsernameForSB( HttpServletRequest request) {
+        return AuthenticationUtilities.getUsernameForSB(request);
     }
 
 
