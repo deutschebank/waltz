@@ -30,6 +30,10 @@ public class AuthenticationUtilities {
         request.attribute(USER_KEY, UserUtilities.ANONYMOUS_USERNAME);
     }
 
+    public static void setUserAsAnonymousForSB(HttpServletRequest request) {
+        request.setAttribute(USER_KEY, UserUtilities.ANONYMOUS_USERNAME);
+    }
+
     public static void setUser(Request request, String user) {
         request.attribute(USER_KEY, user);
     }

@@ -22,6 +22,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import jakarta.servlet.http.HttpServletRequest;
 import org.finos.waltz.service.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +62,7 @@ public class DisallowAnonymousFilter extends WaltzFilter {
             String token = authorizationHeader.replaceFirst("Bearer ", "");
             DecodedJWT decodedJWT = verifier.verify(token);
             AuthenticationUtilities.setUser(request, decodedJWT.getSubject());
+            AuthenticationUtilities.setUserForSB((HttpServletRequest)request.raw(),decodedJWT.getSubject());
         }
     }
 

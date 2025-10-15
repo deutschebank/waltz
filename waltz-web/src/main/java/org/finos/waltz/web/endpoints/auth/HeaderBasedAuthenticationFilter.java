@@ -18,6 +18,7 @@
 
 package org.finos.waltz.web.endpoints.auth;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.finos.waltz.common.StringUtilities;
 import org.finos.waltz.service.settings.SettingsService;
 import org.finos.waltz.model.settings.NamedSettings;
@@ -67,8 +68,10 @@ public class HeaderBasedAuthenticationFilter extends WaltzFilter {
 
         if (notEmpty(userParam)) {
             AuthenticationUtilities.setUser(request, userParam);
+            AuthenticationUtilities.setUserForSB((HttpServletRequest)request.raw(),userParam);
         } else {
             AuthenticationUtilities.setUserAsAnonymous(request);
+            AuthenticationUtilities.setUserAsAnonymousForSB((HttpServletRequest)request.raw());
         }
     }
 
