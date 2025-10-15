@@ -1,0 +1,32 @@
+.waltzEntitySearchSelector {
+    position: relative;
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    float: left;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+
+.dropdownMenu li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.dropdownMenu li:hover {
+    background-color: #f8f9fa;
+}
