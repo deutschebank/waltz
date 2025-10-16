@@ -23,6 +23,7 @@ import playpenView2 from "./2/playpen2";
 import playpenView3 from "./3/playpen3";
 import playpenView4 from "./4/playpen4";
 import playpenView6 from "./6/playpen6";
+import playpenView7 from "./6/playpen7";
 import list from "./list.html";
 
 export default () => {
@@ -59,6 +60,10 @@ export default () => {
                 .state("main.playpen.6", {
                     url: "/6",
                     views: { "content@": playpenView6 }
+                })
+                .state("main.playpen.7", {
+                    url: "/7/:id",
+                    views: { "content@": playpenView7 }
                 });
         }
     ]);

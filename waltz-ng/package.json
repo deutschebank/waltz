@@ -65,8 +65,12 @@
         "moment": "2.29.1",
         "ng-tags-input": "3.2.0",
         "patch-package": "6.4.7",
+<<<<<<< Updated upstream
+=======
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
+        "react-router": "^7.9.4",
+>>>>>>> Stashed changes
         "satellizer": "0.15.5",
         "showdown": "^2.1.0",
         "slickgrid": "^5.7.0",
