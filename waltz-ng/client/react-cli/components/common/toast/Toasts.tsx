@@ -9,8 +9,9 @@ export default function Toasts() {
     return (
         <div className={style.toastContainer}>
             <div className={style.toastPane}>
-                {toasts.map(obj => {
+                {toasts.map((obj, idx) => {
                     return <Toast
+                        key={idx}
                         id={obj.id}
                         type={obj.type}
                         message={obj.message}/>

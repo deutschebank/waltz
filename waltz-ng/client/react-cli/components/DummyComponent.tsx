@@ -17,6 +17,7 @@ import {addToast} from "../../redux-slices/toast-slice";
 import {mkToast} from "../utils/mkToast";
 import {NotificationTypeEnum} from "../enums/Notification";
 import {ToastCreateType, ToastType} from "../types/Toast";
+import {BreadCrumbsConfig} from "../types/BreadCrumbs";
 
 interface DummyComponentProps {
     helloText?: string;
@@ -48,15 +49,13 @@ const samplePeople: Person[] = [
     }
 ];
 
-const breadCrumbs = (
-    <ol className="waltz-breadcrumbs">
-        <li><ViewLink state="main.home">{"Home"}</ViewLink></li>
-        <li><ViewLink state="main.playpen">{"Playpen"}</ViewLink></li>
-        <li><a href="">Home</a></li>
-        <li><a href="/">This route wont work as expected</a></li>
-        <li>Dummy Component</li>
-    </ol>
-);
+const breadCrumbsConfig: BreadCrumbsConfig[] = [
+    {state: "main.home", text: "Home"},
+    {state: "main.playpen", text: "Playpen"},
+    {href: "/actor/list", text: "This actor route won't work on tomcat"},
+    {href: "actor/list", text: "This actor route will work on tomcat"},
+    {text: "Dummy Component"}
+];
 
 // export default function DummyComponent(props: DummyComponentProps) {
 //     return (
@@ -149,7 +148,7 @@ const DummyComponent = ({
                     onRemove={onRemovePerson}/>
                 <PageHeader name="Section"
                             small="small-section"
-                            breadcrumbs={breadCrumbs}
+                            breadcrumbs={breadCrumbsConfig}
                             summary={<h4>This is a summary</h4>}></PageHeader>
             </div>
         </div>

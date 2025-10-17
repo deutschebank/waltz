@@ -8,7 +8,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import _ from "lodash";
-import Toasts from "../react-cli/components/common/Toast/Toasts";
+import Toasts from "../react-cli/components/common/toast/Toasts";
 
 const queryClient = new QueryClient();
 
