@@ -1,4 +1,4 @@
-import {baseApiUrl, fetchJSONList} from "./api";
+import {baseApiUrl, fetchJSON} from "./api";
 import {EntityReference} from "../types/Entity";
 
 const entitySearchUrl = `${baseApiUrl}/entity-search`;
@@ -16,7 +16,7 @@ const search = (query: string,
             searchQuery: query
         };
 
-        return await fetchJSONList(entitySearchUrl, "POST", options);
+        return await fetchJSON(entitySearchUrl, "POST", options);
     }
 });
 
