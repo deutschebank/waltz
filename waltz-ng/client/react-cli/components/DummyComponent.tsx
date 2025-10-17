@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useState} from "react"
 import reduxStore from "../../redux-store";
 import {incremented} from "../../redux-slices/counter-slice";
 import {navigate} from "../../redux-slices/page-nav-slice";
@@ -12,11 +12,11 @@ import {PersonList} from "./common/PersonList";
 import {Person} from "../types/Person";
 import PageHeader from "./common/page-header/PageHeader";
 import ViewLink from "./common/view-link/ViewLink";
-import Toasts from "./common/Toast/Toasts";
-import Toast from "./common/Toast/Toast";
 import {EntityKind} from "../enums/Entity";
 import {addToast} from "../../redux-slices/toast-slice";
-import {red} from "../../common/colors";
+import {mkToast} from "../utils/mkToast";
+import {NotificationTypeEnum} from "../enums/Notification";
+import {ToastCreateType, ToastType} from "../types/Toast";
 
 interface DummyComponentProps {
     helloText?: string;
@@ -100,17 +100,17 @@ const DummyComponent = ({
 
     console.log("Rendering React");
 
-    const toastsPlaceholders = [
-        {type:"SUCCESS", message:"this is a toast lorem ipsum dolor sit amet alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf"},
-        {type:"INFO", message:"this is a toast lorem ipsum dolor sit amet alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf"}
+    const toastsPlaceholders: ToastCreateType[] = [
+        {type:NotificationTypeEnum.SUCCESS, message:"this is a toast lorem ipsum dolor sit amet alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf"},
+        {type:NotificationTypeEnum.INFO, message:"this is a toast lorem ipsum dolor sit amet alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf"}
     ];
 
-    reduxStore.dispatch(addToast(toastsPlaceholders[0]));
+    mkToast(toastsPlaceholders[0]);
 
-    setTimeout(() => reduxStore.dispatch(addToast(toastsPlaceholders[1])), 500);
-    setTimeout(() => reduxStore.dispatch(addToast(toastsPlaceholders[1])), 1000);
-    setTimeout(() => reduxStore.dispatch(addToast(toastsPlaceholders[1])), 1500);
-    setTimeout(() => reduxStore.dispatch(addToast(toastsPlaceholders[1])), 2000);
+    setTimeout(() => mkToast(toastsPlaceholders[1]), 500);
+    setTimeout(() => mkToast(toastsPlaceholders[1]), 1000);
+    setTimeout(() => mkToast(toastsPlaceholders[1]), 1500);
+    setTimeout(() => mkToast(toastsPlaceholders[1]), 2000);
 
     return (
         <div>
