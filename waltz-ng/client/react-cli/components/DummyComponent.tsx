@@ -1,8 +1,7 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import reduxStore from "../../redux-store";
 import {incremented} from "../../redux-slices/counter-slice";
 import {navigate} from "../../redux-slices/page-nav-slice";
-import pageInfo from "../../svelte-stores/page-navigation-store";
 import {useSliceSelector} from "../hooks/useSliceSelector";
 import Section from "./common/Section";
 import Toggle from "./common/toggle/Toggle";
@@ -13,6 +12,11 @@ import {PersonList} from "./common/PersonList";
 import {Person} from "../types/Person";
 import PageHeader from "./common/page-header/PageHeader";
 import ViewLink from "./common/view-link/ViewLink";
+import Toasts from "./common/Toast/Toasts";
+import Toast from "./common/Toast/Toast";
+import {EntityKind} from "../enums/Entity";
+import {addToast} from "../../redux-slices/toast-slice";
+import {red} from "../../common/colors";
 
 interface DummyComponentProps {
     helloText?: string;
@@ -28,7 +32,7 @@ const samplePeople: Person[] = [
         employeeId: "12345",
         isRemoved: false,
         personKind: "EMPLOYEE",
-        kind: "PERSON",
+        kind: EntityKind.PERSON,
         userId: "johndoe"
     },
     {
@@ -39,7 +43,7 @@ const samplePeople: Person[] = [
         employeeId: "67890",
         isRemoved: false,
         personKind: "CONTRACTOR",
-        kind: "PERSON",
+        kind: EntityKind.PERSON,
         userId: "janesmith"
     }
 ];
@@ -95,6 +99,18 @@ const DummyComponent = ({
 
 
     console.log("Rendering React");
+
+    const toastsPlaceholders = [
+        {type:"SUCCESS", message:"this is a toast lorem ipsum dolor sit amet alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf"},
+        {type:"INFO", message:"this is a toast lorem ipsum dolor sit amet alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf"}
+    ];
+
+    reduxStore.dispatch(addToast(toastsPlaceholders[0]));
+
+    setTimeout(() => reduxStore.dispatch(addToast(toastsPlaceholders[1])), 500);
+    setTimeout(() => reduxStore.dispatch(addToast(toastsPlaceholders[1])), 1000);
+    setTimeout(() => reduxStore.dispatch(addToast(toastsPlaceholders[1])), 1500);
+    setTimeout(() => reduxStore.dispatch(addToast(toastsPlaceholders[1])), 2000);
 
     return (
         <div>
