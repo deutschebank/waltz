@@ -8,6 +8,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import _ from "lodash";
+import Toasts from "../react-cli/components/common/Toast/Toasts";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const directive = function () {
                     root.render(
                         <QueryClientProvider client={queryClient}>
                             <ReactComponent {...currentProps} />
+                            <Toasts/>
                         </QueryClientProvider>
                     );
                 }
