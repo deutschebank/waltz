@@ -5,3 +5,8 @@ export type ToastType = {
     type: NotificationType,
     message: string
 }
+
+export type ToastCreateType = {
+    type: NotificationType,
+    message: string
+}

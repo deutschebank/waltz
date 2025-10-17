@@ -15,6 +15,8 @@ export default function Toast({id, type, message}: ToastType) {
     }, [id]);
 
 
+    const onDismiss = () => reduxStore.dispatch(removeToast({id}));
+
     return (
         <div className={styles.toast} style={{background: `${NOTIFICATION_TYPES[type]?.color}`}}>
             <div className={styles.toastIcon}>
@@ -22,6 +24,11 @@ export default function Toast({id, type, message}: ToastType) {
                       size={"lg"}/>
             </div>
             {message}
+            <div className={styles.toastDismiss}
+                    onClick={onDismiss}>
+                <Icon name="xmark"
+                      size="sm"/>
+            </div>
         </div>
     );
 }

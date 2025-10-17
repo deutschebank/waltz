@@ -1,7 +1,13 @@
 import reduxStore from "../../redux-store";
 import {addToast} from "../../redux-slices/toast-slice";
-import {NotificationType} from "../types/Notification";
+import {ToastCreateType} from "../types/Toast";
 
-export function mkToast(type: NotificationType, message: string){
+/**
+ * usage:
+ * `mkToast("SUCCESS", "this is a toast")`
+ * @param type - type of the toast
+ * @param message - content of the toast
+ */
+export function mkToast({type, message}: ToastCreateType){
     reduxStore.dispatch(addToast({type, message}));
 }

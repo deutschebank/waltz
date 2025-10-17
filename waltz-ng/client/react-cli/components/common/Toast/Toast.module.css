@@ -45,3 +45,8 @@
     scale: 110%;
     padding-right: 1rem;
 }
+
+.toastDismiss {
+    align-self: start;
+    cursor: pointer;
+}
