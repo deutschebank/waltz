@@ -14,9 +14,12 @@
     border: 1px solid $waltz-border-color-lighter;
 
     h2 {
-        margin-top: 6px;
-        margin-bottom: 4px;
-        font-size: 22px
+        margin: 2px 0 4px 0;
+        font-size: 22px;
+
+        small {
+            margin-left: 0.25rem;
+        }
     }
 }
 

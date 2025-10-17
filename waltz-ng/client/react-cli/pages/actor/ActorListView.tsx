@@ -10,6 +10,8 @@ import styles from "./ActorListView.module.scss";
 import {mkRef} from "../../utils/mkRef";
 import {useDebounce} from "../../hooks/useDebounce";
 import {locale} from "moment";
+import {BreadCrumbsConfig} from "../../types/BreadCrumbs";
+import BreadCrumbs from "../../components/common/breadcrumbs/BreadCrumbs";
 
 const ActorListView = () => {
     const [qry, setQry] = useState("");
@@ -31,23 +33,16 @@ const ActorListView = () => {
                 || actor.externalString.toLowerCase().includes(debouncedQry.toLowerCase()));
     }, [mappedActors, debouncedQry]);
 
-    const breadCrumbs =
-        <div slot="breadcrumbs">
-            <ol className="waltz-breadcrumbs">
-                <li>
-                    <ViewLink state="main">Home</ViewLink>
-                </li>
-                <li>
-                    <ViewLink state="main.actors.list">Actors</ViewLink>
-                </li>
-            </ol>
-        </div>;
+    const breadCrumbsConfig: BreadCrumbsConfig[] = [
+        {state: "main", text: "Home"},
+        {text: "Actors"}
+    ];
 
     return (
         <div>
             <PageHeader icon="user-circle"
                         name="Actor List"
-                        breadcrumbs={breadCrumbs}/>
+                        breadcrumbs={breadCrumbsConfig}/>
 
             <div className="waltz-page-summary waltz-page-summary-attach">
                 <div className="waltz-display-section">
