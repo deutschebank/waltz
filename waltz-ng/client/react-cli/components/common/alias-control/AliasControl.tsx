@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import TagInput from "../tags-input/TagsInput";
 import "./AliasControl.module.scss";
-
 // Utility imports
-import { entityAliasStore } from "../../../../svelte-stores/entity-alias-store"; // Placeholder for API calls
-import toasts from "../../../../svelte-stores/toast-store";
-// import {displayError} from "../../../../common/error-utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { aliasQuery, updateAliases } from "../../../api/entity-alias";
 
 interface ParentProps {
     parentEntityReference: any; // Change `any` to a specific type if available
@@ -22,42 +20,38 @@ const AliasControl: React.FC<ParentProps> = ({
     editable = false,
 }) => {
     const [mode, setMode] = useState<Modes>(Modes.VIEW); // View/Edit state
-    const [aliases, setAliases] = useState<string[]>([]); // Aliases list
-    const [fetchCallComplete, setFetchCallComplete] = useState<boolean>(false); // State for tracking fetch call completion
+    const queryClient = useQueryClient(); // Required to update the query data
 
-    // Fetch aliases on component mount if `parentEntityReference` exists
-    useEffect(() => {
-        const fetchAliases = async () => {
-            if (parentEntityReference) {
-                try {
-                    const data = await entityAliasStore.fetchForEntityReference(
-                        parentEntityReference
-                    );
-                    setAliases(data || []);
-                    setFetchCallComplete(true);
-                } catch (error) {
-                    console.error("Failed to fetch aliases:", error);
-                    // displayError("Failed to fetch aliases.");
-                }
-            }
-        };
-        fetchAliases();
-    }, [parentEntityReference]);
+    const { isPending, data: aliases = [] } = useQuery(
+        aliasQuery(parentEntityReference)
+    );
 
-    // Save aliases API call
-    const onSave = async (updatedAliases: string[]) => {
-        try {
-            await entityAliasStore.updateForEntityReference(
+    // Update aliases
+    const mutation = useMutation({
+        mutationFn: (newAliases: string[]) => {
+            const { queryFn } = updateAliases(
                 parentEntityReference,
-                updatedAliases
+                newAliases
             );
-            setAliases(updatedAliases); // Update aliases list
-            toasts.success("Updated aliases");
+            return queryFn();
+        },
+        onSuccess: (udatedAliases) => {
+            // toast.success("Updated aliases successfully");
+            queryClient.setQueryData(
+                ["entity-alias", parentEntityReference],
+                udatedAliases
+            ); // Refetch the aliases
             setMode(Modes.VIEW); // Switch back to view mode
-        } catch (error) {
+        },
+        onError: (error) => {
             console.error("Failed to update aliases:", error);
-            // displayError("Failed to update aliases.");
-        }
+            // toast.error(`Failed to update aliases: ${error}`);
+        },
+    });
+
+    // on save call the mutation with new aliases
+    const onSave = (newAliases: string[]) => {
+        mutation.mutate(newAliases);
     };
 
     // Cancel edit mode
@@ -68,11 +62,11 @@ const AliasControl: React.FC<ParentProps> = ({
     return (
         <div className="waltz-alias-list">
             {/* Render aliases in VIEW mode */}
-            {mode === Modes.VIEW && fetchCallComplete && (
+            {mode === Modes.VIEW && !isPending && (
                 <>
                     {aliases.length > 0 ? (
                         <ul className="list-inline">
-                            {aliases.map((alias, index) => (
+                            {aliases.map((alias: string, index: number) => (
                                 <li className="tag" key={index}>
                                     {alias}
                                 </li>

@@ -1,23 +1,30 @@
 import { fetchJSONList } from "./api";
-import { RestMethod } from "../types/Http";
 import PATH from "../constants/path";
 
-const alias = (
-    url: string,
-    method: RestMethod = "GET",
-    data: any,
-    config: any
-) => ({
-    queryKey: ["entity-alias", url, method, data, config],
+type ref = {
+    kind: string;
+    id: number;
+};
+
+// Fetch aliases
+export const aliasQuery = (ref: ref) => ({
+    queryKey: ["entity-alias", ref],
+    queryFn: async () => {
+        const response: string[] = await fetchJSONList(
+            `${PATH.entityAliasUrl}/${ref.kind}/${ref.id}`
+        );
+        return response;
+    },
+    enabled: !!ref,
+});
+
+// Update aliases
+export const updateAliases = (ref: ref, aliases: string[] = []) => ({
     queryFn: async () => {
         return await fetchJSONList(
-            `${PATH.entityAliasUrl}/${url}`,
-            method,
-            data
+            `${PATH.entityAliasUrl}/${ref.kind}/${ref.id}`,
+            "POST",
+            aliases
         );
     },
 });
-
-export default {
-    alias,
-};
