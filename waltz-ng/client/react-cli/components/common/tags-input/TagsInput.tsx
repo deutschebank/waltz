@@ -1,8 +1,7 @@
-// TagInput.tsx
+// src/components/tags-input/TagInput.tsx
 import React, { useState } from "react";
 import Button from "../button/Button";
 import styles from "./TagsInput.module.scss";
-
 interface TagInputProps {
     value?: string[]; // Initial tag list
     list?: string[]; // Tag suggestion list
@@ -20,6 +19,7 @@ const TagInput: React.FC<TagInputProps> = ({
     const [input, setInput] = useState<string>(""); // State for the current input value
     const [dirty, setDirty] = useState<boolean>(false); // State for tracking unsaved changes
 
+    // function on key pressed
     const pressed = (
         ev:
             | React.KeyboardEvent<HTMLInputElement>
@@ -29,17 +29,19 @@ const TagInput: React.FC<TagInputProps> = ({
         if ("key" in ev && ev.key !== "," && ev.key !== "Enter") return;
 
         const newInput = input.replace(",", "");
+        // add new item into list
         if (newInput) {
             setTags((prevTags) => [...prevTags, newInput]);
             setDirty(true);
             setInput("");
         }
-
+        // call the callback function onSave
         if ("key" in ev && ev.key === "Enter" && ev.ctrlKey && onSave) {
             onSave(tags);
         }
     };
 
+    // delete item from the list
     const del = (idx: number) => {
         setTags((prevTags) => {
             const updatedTags = [...prevTags];

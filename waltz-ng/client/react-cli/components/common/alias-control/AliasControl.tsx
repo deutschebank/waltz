@@ -4,12 +4,18 @@ import "./AliasControl.module.scss";
 // Utility imports
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { aliasQuery, updateAliases } from "../../../api/entity-alias";
+import { displayError } from "../../../../common/error-utils";
 
-interface ParentProps {
-    parentEntityReference: any; // Change `any` to a specific type if available
-    editable?: boolean; // Optional editable flag
-}
-
+// Types
+type ParentEntity = {
+    kind: string;
+    id: number;
+};
+type ParentProps = {
+    parentEntityReference: ParentEntity;
+    editable?: boolean;
+};
+// ENUMS
 enum Modes {
     VIEW = "VIEW",
     EDIT = "EDIT",
@@ -22,6 +28,7 @@ const AliasControl: React.FC<ParentProps> = ({
     const [mode, setMode] = useState<Modes>(Modes.VIEW); // View/Edit state
     const queryClient = useQueryClient(); // Required to update the query data
 
+    // React Query for fetching the aliases
     const { isPending, data: aliases = [] } = useQuery(
         aliasQuery(parentEntityReference)
     );
@@ -29,6 +36,7 @@ const AliasControl: React.FC<ParentProps> = ({
     // Update aliases
     const mutation = useMutation({
         mutationFn: (newAliases: string[]) => {
+            // React Query for update new aliases
             const { queryFn } = updateAliases(
                 parentEntityReference,
                 newAliases
@@ -36,16 +44,16 @@ const AliasControl: React.FC<ParentProps> = ({
             return queryFn();
         },
         onSuccess: (udatedAliases) => {
-            // toast.success("Updated aliases successfully");
+            // update the cache with new data
             queryClient.setQueryData(
                 ["entity-alias", parentEntityReference],
                 udatedAliases
-            ); // Refetch the aliases
+            );
+            // toast.success("Updated aliases successfully");
             setMode(Modes.VIEW); // Switch back to view mode
         },
         onError: (error) => {
-            console.error("Failed to update aliases:", error);
-            // toast.error(`Failed to update aliases: ${error}`);
+            displayError("Failed to update aliases", error);
         },
     });
 

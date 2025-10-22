@@ -1,4 +1,4 @@
-// src/components/Header/Header.tsx
+// src/components/list/List.tsx
 import React from "react";
 import { NavLink } from "react-router";
 
