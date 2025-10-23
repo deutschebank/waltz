@@ -131,6 +131,12 @@ public class WebUtilities {
         requireRole(userRoleService, request, SetUtilities.map(asSet(requiredRoles), Enum::name));
     }
 
+    public static void requireRoleForSB(UserRoleService userRoleService,
+                                   HttpServletRequest request,
+                                   SystemRole... requiredRoles) {
+        requireRoleForSB(userRoleService, request, SetUtilities.map(asSet(requiredRoles), Enum::name));
+    }
+
 
     public static void requireRole(UserRoleService userRoleService,
                                    Request request,
@@ -138,10 +144,30 @@ public class WebUtilities {
         requireRole(userRoleService, request, asSet(requiredRoles));
     }
 
+    public static void requireRoleForSB(UserRoleService userRoleService,
+                                   HttpServletRequest httpServletRequest,
+                                   String... requiredRoles) {
+        requireRoleForSB(userRoleService, httpServletRequest, asSet(requiredRoles));
+    }
+
     public static void requireRole(UserRoleService userRoleService,
                                    Request request,
                                    Set<String> requiredRoles) {
         String user = getUsername(request);
+        if (StringUtilities.isEmpty(user)) {
+            LOG.warn("Required role check failed as no user, roles needed: " + requiredRoles);
+            throw new IllegalArgumentException("Not logged in");
+        }
+        if (! userRoleService.hasRole(user, requiredRoles)) {
+            LOG.warn("Required role check failed as user: " + user + ", did not have required roles: " + requiredRoles);
+            throw new NotAuthorizedException();
+        }
+    }
+
+    public static void requireRoleForSB(UserRoleService userRoleService,
+                                   HttpServletRequest request,
+                                   Set<String> requiredRoles) {
+        String user = getUsernameForSB(request);
         if (StringUtilities.isEmpty(user)) {
             LOG.warn("Required role check failed as no user, roles needed: " + requiredRoles);
             throw new IllegalArgumentException("Not logged in");
