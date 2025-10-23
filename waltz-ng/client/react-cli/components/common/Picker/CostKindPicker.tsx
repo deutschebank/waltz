@@ -1,9 +1,10 @@
 import React, { useMemo } from "react";
-import Grid from "./Grid";
-import Icon from "./Icon";
-import { GridColumn } from "../../types/Grid";
-import { findBySubjectKind } from "../../api/cost-kind";
+import Grid from "../Grid";
+import Icon from "../Icon";
+import { GridColumn } from "../../../types/Grid";
+import { findBySubjectKind } from "../../../api/cost-kind";
 import { useQuery } from "@tanstack/react-query";
+import Loader from "../loader/Loader";
 
 // Interface for cost kind data
 export interface CostKind {
@@ -46,27 +47,32 @@ const CostKindPicker: React.FC<GridProps> = ({
             .sort((a, b) => a.name.localeCompare(b.name));
     }, [costKinds, selectionFilter]);
 
-    // Handle loading and error states
-    if (isLoading) return <p>Loading...</p>;
+    // Handle error states
     if (isError) return <p>Error loading data.</p>;
 
     return (
         <div>
-            {/* Information Block */}
-            <div className="help-block small">
-                <Icon name="info-circle" />
-                <span>
-                    Select a cost kind from the list below, you can filter the
-                    list using the search bar.
-                </span>
-            </div>
+            {isLoading ? (
+                <Loader />
+            ) : (
+                <>
+                    {/* Information Block */}
+                    <div className="help-block small">
+                        <Icon name="info-circle" />
+                        <span>
+                            Select a cost kind from the list below, you can
+                            filter the list using the search bar.
+                        </span>
+                    </div>
 
-            {/* Render Grid Component */}
-            <Grid
-                columnDefs={columnDefs}
-                rowData={rowData}
-                onSelectRow={onSelect}
-            />
+                    {/* Render Grid Component */}
+                    <Grid
+                        columnDefs={columnDefs}
+                        rowData={rowData}
+                        onSelectRow={onSelect}
+                    />
+                </>
+            )}
         </div>
     );
 };

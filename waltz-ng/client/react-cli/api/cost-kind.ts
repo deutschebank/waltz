@@ -1,6 +1,6 @@
 import { fetchJSONList } from "./api";
 import PATH from "../constants/path";
-import { CostKind } from "../components/common/CostKindPicker";
+import { CostKind } from "../components/common/Picker/CostKindPicker";
 
 // Fetch all cost kinds
 export const findAll = () => ({

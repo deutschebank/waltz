@@ -1,9 +1,10 @@
 import React, { useMemo } from "react";
-import Grid from "./Grid";
-import Icon from "./Icon";
+import Grid from "../Grid";
+import Icon from "../Icon";
 import { useQuery } from "@tanstack/react-query";
-import { complexityQuery } from "../../api/complexity-kind";
-import { KindGridProps, GridColumn } from "../../types/Grid";
+import { complexityQuery } from "../../../api/complexity-kind";
+import { KindGridProps, GridColumn } from "../../../types/Grid";
+import Loader from "../loader/Loader";
 
 const ComplexityKindPicker: React.FC<KindGridProps> = ({
     onSelect = () => console.log("Selecting complexity kind"),
@@ -35,28 +36,33 @@ const ComplexityKindPicker: React.FC<KindGridProps> = ({
         },
     ];
 
-    // Handle loading and error states
-    if (isLoading) return <p>Loading...</p>;
+    // Handle error states
     if (isError) return <p>Error loading data.</p>;
 
     return (
         <div>
-            {/* Info block */}
-            <div className="help-block small">
-                <Icon name="info-circle" />
-                <span>
-                    Select a complexity kind from the list below, you can filter
-                    the list using the search bar.
-                </span>
-            </div>
-            <br />
+            {isLoading ? (
+                <Loader />
+            ) : (
+                <>
+                    {/* Info block */}
+                    <div className="help-block small">
+                        <Icon name="info-circle" />
+                        <span>
+                            Select a complexity kind from the list below, you
+                            can filter the list using the search bar.
+                        </span>
+                    </div>
+                    <br />
 
-            {/* Grid component */}
-            <Grid
-                columnDefs={columnDefs} // Pass column definitions
-                rowData={rowData} // Pass filtered and sorted data
-                onSelectRow={onSelect} // Pass row selection handler
-            />
+                    {/* Grid component */}
+                    <Grid
+                        columnDefs={columnDefs} // Pass column definitions
+                        rowData={rowData} // Pass filtered and sorted data
+                        onSelectRow={onSelect} // Pass row selection handler
+                    />
+                </>
+            )}
         </div>
     );
 };

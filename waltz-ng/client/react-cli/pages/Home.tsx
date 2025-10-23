@@ -1,9 +1,12 @@
 // src/pages/Home.tsx
 import React, { useState } from "react";
 import AliasControl from "../components/common/alias-control/AliasControl";
-import ComplexityKindPicker from "../components/common/ComplexityKindPicker";
+import ComplexityKindPicker from "../components/common/Picker/ComplexityKindPicker";
 import { ComplexityKind, TableRow } from "../types/Grid";
-import CostKindPicker, { CostKind } from "../components/common/CostKindPicker";
+import CostKindPicker, {
+    CostKind,
+} from "../components/common/Picker/CostKindPicker";
+import AppGroupPicker from "../components/common/Picker/AppGroupPicker";
 
 const Home: React.FC = () => {
     //Complexity Kind
@@ -78,6 +81,8 @@ const Home: React.FC = () => {
                     subjectKind="APPLICATION"
                     selectionFilter={selectionFilterCost}
                 />
+                <h5>3. App Group Picker</h5>
+                <AppGroupPicker />
             </div>
         </div>
     );
