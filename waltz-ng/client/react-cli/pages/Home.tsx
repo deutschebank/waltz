@@ -3,14 +3,16 @@ import React, { useState } from "react";
 import AliasControl from "../components/common/alias-control/AliasControl";
 import ComplexityKindPicker from "../components/common/ComplexityKindPicker";
 import { ComplexityKind, TableRow } from "../types/Grid";
+import CostKindPicker, { CostKind } from "../components/common/CostKindPicker";
 
 const Home: React.FC = () => {
+    //Complexity Kind
     const [selectedComplexityKinds, setSelectedComplexityKinds] = useState<
         any[]
     >([
         {
             name: "Mike",
-            description: "milind aptiasdhjbjasd ashdhasd asd askg ",
+            description: "Lorem Ipsume text !",
         },
     ]); // Store for selected complexity kinds
 
@@ -29,6 +31,25 @@ const Home: React.FC = () => {
     const complexityKindIds = selectedComplexityKinds.map((kind) => kind.id);
     const selectionFilter = (complexityKind: ComplexityKind) =>
         !complexityKindIds.includes(complexityKind.id);
+
+    // Cost Kind
+    const [selectedCostKinds, setSelectedCostKinds] = useState<any[]>([
+        {
+            name: "Mike",
+            description: "Lorem Ipsume text !",
+        },
+    ]); // Store for selected Cost kinds
+
+    const onSelectCostKind = (costKind: TableRow) => {
+        if (!selectedCostKinds.some((ck) => ck.id === costKind.id)) {
+            setSelectedCostKinds([...selectedCostKinds, costKind]); // Append if not already selected
+        }
+    };
+
+    // Filter logic for CostKindPicker
+    const costKindIds = selectedCostKinds.map((kind) => kind.id);
+    const selectionFilterCost = (costKind: CostKind) =>
+        !costKindIds.includes(costKind.id);
 
     return (
         <div>
@@ -50,6 +71,12 @@ const Home: React.FC = () => {
                 <ComplexityKindPicker
                     onSelect={onSelectComplexityKind}
                     selectionFilter={selectionFilter}
+                />
+                <h5>3. Cost Kind Picker</h5>
+                <CostKindPicker
+                    onSelect={onSelectCostKind}
+                    subjectKind="APPLICATION"
+                    selectionFilter={selectionFilterCost}
                 />
             </div>
         </div>

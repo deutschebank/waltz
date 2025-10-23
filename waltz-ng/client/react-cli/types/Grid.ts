@@ -11,6 +11,7 @@ export type ComplexityKind = {
     kind: string;
     isDefault: boolean;
     externalId: string;
+    costKind?: string;
 };
 
 export type GridColumn = {
@@ -20,7 +21,8 @@ export type GridColumn = {
     maxLength?: number;
 };
 
-export type ComplexityKindsGridProps = {
+export type KindGridProps = {
+    // subjectKind?: string;
     onSelect: (row: TableRow) => void; // Callback invoked when a row is selected
     selectionFilter: (kind: ComplexityKind) => boolean; // Filter function for row data
 };

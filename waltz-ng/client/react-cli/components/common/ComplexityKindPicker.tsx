@@ -3,11 +3,11 @@ import Grid from "./Grid";
 import Icon from "./Icon";
 import { useQuery } from "@tanstack/react-query";
 import { complexityQuery } from "../../api/complexity-kind";
-import { ComplexityKindsGridProps, GridColumn } from "../../types/Grid";
+import { KindGridProps, GridColumn } from "../../types/Grid";
 
-const ComplexityKindPicker: React.FC<ComplexityKindsGridProps> = ({
-    onSelect,
-    selectionFilter,
+const ComplexityKindPicker: React.FC<KindGridProps> = ({
+    onSelect = () => console.log("Selecting complexity kind"),
+    selectionFilter = () => true,
 }) => {
     // React Query for fetching the complexity kinds
     const {
@@ -18,6 +18,7 @@ const ComplexityKindPicker: React.FC<ComplexityKindsGridProps> = ({
 
     // Memoize filtered and ordered rowData (derived state)
     const rowData = useMemo(() => {
+        if (!complexityKinds) return [];
         return complexityKinds
             .filter(selectionFilter)
             .sort((a, b) => a.name.localeCompare(b.name));
