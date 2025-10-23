@@ -18,6 +18,7 @@
 
 package org.finos.waltz.web.endpoints.api;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.finos.waltz.common.exception.InsufficientPrivelegeException;
 import org.finos.waltz.service.app_group.AppGroupService;
 import org.finos.waltz.model.EntityKind;
@@ -37,6 +38,7 @@ import java.util.Set;
 
 import static org.finos.waltz.model.EntityReference.mkRef;
 import static org.finos.waltz.model.entity_search.EntitySearchOptions.mkForEntity;
+import static org.finos.waltz.web.WebUtilities.getUsernameForSB;
 
 @RestController
 @RequestMapping("/api/app-group/")
@@ -59,13 +61,13 @@ public class AppGroupEndpointController {
     }
 
     @PostMapping("id")
-    public Collection<AppGroup> findByIds(Principal principal, @RequestBody List<Long> ids) {
-        return appGroupService.findByIds(principal.getName(), ids);
+    public Collection<AppGroup> findByIds(HttpServletRequest request, @RequestBody List<Long> ids) {
+        return appGroupService.findByIds(getUsernameForSB(request), ids);
     }
 
     @GetMapping("my-group-subscriptions")
-    public Set<AppGroupSubscription> findGroupSubscriptionsForUser(Principal principal) {
-        return appGroupService.findGroupSubscriptionsForUser(principal.getName());
+    public Set<AppGroupSubscription> findGroupSubscriptionsForUser(HttpServletRequest request) {
+        return appGroupService.findGroupSubscriptionsForUser(getUsernameForSB(request));
     }
 
     @GetMapping("public")
@@ -74,29 +76,29 @@ public class AppGroupEndpointController {
     }
 
     @GetMapping("private")
-    public List<AppGroup> findPrivateGroupsByOwner(Principal principal) {
-        return appGroupService.findPrivateGroupsByOwner(principal.getName());
+    public List<AppGroup> findPrivateGroupsByOwner(HttpServletRequest request) {
+        return appGroupService.findPrivateGroupsByOwner(getUsernameForSB(request));
     }
 
     @GetMapping("related/{kind}/{id}")
     public List<AppGroup> findRelatedByEntityReference(@PathVariable("kind") String kind,
                                                        @PathVariable("id") long id,
-                                                       Principal principal) {
+                                                       HttpServletRequest request) {
         EntityReference ref = mkRef(EntityKind.valueOf(kind), id);
-        return appGroupService.findRelatedByEntityReference(ref, principal.getName());
+        return appGroupService.findRelatedByEntityReference(ref, getUsernameForSB(request));
     }
 
     @PostMapping("id/{id}/subscribe")
-    public Set<AppGroupSubscription> subscribe(@PathVariable("id") long groupId, Principal principal) {
-        String userId = principal.getName();
+    public Set<AppGroupSubscription> subscribe(@PathVariable("id") long groupId, HttpServletRequest request) {
+        String userId = getUsernameForSB(request);
         LOG.info("Subscribing {} to group: {}", userId, groupId);
         appGroupService.subscribe(userId, groupId);
         return appGroupService.findGroupSubscriptionsForUser(userId);
     }
 
     @PostMapping("id/{id}/unsubscribe")
-    public Set<AppGroupSubscription> unsubscribe(@PathVariable("id") long groupId, Principal principal) {
-        String userId = principal.getName();
+    public Set<AppGroupSubscription> unsubscribe(@PathVariable("id") long groupId, HttpServletRequest request) {
+        String userId = getUsernameForSB(request);
         LOG.info("Unsubscribing {} from group: {}", userId, groupId);
         appGroupService.unsubscribe(userId, groupId);
         return appGroupService.findGroupSubscriptionsForUser(userId);
@@ -105,8 +107,8 @@ public class AppGroupEndpointController {
     @PostMapping("id/{id}/members/owners")
     public Set<AppGroupMember> addOwner(@PathVariable("id") long groupId,
                                          @RequestBody String ownerId,
-                                         Principal principal) throws InsufficientPrivelegeException {
-        String userId = principal.getName();
+                                         HttpServletRequest request) throws InsufficientPrivelegeException {
+        String userId = getUsernameForSB(request);
         LOG.info("User {} adding owner: {}, to group: {}", userId, ownerId, groupId);
         appGroupService.addOwner(userId, groupId, ownerId);
         return appGroupService.getMembers(groupId);
@@ -115,16 +117,16 @@ public class AppGroupEndpointController {
     @DeleteMapping("id/{id}/members/owners/{ownerId}")
     public Set<AppGroupMember> removeOwner(@PathVariable("id") long groupId,
                                             @PathVariable("ownerId") String ownerToRemoveId,
-                                            Principal principal) throws InsufficientPrivelegeException {
-        String requestorName = principal.getName();
+                                            HttpServletRequest request) throws InsufficientPrivelegeException {
+        String requestorName = getUsernameForSB(request);
         LOG.info("User {} removing owner: {} from app group: {}", requestorName, ownerToRemoveId, groupId);
         appGroupService.removeOwner(requestorName, groupId, ownerToRemoveId);
         return appGroupService.getMembers(groupId);
     }
 
     @DeleteMapping("id/{id}")
-    public Set<AppGroupSubscription> deleteGroup(@PathVariable("id") long groupId, Principal principal) throws InsufficientPrivelegeException {
-        String userId = principal.getName();
+    public Set<AppGroupSubscription> deleteGroup(@PathVariable("id") long groupId, HttpServletRequest request) throws InsufficientPrivelegeException {
+        String userId = getUsernameForSB(request);
         LOG.warn("User {} deleting group: {}", userId, groupId);
         appGroupService.deleteGroup(userId, groupId);
         return appGroupService.findGroupSubscriptionsForUser(userId);
@@ -133,18 +135,18 @@ public class AppGroupEndpointController {
     @PostMapping("id/{id}/applications")
     public List<AppGroupEntry> addApplication(@PathVariable("id") long groupId,
                                               @RequestBody long applicationId,
-                                              Principal principal) throws InsufficientPrivelegeException {
+                                              HttpServletRequest request) throws InsufficientPrivelegeException {
         LOG.info("Adding application: {}, to group: {} ", applicationId, groupId);
-        return appGroupService.addApplication(principal.getName(), groupId, applicationId);
+        return appGroupService.addApplication(getUsernameForSB(request), groupId, applicationId);
     }
 
     @PostMapping("id/{id}/applications/list")
     public List<AppGroupEntry> addApplicationList(@PathVariable("id") long groupId,
                                                   @RequestBody AppGroupBulkAddRequest bulkAddRequest,
-                                                  Principal principal) throws InsufficientPrivelegeException {
+                                                  HttpServletRequest request) throws InsufficientPrivelegeException {
         LOG.info("Adding applications: {}, to group: {} ", bulkAddRequest.applicationIds(), groupId);
         return appGroupService.addApplications(
-                principal.getName(),
+                getUsernameForSB(request),
                 groupId,
                 bulkAddRequest.applicationIds(),
                 bulkAddRequest.unknownIdentifiers());
@@ -153,70 +155,70 @@ public class AppGroupEndpointController {
     @DeleteMapping("id/{id}/applications/{applicationId}")
     public List<AppGroupEntry> removeApplication(@PathVariable("id") long groupId,
                                                  @PathVariable("applicationId") long applicationId,
-                                                 Principal principal) throws InsufficientPrivelegeException {
+                                                 HttpServletRequest request) throws InsufficientPrivelegeException {
         LOG.info("Removing application: {}, from group: {} ", applicationId, groupId);
-        return appGroupService.removeApplication(principal.getName(), groupId, applicationId);
+        return appGroupService.removeApplication(getUsernameForSB(request), groupId, applicationId);
     }
 
     @PostMapping("id/{id}/applications/list/remove")
     public List<AppGroupEntry> removeApplicationList(@PathVariable("id") long groupId,
                                                      @RequestBody List<Long> applicationIds,
-                                                     Principal principal) throws InsufficientPrivelegeException {
+                                                     HttpServletRequest request) throws InsufficientPrivelegeException {
         LOG.info("Removing applications: {}, from group: {} ", applicationIds, groupId);
-        return appGroupService.removeApplications(principal.getName(), groupId, applicationIds);
+        return appGroupService.removeApplications(getUsernameForSB(request), groupId, applicationIds);
     }
 
     @PostMapping("id/{id}/orgUnits")
     public List<AppGroupEntry> addOrgUnit(@PathVariable("id") long groupId,
                                           @RequestBody long orgUnitId,
-                                          Principal principal) throws InsufficientPrivelegeException {
+                                          HttpServletRequest request) throws InsufficientPrivelegeException {
         LOG.info("Adding orgUnit: {}, to application group: {} ", orgUnitId, groupId);
-        return appGroupService.addOrganisationalUnit(principal.getName(), groupId, orgUnitId);
+        return appGroupService.addOrganisationalUnit(getUsernameForSB(request), groupId, orgUnitId);
     }
 
     @DeleteMapping("id/{id}/orgUnits/{orgUnitId}")
     public List<AppGroupEntry> removeOrgUnit(@PathVariable("id") long groupId,
                                              @PathVariable("orgUnitId") long orgUnitId,
-                                             Principal principal) throws InsufficientPrivelegeException {
+                                             HttpServletRequest request) throws InsufficientPrivelegeException {
         LOG.info("Removing orgUnit: {}, from application group: {} ", orgUnitId, groupId);
-        return appGroupService.removeOrganisationalUnit(principal.getName(), groupId, orgUnitId);
+        return appGroupService.removeOrganisationalUnit(getUsernameForSB(request), groupId, orgUnitId);
     }
 
     @PostMapping("id/{id}")
     public AppGroupDetail updateGroupOverview(@PathVariable("id") long groupId,
                                               @RequestBody AppGroup appGroup,
-                                              Principal principal) throws InsufficientPrivelegeException {
-        return appGroupService.updateOverview(principal.getName(), appGroup);
+                                              HttpServletRequest request) throws InsufficientPrivelegeException {
+        return appGroupService.updateOverview(getUsernameForSB(request), appGroup);
     }
 
     @PostMapping
-    public Long createNewGroup(Principal principal) {
-        return appGroupService.createNewGroup(principal.getName());
+    public Long createNewGroup(HttpServletRequest request) {
+        return appGroupService.createNewGroup(getUsernameForSB(request));
     }
 
     @PostMapping("id/{id}/change-initiatives")
     public List<AppGroupEntry> addChangeInitiative(@PathVariable("id") long groupId,
                                                    @RequestBody long changeInitiativeId,
-                                                   Principal principal) throws InsufficientPrivelegeException {
+                                                   HttpServletRequest request) throws InsufficientPrivelegeException {
         LOG.info("Adding Change Initiative: {}, to group: {} ", changeInitiativeId, groupId);
-        return appGroupService.addChangeInitiative(principal.getName(), groupId, changeInitiativeId);
+        return appGroupService.addChangeInitiative(getUsernameForSB(request), groupId, changeInitiativeId);
     }
 
     @DeleteMapping("id/{id}/change-initiatives/{changeInitiativeId}")
     public List<AppGroupEntry> removeChangeInitiative(@PathVariable("id") long groupId,
                                                       @PathVariable("changeInitiativeId") long changeInitiativeId,
-                                                      Principal principal) throws InsufficientPrivelegeException {
+                                                      HttpServletRequest request) throws InsufficientPrivelegeException {
         LOG.info("Removing Change Initiative: {}, from group: {} ", changeInitiativeId, groupId);
-        return appGroupService.removeChangeInitiative(principal.getName(), groupId, changeInitiativeId);
+        return appGroupService.removeChangeInitiative(getUsernameForSB(request), groupId, changeInitiativeId);
     }
 
     @PostMapping("id/{id}/change-initiatives/list")
     public List<AppGroupEntry> addChangeInitiativeList(@PathVariable("id") long groupId,
                                                        @RequestBody AppGroupBulkAddRequest bulkAddRequest,
-                                                       Principal principal) throws InsufficientPrivelegeException {
+                                                       HttpServletRequest request) throws InsufficientPrivelegeException {
         LOG.info("Adding change initiatives: {}, to group: {} ", bulkAddRequest.changeInitiativeIds(), groupId);
         return appGroupService.addChangeInitiatives(
-                principal.getName(),
+                getUsernameForSB(request),
                 groupId,
                 bulkAddRequest.changeInitiativeIds());
     }
@@ -224,9 +226,9 @@ public class AppGroupEndpointController {
     @PostMapping("id/{id}/change-initiatives/list/remove")
     public List<AppGroupEntry> removeChangeInitiativeList(@PathVariable("id") long groupId,
                                                           @RequestBody List<Long> changeInitiativeIds,
-                                                          Principal principal) throws InsufficientPrivelegeException {
+                                                          HttpServletRequest request) throws InsufficientPrivelegeException {
         LOG.info("Removing change initiatives: {}, from group: {} ", changeInitiativeIds, groupId);
-        return appGroupService.removeChangeInitiatives(principal.getName(), groupId, changeInitiativeIds);
+        return appGroupService.removeChangeInitiatives(getUsernameForSB(request), groupId, changeInitiativeIds);
     }
 
     @PostMapping("search")

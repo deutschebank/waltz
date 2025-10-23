@@ -18,6 +18,7 @@
 
 package org.finos.waltz.web.endpoints.api;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.finos.waltz.service.access_log.AccessLogService;
 import org.finos.waltz.model.WaltzVersionInfo;
 import org.finos.waltz.model.accesslog.AccessLog;
@@ -38,6 +39,7 @@ import java.time.Duration;
 import java.util.List;
 
 import static org.finos.waltz.common.Checks.checkNotNull;
+import static org.finos.waltz.web.WebUtilities.getUsernameForSB;
 import static org.finos.waltz.web.WebUtilities.mkPath;
 
 
@@ -107,9 +109,9 @@ public class AccessLogEndpointController {
     @PostMapping("{state}")
     public WaltzVersionInfo write(@PathVariable String state,
                                   @RequestBody(required = false) String params,
-                                  Principal principal) {
+                                  HttpServletRequest request) {
         AccessLog accessLog = ImmutableAccessLog.builder()
-                .userId(principal.getName())
+                .userId(getUsernameForSB(request))
                 .state(state)
                 .params(params)
                 .build();

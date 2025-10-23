@@ -90,7 +90,7 @@ public class AuthenticationEndpoint implements Endpoint {
     private Supplier<Filter> createDefaultFilter() {
         return () -> {
             LOG.info("Using default (jwt) authentication filter");
-            return new JWTAuthenticationFilter(settingsService);
+            return null;
         };
     }
 
