@@ -26,7 +26,8 @@ import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
-@ManagedResource(description = "Maintenance functions for the Waltz Persons")
+@ManagedResource(objectName = "org.finos.waltz.service.jmx:name=PersonMaintenance",
+        description = "Maintenance functions for the Waltz Persons")
 public class PersonMaintenance {
 
     private static final Logger LOG = LoggerFactory.getLogger(PersonMaintenance.class);
@@ -41,7 +42,7 @@ public class PersonMaintenance {
 
     @ManagedOperation(description = "Rebuild the person hierarchy table")
     public int rebuildHierarchyTable() {
-        LOG.warn("Rebuild person hierarchy (via jmx)");
+        LOG.info("Rebuild person hierarchy (via jmx)");
         return personHierarchyService.build().length;
     }
 
