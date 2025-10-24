@@ -77,7 +77,7 @@ public class DisallowAnonymousFilter extends WaltzFilter {
     {
         LOG.info("Start of DisallowAnonymousFilter#doFilter()");
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
-        HttpServletResponse httpResponse = (HttpServletResponse) servletRequest;
+        HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
         String authorizationHeader = httpRequest.getHeader("Authorization");
         LOG.info("value of authorizationHeader : {}", authorizationHeader);
 
