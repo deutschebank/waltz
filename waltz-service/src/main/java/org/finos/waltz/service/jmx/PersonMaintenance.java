@@ -26,11 +26,11 @@ import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
-@ManagedResource(objectName = "org.finos.waltz.service.jmx:name=PersonMaintenance",
-        description = "Maintenance functions for the Waltz Persons")
+/*@ManagedResource(objectName = "org.finos.waltz.service.jmx:name=PersonMaintenance",
+        description = "Maintenance functions for the Waltz Persons")*/
 public class PersonMaintenance {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PersonMaintenance.class);
+    /*private static final Logger LOG = LoggerFactory.getLogger(PersonMaintenance.class);
 
     private final PersonHierarchyService personHierarchyService;
 
@@ -50,6 +50,6 @@ public class PersonMaintenance {
     @ManagedAttribute
     public String getName() {
         return "Person";
-    }
+    }*/
 
 }

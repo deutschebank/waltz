@@ -40,7 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import spark.Filter;
+import jakarta.servlet.Filter;
 import spark.Spark;
 
 import java.io.BufferedReader;
@@ -174,7 +174,7 @@ public class AuthenticationEndpoint implements Endpoint {
             return newHashMap("token", token);
         }, WebUtilities.transformer);
 
-        Spark.before(WebUtilities.mkPath("api", "*"), filter);
+        //Spark.before(WebUtilities.mkPath("api", "*"), filter);
 
     }
 

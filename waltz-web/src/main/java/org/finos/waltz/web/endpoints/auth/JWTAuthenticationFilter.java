@@ -24,6 +24,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.finos.waltz.service.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,8 +86,10 @@ public class JWTAuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
         LOG.info("JWT Filter Invoked API:{}", ((HttpServletRequest) servletRequest).getServletPath());
         String authorizationHeader = httpRequest.getHeader("Authorization");
+        LOG.info("authorizationHeader : {}", authorizationHeader);
 
         if (authorizationHeader == null) {
             AuthenticationUtilities.setUserAsAnonymousForSB(httpRequest);
@@ -99,6 +102,7 @@ public class JWTAuthenticationFilter implements Filter {
 
             DecodedJWT decodedJWT = verifier.verify(token);
             AuthenticationUtilities.setUserForSB(httpRequest, decodedJWT.getSubject());
+            LOG.info("Subject : {}", decodedJWT.getSubject());
             filterChain.doFilter(servletRequest, servletResponse);
         }
     }

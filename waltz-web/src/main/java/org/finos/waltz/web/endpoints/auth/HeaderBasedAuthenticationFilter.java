@@ -18,7 +18,12 @@
 
 package org.finos.waltz.web.endpoints.auth;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.finos.waltz.common.StringUtilities;
 import org.finos.waltz.service.settings.SettingsService;
 import org.finos.waltz.model.settings.NamedSettings;
@@ -26,6 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
+
+import java.io.IOException;
 
 import static org.finos.waltz.common.StringUtilities.notEmpty;
 
@@ -56,7 +63,7 @@ public class HeaderBasedAuthenticationFilter extends WaltzFilter {
     }
 
 
-    @Override
+    /*@Override
     public void handle(Request request,
                        Response response) throws Exception {
 
@@ -73,6 +80,25 @@ public class HeaderBasedAuthenticationFilter extends WaltzFilter {
             AuthenticationUtilities.setUserAsAnonymous(request);
             AuthenticationUtilities.setUserAsAnonymousForSB((HttpServletRequest)request.raw());
         }
-    }
+    }*/
 
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException
+    {
+        LOG.info("Start of HeaderBasedAuthenticationFilter#doFilter()");
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+        String userParam = StringUtilities.ifEmpty(
+                testingOverride,httpRequest.getHeader(paramName));
+
+        LOG.trace("User according to header: {}", userParam);
+
+        if (notEmpty(userParam)) {
+            //AuthenticationUtilities.setUser(request, userParam);
+            AuthenticationUtilities.setUserForSB(httpRequest,userParam);
+        } else {
+            //AuthenticationUtilities.setUserAsAnonymous(request);
+            AuthenticationUtilities.setUserAsAnonymousForSB(httpRequest);
+            LOG.info("End of HeaderBasedAuthenticationFilter#doFilter()");
+        }
+    }
 }

@@ -132,10 +132,10 @@ public class DIConfiguration implements SchedulingConfigurer {
     }
 
 
-    @Bean
+    /*@Bean
     public PersonMaintenance personMaintenance(PersonHierarchyService personHierarchyService) {
         return new PersonMaintenance(personHierarchyService);
-    }
+    }*/
 
 
     @Bean

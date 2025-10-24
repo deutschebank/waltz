@@ -18,8 +18,9 @@
 
 package org.finos.waltz.web.endpoints.auth;
 
+import jakarta.servlet.Filter;
 import org.finos.waltz.service.settings.SettingsService;
-import spark.Filter;
+//import spark.Filter;
 
 import java.util.Optional;
 
