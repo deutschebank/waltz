@@ -1,9 +1,10 @@
 import * as React from "react";
 import {entity} from "../../../constants/entity";
 import Icon from "../Icon";
+import {EntityKind} from "../../../types/Entity";
 
 export interface EntityIconProps {
-    kind: string;
+    kind: EntityKind;
     showName?: boolean;
 }
 

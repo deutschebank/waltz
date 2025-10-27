@@ -1,13 +1,11 @@
-import {baseApiUrl, fetchJSONList} from "./api";
+import {fetchJSON} from "./api";
 import {Person} from "../types/Person";
-
-const personBaseUrl = `${baseApiUrl}/person`;
-const getSelfUrl = `${personBaseUrl}/self`;
+import {personPath} from "../constants/path";
 
 const getSelf = () => ({
     queryKey: ['person', 'getSelf'],
     queryFn: async (): Promise<Person> => {
-        return await fetchJSONList(getSelfUrl);
+        return await fetchJSON(personPath.getSelf());
     }
 })
 

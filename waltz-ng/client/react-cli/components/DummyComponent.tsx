@@ -2,7 +2,6 @@ import React, {useState} from "react"
 import reduxStore from "../../redux-store";
 import {incremented} from "../../redux-slices/counter-slice";
 import {navigate} from "../../redux-slices/page-nav-slice";
-import pageInfo from "../../svelte-stores/page-navigation-store";
 import {useSliceSelector} from "../hooks/useSliceSelector";
 import Section from "./common/Section";
 import Toggle from "./common/toggle/Toggle";
@@ -13,6 +12,12 @@ import {PersonList} from "./common/PersonList";
 import {Person} from "../types/Person";
 import PageHeader from "./common/page-header/PageHeader";
 import ViewLink from "./common/view-link/ViewLink";
+import {EntityKind} from "../enums/Entity";
+import {addToast} from "../../redux-slices/toast-slice";
+import {mkToast} from "../utils/mkToast";
+import {NotificationTypeEnum} from "../enums/Notification";
+import {ToastCreateType, ToastType} from "../types/Toast";
+import {BreadCrumbsConfig} from "../types/BreadCrumbs";
 
 interface DummyComponentProps {
     helloText?: string;
@@ -28,7 +33,7 @@ const samplePeople: Person[] = [
         employeeId: "12345",
         isRemoved: false,
         personKind: "EMPLOYEE",
-        kind: "PERSON",
+        kind: EntityKind.PERSON,
         userId: "johndoe"
     },
     {
@@ -39,20 +44,18 @@ const samplePeople: Person[] = [
         employeeId: "67890",
         isRemoved: false,
         personKind: "CONTRACTOR",
-        kind: "PERSON",
+        kind: EntityKind.PERSON,
         userId: "janesmith"
     }
 ];
 
-const breadCrumbs = (
-    <ol className="waltz-breadcrumbs">
-        <li><ViewLink state="main.home">{"Home"}</ViewLink></li>
-        <li><ViewLink state="main.playpen">{"Playpen"}</ViewLink></li>
-        <li><a href="">Home</a></li>
-        <li><a href="/">This route wont work as expected</a></li>
-        <li>Dummy Component</li>
-    </ol>
-);
+const breadCrumbsConfig: BreadCrumbsConfig[] = [
+    {state: "main.home", text: "Home"},
+    {state: "main.playpen", text: "Playpen"},
+    {href: "/actor/list", text: "This actor route won't work on tomcat"},
+    {href: "actor/list", text: "This actor route will work on tomcat"},
+    {text: "Dummy Component"}
+];
 
 // export default function DummyComponent(props: DummyComponentProps) {
 //     return (
@@ -96,6 +99,18 @@ const DummyComponent = ({
 
     console.log("Rendering React");
 
+    const toastsPlaceholders: ToastCreateType[] = [
+        {type:NotificationTypeEnum.SUCCESS, message:"this is a toast lorem ipsum dolor sit amet alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf"},
+        {type:NotificationTypeEnum.INFO, message:"this is a toast lorem ipsum dolor sit amet alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf"}
+    ];
+
+    mkToast(toastsPlaceholders[0]);
+
+    setTimeout(() => mkToast(toastsPlaceholders[1]), 500);
+    setTimeout(() => mkToast(toastsPlaceholders[1]), 1000);
+    setTimeout(() => mkToast(toastsPlaceholders[1]), 1500);
+    setTimeout(() => mkToast(toastsPlaceholders[1]), 2000);
+
     return (
         <div>
             <div style={{ borderRadius: '4px', padding: '16px' }}>
@@ -133,7 +148,7 @@ const DummyComponent = ({
                     onRemove={onRemovePerson}/>
                 <PageHeader name="Section"
                             small="small-section"
-                            breadcrumbs={breadCrumbs}
+                            breadcrumbs={breadCrumbsConfig}
                             summary={<h4>This is a summary</h4>}></PageHeader>
             </div>
         </div>

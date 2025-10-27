@@ -3,12 +3,14 @@ import React, { useState, useEffect } from "react";
 import { truncateMiddle } from "../../../../common/string-utils";
 import Icon from "../Icon";
 import styles from "./PageHeader.module.scss";
+import {BreadCrumbsConfig} from "../../../types/BreadCrumbs";
+import BreadCrumbs from "../breadcrumbs/BreadCrumbs";
 
 interface PageHeaderProps {
     icon?: string;
     name: string;
     small?: string;
-    breadcrumbs?: React.ReactNode;
+    breadcrumbs?: BreadCrumbsConfig[];
     actions?: React.ReactNode;
     summary?: React.ReactNode;
 }
@@ -50,7 +52,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     return (
         <div className={styles.header}>
             <div className={styles.headerFree}>
-                {breadcrumbs}
+                {breadcrumbs && <BreadCrumbs crumbs={breadcrumbs}/>}
                 <h2>
                     <Icon name={icon} />
                     <span title={name}>{truncateMiddle(name, 70)}</span>

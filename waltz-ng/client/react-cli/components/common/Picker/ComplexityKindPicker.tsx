@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import Grid from "../Grid";
 import Icon from "../Icon";
 import { useQuery } from "@tanstack/react-query";
-import { complexityQuery } from "../../../api/complexity-kind";
+import { findAll } from "../../../api/complexity-kind";
 import { KindGridProps, GridColumn } from "../../../types/Grid";
 import Loader from "../loader/Loader";
 
@@ -15,7 +15,7 @@ const ComplexityKindPicker: React.FC<KindGridProps> = ({
         data: complexityKinds = [],
         isLoading,
         isError,
-    } = useQuery(complexityQuery());
+    } = useQuery(findAll());
 
     // Memoize filtered and ordered rowData (derived state)
     const rowData = useMemo(() => {

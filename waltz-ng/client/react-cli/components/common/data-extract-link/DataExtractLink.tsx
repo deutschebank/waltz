@@ -36,7 +36,7 @@ const DataExtractLink: React.FC<DataExtractLinkProps> = ({
 
     const { isPending: extracting, mutate } = useMutation<Response, Error, DataExtractFileType>({
         mutationFn: (fmt: DataExtractFileType) => {
-            const { queryFn } = dataExtractApi.extract(extractUrl, method, fmt, filename, requestBody);
+            const {queryFn} = dataExtractApi.extract(extractUrl, method, fmt, filename, requestBody);
             return queryFn();
         },
         onSuccess: (data, fmt) => {

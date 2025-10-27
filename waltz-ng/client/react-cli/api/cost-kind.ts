@@ -1,24 +1,21 @@
-import { fetchJSONList } from "./api";
-import PATH from "../constants/path";
-import { CostKind } from "../components/common/Picker/CostKindPicker";
+import {fetchJSON} from "./api";
+import {costKindPath} from "../constants/path";
+import {CostKind} from "../components/common/Picker/CostKindPicker";
+import {EntityKind} from "../types/Entity";
 
 // Fetch all cost kinds
 export const findAll = () => ({
     queryKey: ["cost-kind"],
-    queryFn: async () => {
-        const response: CostKind[] = await fetchJSONList(`${PATH.costKind}`);
-        return response;
+    queryFn: async (): Promise<CostKind[]> => {
+        return await fetchJSON(costKindPath.findAll());
     },
 });
 
 // Fetch by subject kind
-export const findBySubjectKind = (subjectKind: string) => ({
+export const findBySubjectKind = (subjectKind: EntityKind) => ({
     queryKey: ["cost-subjectKind", subjectKind],
-    queryFn: async () => {
-        const response: CostKind[] = await fetchJSONList(
-            `${PATH.costSubjectKind}/${subjectKind}`
-        );
-        return response;
+    queryFn: async (): Promise<CostKind[]> => {
+        return await fetchJSON(costKindPath.findBySubjectKind(subjectKind));
     },
     enabled: !!subjectKind,
 });

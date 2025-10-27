@@ -1,7 +1,6 @@
 import {isEmpty} from "lodash";
 import {RestMethod} from "../types/Http";
 
-export const baseApiUrl = "api";
 export const headers: HeadersInit = {
     "Content-Type": "application/json"
 }
@@ -14,7 +13,7 @@ if (typeof window !== 'undefined') {
     }
 }
 
-export async function fetchJSONList<T>(url: string, method: RestMethod = "GET", data?: object): Promise<T>{
+export async function fetchJSON<T>(url: string, method: RestMethod = "GET", data?: object): Promise<T>{
     return await fetch(url, {
         method: method,
         headers: headers,
