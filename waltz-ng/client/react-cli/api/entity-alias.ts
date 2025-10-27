@@ -1,4 +1,4 @@
-import { fetchJSONList } from "./api";
+import { fetchJSON } from "./api";
 import PATH from "../constants/path";
 
 type ref = {
@@ -10,7 +10,7 @@ type ref = {
 export const aliasQuery = (ref: ref) => ({
     queryKey: ["entity-alias", ref],
     queryFn: async () => {
-        const response: string[] = await fetchJSONList(
+        const response: string[] = await fetchJSON(
             `${PATH.entityAliasUrl}/${ref.kind}/${ref.id}`
         );
         return response;
@@ -21,7 +21,7 @@ export const aliasQuery = (ref: ref) => ({
 // Update aliases
 export const updateAliases = (ref: ref, aliases: string[] = []) => ({
     queryFn: async () => {
-        return await fetchJSONList(
+        return await fetchJSON(
             `${PATH.entityAliasUrl}/${ref.kind}/${ref.id}`,
             "POST",
             aliases

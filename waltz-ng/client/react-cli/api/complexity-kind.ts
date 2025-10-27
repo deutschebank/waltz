@@ -1,14 +1,13 @@
-import { fetchJSONList } from "./api";
+import {fetchJSON} from "./api";
 import PATH from "../constants/path";
-import { ComplexityKind } from "../types/Grid";
+import {ComplexityKind} from "../types/Grid";
 
 // Fetch complexity kinds
 export const complexityQuery = () => ({
     queryKey: ["complexity-kind"],
     queryFn: async () => {
-        const response: ComplexityKind[] = await fetchJSONList(
+        return await fetchJSON<ComplexityKind[]>(
             `${PATH.complexityKindUrl}`
         );
-        return response;
     },
 });

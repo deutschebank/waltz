@@ -1,13 +1,12 @@
-import { fetchJSONList } from "./api";
+import {fetchJSON} from "./api";
 import PATH from "../constants/path";
-import { CostKind } from "../components/common/Picker/CostKindPicker";
+import {CostKind} from "../components/common/Picker/CostKindPicker";
 
 // Fetch all cost kinds
 export const findAll = () => ({
     queryKey: ["cost-kind"],
     queryFn: async () => {
-        const response: CostKind[] = await fetchJSONList(`${PATH.costKind}`);
-        return response;
+        return await fetchJSON<CostKind[]>(`${PATH.costKind}`);
     },
 });
 
@@ -15,10 +14,9 @@ export const findAll = () => ({
 export const findBySubjectKind = (subjectKind: string) => ({
     queryKey: ["cost-subjectKind", subjectKind],
     queryFn: async () => {
-        const response: CostKind[] = await fetchJSONList(
+        return await fetchJSON<CostKind[]>(
             `${PATH.costSubjectKind}/${subjectKind}`
         );
-        return response;
     },
     enabled: !!subjectKind,
 });
