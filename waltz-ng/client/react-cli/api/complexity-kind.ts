@@ -5,8 +5,8 @@ import {ComplexityKind} from "../types/Grid";
 // Fetch complexity kinds
 export const complexityQuery = () => ({
     queryKey: ["complexity-kind"],
-    queryFn: async () => {
-        return await fetchJSON<ComplexityKind[]>(
+    queryFn: async (): Promise<ComplexityKind[]> => {
+        return await fetchJSON(
             `${PATH.complexityKindUrl}`
         );
     },

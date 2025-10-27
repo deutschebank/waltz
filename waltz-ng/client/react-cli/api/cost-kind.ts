@@ -5,16 +5,16 @@ import {CostKind} from "../components/common/Picker/CostKindPicker";
 // Fetch all cost kinds
 export const findAll = () => ({
     queryKey: ["cost-kind"],
-    queryFn: async () => {
-        return await fetchJSON<CostKind[]>(`${PATH.costKind}`);
+    queryFn: async (): Promise<CostKind[]> => {
+        return await fetchJSON(`${PATH.costKind}`);
     },
 });
 
 // Fetch by subject kind
 export const findBySubjectKind = (subjectKind: string) => ({
     queryKey: ["cost-subjectKind", subjectKind],
-    queryFn: async () => {
-        return await fetchJSON<CostKind[]>(
+    queryFn: async (): Promise<CostKind[]> => {
+        return await fetchJSON(
             `${PATH.costSubjectKind}/${subjectKind}`
         );
     },
