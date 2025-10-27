@@ -74,7 +74,7 @@ public class DIBaseConfiguration {
     private int databasePerformanceQuerySlowThreshold;
 
     @Bean
-    public DataSource dataSource() {
+    public DataSource waltzCoredataSource() {
 
         HikariConfig dsConfig = new HikariConfig();
         dsConfig.setJdbcUrl(dbUrl);
