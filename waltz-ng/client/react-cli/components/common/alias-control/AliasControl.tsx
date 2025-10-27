@@ -8,16 +8,14 @@ import {
     updateEntityReference,
 } from "../../../api/entity-alias";
 import { displayError } from "../../../../common/error-utils";
+import { EntityReference } from "../../../types/Entity";
 
 // Types
-type ParentEntity = {
-    kind: string;
-    id: number;
-};
 type ParentProps = {
-    parentEntityReference: ParentEntity;
+    parentEntityReference: Pick<EntityReference, "kind" | "id">;
     editable?: boolean;
 };
+
 // ENUMS
 enum Modes {
     VIEW = "VIEW",

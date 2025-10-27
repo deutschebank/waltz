@@ -1,18 +1,24 @@
 // Define TypeScript interfaces for props and data structures
 
+import { EntityKind } from "./Entity";
+
 export type TableRow = {
     [key: string]: any; // Generic row structure, to be resolved dynamically
 };
-
-export type ComplexityKind = {
-    id: number;
+export interface BaseKind {
+    id: string | number;
     name: string;
     description: string;
+}
+export interface ComplexityKind extends BaseKind {
     kind: string;
     isDefault: boolean;
     externalId: string;
-    costKind?: string;
-};
+}
+
+export interface CostKind extends BaseKind {
+    costKind: string;
+}
 
 export type GridColumn = {
     field: string;
@@ -22,7 +28,6 @@ export type GridColumn = {
 };
 
 export type KindGridProps = {
-    // subjectKind?: string;
     onSelect: (row: TableRow) => void; // Callback invoked when a row is selected
     selectionFilter: (kind: ComplexityKind) => boolean; // Filter function for row data
 };
@@ -32,3 +37,8 @@ export type GridProps = {
     rowData: TableRow[]; // Data for rows
     onSelectRow: (row: TableRow) => void; // Callback to select a row
 };
+export interface PickerGridProps {
+    subjectKind: EntityKind;
+    onSelect: (row: any) => void; // Callback for row selection
+    selectionFilter: (row: CostKind) => boolean;
+}

@@ -1,27 +1,12 @@
 import React, { useMemo } from "react";
 import Grid from "../Grid";
 import Icon from "../Icon";
-import { GridColumn } from "../../../types/Grid";
+import { GridColumn, PickerGridProps } from "../../../types/Grid";
 import { findBySubjectKind } from "../../../api/cost-kind";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../loader/Loader";
-import {EntityKind} from "../../../types/Entity";
 
-// Interface for cost kind data
-export interface CostKind {
-    id: string;
-    costKind: string;
-    name: string;
-    description: string;
-}
-
-interface GridProps {
-    subjectKind: EntityKind;
-    onSelect: (row: any) => void; // Callback for row selection
-    selectionFilter: (row: CostKind) => boolean;
-}
-
-const CostKindPicker: React.FC<GridProps> = ({
+const CostKindPicker: React.FC<PickerGridProps> = ({
     subjectKind = "APPLICATION",
     onSelect = () => console.log("Selecting cost kind"),
     selectionFilter = () => true,

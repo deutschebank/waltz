@@ -2,10 +2,8 @@
 import React, { useState } from "react";
 import AliasControl from "../components/common/alias-control/AliasControl";
 import ComplexityKindPicker from "../components/common/Picker/ComplexityKindPicker";
-import { ComplexityKind, TableRow } from "../types/Grid";
-import CostKindPicker, {
-    CostKind,
-} from "../components/common/Picker/CostKindPicker";
+import { ComplexityKind, CostKind, TableRow } from "../types/Grid";
+import CostKindPicker from "../components/common/Picker/CostKindPicker";
 import AppGroupPicker from "../components/common/Picker/AppGroupPicker";
 
 const Home: React.FC = () => {
@@ -82,7 +80,10 @@ const Home: React.FC = () => {
                     selectionFilter={selectionFilterCost}
                 />
                 <h5>3. App Group Picker</h5>
-                <AppGroupPicker />
+                <AppGroupPicker
+                    onSelect={onSelectComplexityKind}
+                    selectionFilter={selectionFilter}
+                />
             </div>
         </div>
     );

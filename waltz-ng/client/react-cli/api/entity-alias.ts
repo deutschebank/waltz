@@ -1,25 +1,26 @@
 import { fetchJSON } from "./api";
-import PATH from "../constants/path";
-
-type ref = {
-    kind: string;
-    id: number;
-};
+import { entityAliasPath } from "../constants/path";
+import { EntityReference } from "../types/Entity";
 
 // Fetch aliases
-export const getEntityReference = (ref: ref) => ({
+export const getEntityReference = (
+    ref: Pick<EntityReference, "kind" | "id">
+) => ({
     queryKey: ["entity-alias", ref],
     queryFn: async (): Promise<string[]> => {
-        return await fetchJSON(`${PATH.entityAliasUrl}/${ref.kind}/${ref.id}`);
+        return await fetchJSON(entityAliasPath.entityReference(ref));
     },
     enabled: !!ref,
 });
 
 // Update aliases
-export const updateEntityReference = (ref: ref, aliases: string[] = []) => ({
+export const updateEntityReference = (
+    ref: Pick<EntityReference, "kind" | "id">,
+    aliases: string[] = []
+) => ({
     queryFn: async () => {
         return await fetchJSON(
-            `${PATH.entityAliasUrl}/${ref.kind}/${ref.id}`,
+            entityAliasPath.entityReference(ref),
             "POST",
             aliases
         );
