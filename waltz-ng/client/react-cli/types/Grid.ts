@@ -37,8 +37,3 @@ export type GridProps = {
     rowData: TableRow[]; // Data for rows
     onSelectRow: (row: TableRow) => void; // Callback to select a row
 };
-export interface PickerGridProps {
-    subjectKind: EntityKind;
-    onSelect: (row: any) => void; // Callback for row selection
-    selectionFilter: (row: CostKind) => boolean;
-}

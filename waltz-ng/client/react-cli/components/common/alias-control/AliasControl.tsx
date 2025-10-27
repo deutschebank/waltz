@@ -44,11 +44,11 @@ const AliasControl: React.FC<ParentProps> = ({
             );
             return queryFn();
         },
-        onSuccess: (udatedAliases) => {
+        onSuccess: (updatedAliases) => {
             // update the cache with new data
             queryClient.setQueryData(
                 ["entity-alias", parentEntityReference],
-                udatedAliases
+                updatedAliases
             );
             // toast.success("Updated aliases successfully");
             setMode(Modes.VIEW); // Switch back to view mode
