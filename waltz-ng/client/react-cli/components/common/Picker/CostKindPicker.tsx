@@ -5,6 +5,7 @@ import { GridColumn } from "../../../types/Grid";
 import { findBySubjectKind } from "../../../api/cost-kind";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../loader/Loader";
+import {EntityKind} from "../../../types/Entity";
 
 // Interface for cost kind data
 export interface CostKind {
@@ -15,7 +16,7 @@ export interface CostKind {
 }
 
 interface GridProps {
-    subjectKind: string;
+    subjectKind: EntityKind;
     onSelect: (row: any) => void; // Callback for row selection
     selectionFilter: (row: CostKind) => boolean;
 }

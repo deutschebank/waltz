@@ -1,12 +1,12 @@
-import {baseApiUrl, fetchJSON} from "./api";
-import {EntityReference} from "../types/Entity";
-
-const entitySearchUrl = `${baseApiUrl}/entity-search`;
+import {fetchJSON} from "./api";
+import {EntityLifecycleStatus, EntityReference} from "../types/Entity";
+import {EntityKind} from "../types/Entity";
+import {entitySearchPath} from "../constants/path";
 
 const search = (query: string,
-                entityKinds: string[] = [],
+                entityKinds: EntityKind[] = [],
                 limit: number = 5,
-                entityLifecycleStatuses : string[] = ["ACTIVE", "PENDING"]) => ({
+                entityLifecycleStatuses : EntityLifecycleStatus[] = ["ACTIVE", "PENDING"]) => ({
     queryKey: ['entitySearch', query, entityKinds, entityLifecycleStatuses, limit],
     queryFn: async (): Promise<EntityReference[]> => {
         let options = {
@@ -16,7 +16,7 @@ const search = (query: string,
             searchQuery: query
         };
 
-        return await fetchJSON(entitySearchUrl, "POST", options);
+        return await fetchJSON(entitySearchPath.search(), "POST", options);
     }
 });
 

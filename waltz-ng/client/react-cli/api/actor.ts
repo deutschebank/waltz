@@ -1,20 +1,18 @@
-import {baseApiUrl, fetchJSON} from "./api";
+import {fetchJSON} from "./api";
 import {Actor} from "../types/Actor";
-
-const actorBaseUrl = `${baseApiUrl}/actor`;
-const getByIdPath = (id: number) => `${actorBaseUrl}/id/${id}`;
+import {actorPath} from "../constants/path";
 
 const findAll = () => ({
     queryKey: ['actor', 'findAllActors'],
     queryFn: async(): Promise<Actor[]> => {
-        return await fetchJSON(actorBaseUrl);
+        return await fetchJSON(actorPath.findAll());
     }
 });
 
 const getById = (id: number) => ({
     queryKey: ['actor', 'getById', id],
     queryFn: async(): Promise<Actor> => {
-        return await fetchJSON(getByIdPath(id));
+        return await fetchJSON(actorPath.getById(id));
     }
 });
 

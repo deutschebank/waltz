@@ -4,11 +4,11 @@ import entitySearchApi from "../../../api/entity-search";
 import { EntityLabel } from "../entity/EntityLabel";
 import styles from "./EntitySearchSelector.module.css";
 import { useQuery } from "@tanstack/react-query";
-import { EntityReference } from "../../../types/Entity";
+import {EntityKind, EntityReference} from "../../../types/Entity";
 import { useDebounce } from "../../../hooks/useDebounce";
 
 export interface EntitySearchSelectorProps {
-    entityKinds: string[];
+    entityKinds: EntityKind[];
     placeholder?: string;
     showIcon?: boolean;
     selectionFilter?: (d: EntityReference) => boolean;

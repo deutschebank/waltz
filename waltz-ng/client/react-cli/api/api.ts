@@ -1,7 +1,6 @@
 import {isEmpty} from "lodash";
 import {RestMethod} from "../types/Http";
 
-export const baseApiUrl = "api";
 export const headers: HeadersInit = {
     "Content-Type": "application/json"
 }
