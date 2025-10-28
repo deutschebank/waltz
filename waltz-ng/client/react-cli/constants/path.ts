@@ -38,6 +38,13 @@ export const personPath = {
     getSelf: () => `${personBaseUrl}/self`
 }
 
+export const staticPanelBaseUrl = `${BASE_URL}/static-panel`;
+export const staticPanelPath = {
+    load: () => staticPanelBaseUrl,
+    save: () => staticPanelBaseUrl,
+    findByGroupKey: (groupKey: string) => `${staticPanelBaseUrl}/group?group=${groupKey}`
+}
+
 // Register Data Extract Endpoint Paths Here
 export const dataExtractPath = {
     extract: () => DATA_EXTRACT_BASE_URL,
