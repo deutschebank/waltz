@@ -14,18 +14,30 @@
 }
 
 .toast {
-    display: flex;
-    align-items: start;
-    justify-content: start;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
     width: 40rem;
     height: 6rem;
     border-radius: 0.2rem;
     border: 1px solid #999999;
     padding: 0.75rem 1.5rem;
-    overflow: auto;
-    font-size: smaller;
-    scrollbar-color: transparent transparent;
     pointer-events: auto;
+    animation: fadeOut 15s forwards;
+}
+
+.toast:hover {
+    animation: none;
+}
+
+@keyframes fadeOut {
+    from{
+        opacity: 1;
+    }
+    to{
+        opacity: 0;
+    }
 }
 
 .toastPane {
@@ -41,12 +53,20 @@
 }
 
 .toastIcon {
-    align-self: center;
+    grid-column: 1;
     scale: 110%;
-    padding-right: 1rem;
+}
+
+.toastText {
+    grid-column: 2;
+    font-size: smaller;
+    align-self: start;
+    overflow-y: auto;
+    max-height: 4.5rem; /* Corresponds to toast height minus padding */
 }
 
 .toastDismiss {
-    align-self: start;
+    grid-column: 3;
     cursor: pointer;
+    align-self: start;
 }

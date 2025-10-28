@@ -9,6 +9,7 @@ import {mkRef} from "../../utils/mkRef";
 import {EntityReference} from "../../types/Entity";
 import personApi from "../../api/person"
 import {useQuery} from "@tanstack/react-query";
+import {EntityKind} from "../../enums/Entity";
 
 
 const Modes = {
@@ -16,7 +17,7 @@ const Modes = {
     LIST: "list"
 };
 
-const searchKinds = ["PERSON"];
+const searchKinds = [EntityKind.PERSON];
 
 export interface PersonListProps {
     people: Person[];

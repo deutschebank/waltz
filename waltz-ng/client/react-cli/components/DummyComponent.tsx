@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import reduxStore from "../../redux-store";
 import {incremented} from "../../redux-slices/counter-slice";
 import {navigate} from "../../redux-slices/page-nav-slice";
@@ -11,13 +11,14 @@ import SubSection from "./common/sub-section/SubSection";
 import {PersonList} from "./common/PersonList";
 import {Person} from "../types/Person";
 import PageHeader from "./common/page-header/PageHeader";
-import ViewLink from "./common/view-link/ViewLink";
 import {EntityKind} from "../enums/Entity";
-import {addToast} from "../../redux-slices/toast-slice";
-import {mkToast} from "../utils/mkToast";
 import {NotificationTypeEnum} from "../enums/Notification";
 import {ToastCreateType, ToastType} from "../types/Toast";
 import {BreadCrumbsConfig} from "../types/BreadCrumbs";
+import Markdown from "./common/markdown/Markdown";
+import {useQuery} from "@tanstack/react-query";
+import staticPanelApi from "../api/static-panel";
+import Toast from "./common/toast/Toast";
 
 interface DummyComponentProps {
     helloText?: string;
@@ -71,6 +72,7 @@ const DummyComponent = ({
     const [toggleState, setToggleState] = useState(false);
     const [value, setValue] = useState(0);
     const [people, setPeople] = useState<Person[]>(samplePeople);
+    const [showSecondToast, setShowSecondToast] = useState(false);
     const reduxVal = useSliceSelector(state => state.counter.value);
 
     const onClick = () => reduxStore.dispatch(navigate({
@@ -99,17 +101,20 @@ const DummyComponent = ({
 
     console.log("Rendering React");
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowSecondToast(true);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
     const toastsPlaceholders: ToastCreateType[] = [
         {type:NotificationTypeEnum.SUCCESS, message:"this is a toast lorem ipsum dolor sit amet alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf"},
         {type:NotificationTypeEnum.INFO, message:"this is a toast lorem ipsum dolor sit amet alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf"}
     ];
 
-    mkToast(toastsPlaceholders[0]);
-
-    setTimeout(() => mkToast(toastsPlaceholders[1]), 500);
-    setTimeout(() => mkToast(toastsPlaceholders[1]), 1000);
-    setTimeout(() => mkToast(toastsPlaceholders[1]), 1500);
-    setTimeout(() => mkToast(toastsPlaceholders[1]), 2000);
+    const {isPending, data: mdText} = useQuery(staticPanelApi.findByGroupKey("NEWS"));
 
     return (
         <div>
@@ -150,6 +155,9 @@ const DummyComponent = ({
                             small="small-section"
                             breadcrumbs={breadCrumbsConfig}
                             summary={<h4>This is a summary</h4>}></PageHeader>
+                {mdText && <Markdown text={mdText[0]?.content}/>}
+                <Toast type={toastsPlaceholders[0].type} message={toastsPlaceholders[0].message}/>
+                {showSecondToast && <Toast type={"ERROR"} message={"Hello, warned"}/>}
             </div>
         </div>
 	);
