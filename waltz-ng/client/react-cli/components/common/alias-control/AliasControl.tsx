@@ -12,7 +12,7 @@ import { EntityReference } from "../../../types/Entity";
 
 // Types
 type ParentProps = {
-    parentEntityReference: Pick<EntityReference, "kind" | "id">;
+    parentEntityReference: EntityReference;
     editable?: boolean;
 };
 

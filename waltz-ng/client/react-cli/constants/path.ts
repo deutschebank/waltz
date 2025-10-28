@@ -24,7 +24,7 @@ export const costKindPath = {
 
 export const entityAliasBaseUrl = `${BASE_URL}/entity/alias`;
 export const entityAliasPath = {
-    entityReference: (ref: Pick<EntityReference, "kind" | "id">) =>
+    entityReference: (ref: EntityReference) =>
         `${entityAliasBaseUrl}/${ref.kind}/${ref.id}`,
 };
 

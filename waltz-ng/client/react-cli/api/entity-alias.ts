@@ -3,9 +3,7 @@ import { entityAliasPath } from "../constants/path";
 import { EntityReference } from "../types/Entity";
 
 // Fetch aliases
-export const getEntityReference = (
-    ref: Pick<EntityReference, "kind" | "id">
-) => ({
+export const getEntityReference = (ref: EntityReference) => ({
     queryKey: ["entity-alias", ref],
     queryFn: async (): Promise<string[]> => {
         return await fetchJSON(entityAliasPath.entityReference(ref));
@@ -15,7 +13,7 @@ export const getEntityReference = (
 
 // Update aliases
 export const updateEntityReference = (
-    ref: Pick<EntityReference, "kind" | "id">,
+    ref: EntityReference,
     aliases: string[] = []
 ) => ({
     queryFn: async () => {
