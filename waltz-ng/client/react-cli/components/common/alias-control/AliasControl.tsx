@@ -3,18 +3,19 @@ import TagInput from "../tags-input/TagsInput";
 import "./AliasControl.module.scss";
 // Utility imports
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { aliasQuery, updateAliases } from "../../../api/entity-alias";
+import {
+    getEntityReference,
+    updateEntityReference,
+} from "../../../api/entity-alias";
 import { displayError } from "../../../../common/error-utils";
+import { EntityReference } from "../../../types/Entity";
 
 // Types
-type ParentEntity = {
-    kind: string;
-    id: number;
-};
 type ParentProps = {
-    parentEntityReference: ParentEntity;
+    parentEntityReference: EntityReference;
     editable?: boolean;
 };
+
 // ENUMS
 enum Modes {
     VIEW = "VIEW",
@@ -30,24 +31,24 @@ const AliasControl: React.FC<ParentProps> = ({
 
     // React Query for fetching the aliases
     const { isPending, data: aliases = [] } = useQuery(
-        aliasQuery(parentEntityReference)
+        getEntityReference(parentEntityReference)
     );
 
     // Update aliases
     const mutation = useMutation({
         mutationFn: (newAliases: string[]) => {
             // React Query for update new aliases
-            const { queryFn } = updateAliases(
+            const { queryFn } = updateEntityReference(
                 parentEntityReference,
                 newAliases
             );
             return queryFn();
         },
-        onSuccess: (udatedAliases) => {
+        onSuccess: (updatedAliases) => {
             // update the cache with new data
             queryClient.setQueryData(
                 ["entity-alias", parentEntityReference],
-                udatedAliases
+                updatedAliases
             );
             // toast.success("Updated aliases successfully");
             setMode(Modes.VIEW); // Switch back to view mode

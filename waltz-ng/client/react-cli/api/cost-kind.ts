@@ -1,7 +1,7 @@
-import {fetchJSON} from "./api";
-import {costKindPath} from "../constants/path";
-import {CostKind} from "../components/common/Picker/CostKindPicker";
-import {EntityKind} from "../types/Entity";
+import { fetchJSON } from "./api";
+import { costKindPath } from "../constants/path";
+import { EntityKind } from "../types/Entity";
+import { CostKind } from "../types/Grid";
 
 // Fetch all cost kinds
 export const findAll = () => ({
