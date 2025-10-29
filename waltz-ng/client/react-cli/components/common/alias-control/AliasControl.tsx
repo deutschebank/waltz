@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import TagInput from "../tags-input/TagsInput";
-import "./AliasControl.module.scss";
-// Utility imports
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     getEntityReference,
     updateEntityReference,
 } from "../../../api/entity-alias";
-import { displayError } from "../../../../common/error-utils";
+// import { displayError } from "../../../../common/error-utils";
 import { EntityReference } from "../../../types/Entity";
+import Button from "../button/Button";
+import TagInput from "../tags-input/TagsInput";
+// import styles from "./AliasControl.module.scss";
 
 // Types
 type ParentProps = {
@@ -54,7 +54,8 @@ const AliasControl: React.FC<ParentProps> = ({
             setMode(Modes.VIEW); // Switch back to view mode
         },
         onError: (error) => {
-            displayError("Failed to update aliases", error);
+            // displayError("Failed to update aliases", error);
+            console.error("Failed to update aliases", error);
         },
     });
 
@@ -87,12 +88,11 @@ const AliasControl: React.FC<ParentProps> = ({
                         </ul>
                     )}
                     {editable && (
-                        <button
+                        <Button
                             className="btn-skinny"
                             onClick={() => setMode(Modes.EDIT)}
-                        >
-                            Edit
-                        </button>
+                            label="Edit"
+                        />
                     )}
                 </>
             )}
