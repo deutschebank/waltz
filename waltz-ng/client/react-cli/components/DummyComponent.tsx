@@ -17,8 +17,11 @@ import {ToastCreateType, ToastType} from "../types/Toast";
 import {BreadCrumbsConfig} from "../types/BreadCrumbs";
 import Markdown from "./common/markdown/Markdown";
 import {useQuery} from "@tanstack/react-query";
-import staticPanelApi from "../api/static-panel";
+import {staticPanelApi} from "../api/static-panel";
 import Toast from "./common/toast/Toast";
+import Loader from "./common/loader/Loader";
+import StaticPanel from "./common/static-panel/StaticPanel";
+import StaticPanels from "./common/static-panel/StaticPanels";
 
 interface DummyComponentProps {
     helloText?: string;
@@ -114,7 +117,7 @@ const DummyComponent = ({
         {type:NotificationTypeEnum.INFO, message:"this is a toast lorem ipsum dolor sit amet alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf alkjfgqsfua absfuasf  asfusagf abfuisfas bafiusgfas basfuigsafs asgfuisagf"}
     ];
 
-    const {isPending, data: mdText} = useQuery(staticPanelApi.findByGroupKey("NEWS"));
+    const {isPending: newsPending, data: mdText} = useQuery(staticPanelApi.findByGroupKey("NEWS"));
 
     return (
         <div>
@@ -155,9 +158,21 @@ const DummyComponent = ({
                             small="small-section"
                             breadcrumbs={breadCrumbsConfig}
                             summary={<h4>This is a summary</h4>}></PageHeader>
-                {mdText && <Markdown text={mdText[0]?.content}/>}
+                <br/>
+                <Section icon="pencil-square-o"
+                         name="Static Panel"
+                         small="Static panel in here">
+                    {newsPending && <Loader/>}
+                    {mdText && <StaticPanel panel={mdText[0]} showTitle={true}/>}
+                </Section>
+
+                <Section icon={"bolt"}
+                         name={"Static Panels"}
+                         small={"Static panels in here"}>
+                    {showSecondToast && <Toast type={"ERROR"} message={"Hello, warned"}/>}
+                    <StaticPanels groupKey={"HOME"}/>
+                </Section>
                 <Toast type={toastsPlaceholders[0].type} message={toastsPlaceholders[0].message}/>
-                {showSecondToast && <Toast type={"ERROR"} message={"Hello, warned"}/>}
             </div>
         </div>
 	);
