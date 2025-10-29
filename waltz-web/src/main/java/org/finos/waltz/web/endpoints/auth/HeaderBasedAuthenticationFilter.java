@@ -38,7 +38,7 @@ import static org.finos.waltz.common.StringUtilities.notEmpty;
  * http headers of a request.  The header name is either `remote-user`
  * or is specified by a settings: `server.authentication.filter.headerbased.param`
  */
-@Component
+
 public class HeaderBasedAuthenticationFilter implements Filter {
 
     private static final Logger LOG = LoggerFactory.getLogger(HeaderBasedAuthenticationFilter.class);
@@ -48,7 +48,7 @@ public class HeaderBasedAuthenticationFilter implements Filter {
 
 
     public HeaderBasedAuthenticationFilter(SettingsService settingsService) {
-        // super(settingsService);
+         //super(settingsService);
 
         paramName = settingsService.getValue(NamedSettings.headerBasedAuthenticationFilterParam)
                 .orElseGet(() -> {
