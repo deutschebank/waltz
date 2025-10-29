@@ -20,13 +20,11 @@ package org.finos.waltz.web.endpoints.auth;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.finos.waltz.common.StringUtilities;
 import org.finos.waltz.model.settings.NamedSettings;
 import org.finos.waltz.service.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -48,7 +46,7 @@ public class HeaderBasedAuthenticationFilter implements Filter {
 
 
     public HeaderBasedAuthenticationFilter(SettingsService settingsService) {
-         //super(settingsService);
+        //super(settingsService);
 
         paramName = settingsService.getValue(NamedSettings.headerBasedAuthenticationFilterParam)
                 .orElseGet(() -> {
