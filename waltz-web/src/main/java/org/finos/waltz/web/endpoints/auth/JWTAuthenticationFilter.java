@@ -25,12 +25,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.finos.waltz.service.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import spark.Request;
-import spark.Response;
 
 import java.io.IOException;
 
@@ -39,7 +35,7 @@ import java.io.IOException;
  * Authentication filter which verifies a jwt token.  We only care
  * about the bearer name.
  */
-@Component
+
 public class JWTAuthenticationFilter implements Filter {
 
     private static final Logger LOG = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
@@ -49,7 +45,7 @@ public class JWTAuthenticationFilter implements Filter {
 
 
     public JWTAuthenticationFilter() {
-
+        LOG.info("JWTAuthenticationFilter Loaded  ");
         try {
             Algorithm algorithm256 = Algorithm.HMAC256(JWTUtilities.SECRET);
             Algorithm algorithm512 = Algorithm.HMAC512(JWTUtilities.SECRET);
@@ -86,7 +82,7 @@ public class JWTAuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
-        HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+
         LOG.info("JWT Filter Invoked API:{}", ((HttpServletRequest) servletRequest).getServletPath());
         String authorizationHeader = httpRequest.getHeader("Authorization");
         LOG.info("authorizationHeader : {}", authorizationHeader);
