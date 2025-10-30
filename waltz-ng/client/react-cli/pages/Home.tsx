@@ -2,11 +2,10 @@
 import React, { useState } from "react";
 import AliasControl from "../components/common/alias-control/AliasControl";
 import ComplexityKindPicker from "../components/common/Picker/ComplexityKindPicker";
-import { ComplexityKind, TableRow } from "../types/Grid";
-import CostKindPicker, {
-    CostKind,
-} from "../components/common/Picker/CostKindPicker";
+import { ComplexityKind, CostKind, TableRow } from "../types/Grid";
+import CostKindPicker from "../components/common/Picker/CostKindPicker";
 import AppGroupPicker from "../components/common/Picker/AppGroupPicker";
+import { mkRef } from "../utils/mkRef";
 
 const Home: React.FC = () => {
     //Complexity Kind
@@ -64,10 +63,10 @@ const Home: React.FC = () => {
                 <h3>Migrated React Components List</h3>
                 <h5>1. Alias Control Component</h5>
                 <AliasControl
-                    parentEntityReference={{
+                    parentEntityReference={mkRef({
                         kind: "ACTOR",
                         id: 1206,
-                    }}
+                    })}
                     editable={true}
                 />
                 <h5>2. Complexity Kind Picker</h5>
@@ -82,7 +81,10 @@ const Home: React.FC = () => {
                     selectionFilter={selectionFilterCost}
                 />
                 <h5>3. App Group Picker</h5>
-                <AppGroupPicker />
+                <AppGroupPicker
+                    onSelect={onSelectComplexityKind}
+                    selectionFilter={selectionFilter}
+                />
             </div>
         </div>
     );
