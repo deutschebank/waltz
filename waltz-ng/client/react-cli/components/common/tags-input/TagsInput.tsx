@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Button from "../button/Button";
 import styles from "./TagsInput.module.scss";
+import Icon from "../Icon";
 interface TagInputProps {
     value?: string[]; // Initial tag list
     list?: string[]; // Tag suggestion list
@@ -76,7 +77,7 @@ const TagInput: React.FC<TagInputProps> = ({
                                     del(idx);
                                 }}
                             >
-                                X
+                                <Icon name="xmark" />
                             </a>
                         </span>
                     ))}

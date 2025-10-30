@@ -8,7 +8,7 @@ import {
 import { EntityReference } from "../../../types/Entity";
 import Button from "../button/Button";
 import TagInput from "../tags-input/TagsInput";
-// import styles from "./AliasControl.module.scss";
+import styles from "./AliasControl.module.scss";
 
 // Types
 type ParentProps = {
@@ -73,30 +73,28 @@ const AliasControl: React.FC<ParentProps> = ({
         <div className="waltz-alias-list">
             {/* Render aliases in VIEW mode */}
             {mode === Modes.VIEW && !isPending && (
-                <>
+                <ul className="list-inline">
                     {aliases.length > 0 ? (
-                        <ul className="list-inline">
-                            {aliases.map((alias: string, index: number) => (
-                                <li className="tag" key={index}>
-                                    {alias}
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <ul>
-                            <li className="text-muted" data-testid="no-aliases">
-                                No aliases defined
+                        aliases.map((alias: string, index: number) => (
+                            <li className={styles.tag} key={index}>
+                                {alias}
                             </li>
-                        </ul>
+                        ))
+                    ) : (
+                        <li className="text-muted" data-testid="no-aliases">
+                            No aliases defined
+                        </li>
                     )}
                     {editable && (
-                        <Button
-                            className="btn-skinny"
-                            onClick={() => setMode(Modes.EDIT)}
-                            label="Edit"
-                        />
+                        <li>
+                            <Button
+                                className="btn-skinny"
+                                onClick={() => setMode(Modes.EDIT)}
+                                label="Edit"
+                            />
+                        </li>
                     )}
-                </>
+                </ul>
             )}
 
             {/* Render TagInput in EDIT mode */}
