@@ -84,7 +84,9 @@ const AliasControl: React.FC<ParentProps> = ({
                         </ul>
                     ) : (
                         <ul>
-                            <li className="text-muted">No aliases defined</li>
+                            <li className="text-muted" data-testid="no-aliases">
+                                No aliases defined
+                            </li>
                         </ul>
                     )}
                     {editable && (

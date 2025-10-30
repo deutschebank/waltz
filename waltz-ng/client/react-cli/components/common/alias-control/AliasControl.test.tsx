@@ -96,7 +96,7 @@ describe("AliasControl", () => {
         );
 
         // Ensure "No aliases defined" message is displayed
-        expect(screen.getByText(/No aliases defined/i)).toBeInTheDocument();
+        expect(screen.getByTestId("no-aliases")).toBeInTheDocument();
     });
 
     test("renders the edit button when editable is true", () => {
