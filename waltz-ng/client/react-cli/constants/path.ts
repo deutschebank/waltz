@@ -43,3 +43,9 @@ export const dataExtractPath = {
     extract: () => DATA_EXTRACT_BASE_URL,
     allActors: "actor/all",
 };
+
+export const allocationSchemeBaseUrl = `${BASE_URL}/allocation-scheme`;
+export const allocationSchemePath: {
+    findAll: () => string;} = {
+    findAll: () => `${allocationSchemeBaseUrl}/all`,
+};
