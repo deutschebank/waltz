@@ -11,10 +11,10 @@ module.exports = {
     collectCoverage: true,
     coverageThreshold: {
         global: {
-            branches: 90, // At least 80% of branches must be covered
-            functions: 90, // At least 80% of functions must be covered
-            lines: 90, // At least 80% of lines must be executed
-            statements: 90, // At least 80% of statements must be executed
+            branches: 90, // At least 90% of branches must be covered
+            functions: 90, // At least 90% of functions must be covered
+            lines: 90, // At least 90% of lines must be executed
+            statements: 90, // At least 90% of statements must be executed
         },
     },
     coverageReporters: [
