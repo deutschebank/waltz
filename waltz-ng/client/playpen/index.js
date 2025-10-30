@@ -24,6 +24,8 @@ import playpenView3 from "./3/playpen3";
 import playpenView4 from "./4/playpen4";
 import playpenView6 from "./6/playpen6";
 import playpenView7 from "./7/playpen7";
+import playpenView8 from "./8/playpen8";
+
 import list from "./list.html";
 
 export default () => {
@@ -62,6 +64,10 @@ export default () => {
                 .state("main.playpen.7", {
                     url: "/7/:id",
                     views: { "content@": playpenView7 },
+                })
+                .state("main.playpen.8", {
+                    url: "/8",
+                    views: { "content@": playpenView8 }
                 });
         },
     ]);
