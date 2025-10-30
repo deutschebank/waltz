@@ -1,7 +1,4 @@
-import _ from 'lodash';
 import  { fetchJSON } from './api';
-import {CostKind} from "../types/Grid";
-import {costKindPath} from "../constants/path";
 import {allocationSchemePath} from "../constants/path";
 
 export type AllocationScheme = {
