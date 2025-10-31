@@ -9,6 +9,17 @@ module.exports = {
     },
     setupFilesAfterEnv: ["@testing-library/jest-dom"], // Include setup for React Testing Library
     collectCoverage: true,
+    collectCoverageFrom: ["client/react-cli/**/*.{js,jsx,ts,tsx}"],
+    // Collect coverage only from these specific file patterns, excluding unnecessary files/folders
+    coveragePathIgnorePatterns: [
+        "client/react-cli/api/", // Exclude api directories
+        "client/react-cli/constants/", // Exclude constants directories
+        "client/react-cli/utils/", // Exclude utility functions
+        "client/react-cli/types/", // Exclude types
+        "client/react-cli/enums/", // Exclude enums
+        "\\.d\\.ts", // Exclude TypeScript declaration files
+        "generate-svelte-tree.js", // Exclude
+    ],
     coverageThreshold: {
         global: {
             branches: 90, // At least 90% of branches must be covered
