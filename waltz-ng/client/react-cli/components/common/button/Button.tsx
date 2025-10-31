@@ -5,7 +5,7 @@ import styles from "./Button.module.scss";
 // Type
 type ButtonProps = {
     label: string;
-    onClick: (event: MouseEvent<HTMLButtonElement>) => void;
+    onClick: () => void;
     disabled?: boolean;
     className?: string;
 };
@@ -18,7 +18,12 @@ const Button: FC<ButtonProps> = ({
     className = "",
 }) => {
     return (
-        <button className={className} onClick={onClick} disabled={disabled}>
+        <button
+            data-testid="custom-button"
+            className={className}
+            onClick={onClick}
+            disabled={disabled}
+        >
             {label}
         </button>
     );
