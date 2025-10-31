@@ -1,34 +1,13 @@
-import React, {useEffect, useState} from "react";
-import styles from "./Toast.module.css";
-import Icon from "../Icon";
-import {NOTIFICATION_TYPES} from "../../../constants/notification";
-import {ToastType} from "../../../types/Toast";
-import reduxStore from "../../../../redux-store";
-import {removeToast} from "../../../../redux-slices/toast-slice";
+import React from "react";
+import {ToastCreateType} from "../../../types/Toast";
+import {createPortal} from "react-dom";
+import ToastInternal from "./ToastInternal";
 
-export default function Toast({id, type, message}: ToastType) {
-    useEffect(() => {
-        const timeoutHandler = setTimeout(()=> {
-            reduxStore.dispatch(removeToast({id}))
-        }, 2000);
-        return () => clearTimeout(timeoutHandler);
-    }, [id]);
-
-
-    const onDismiss = () => reduxStore.dispatch(removeToast({id}));
+export default function Toast({type, message}: ToastCreateType) {
+    const toastRoot = document.getElementById("react-toasts-pane");
+    if(!toastRoot) return <></>;
 
     return (
-        <div className={styles.toast} style={{background: `${NOTIFICATION_TYPES[type]?.color}`}}>
-            <div className={styles.toastIcon}>
-                <Icon name={NOTIFICATION_TYPES[type]?.iconName}
-                      size={"lg"}/>
-            </div>
-            {message}
-            <div className={styles.toastDismiss}
-                    onClick={onDismiss}>
-                <Icon name="xmark"
-                      size="sm"/>
-            </div>
-        </div>
+        createPortal(<ToastInternal type={type} message={message}/>, toastRoot)
     );
 }
