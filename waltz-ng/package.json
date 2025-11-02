@@ -67,6 +67,7 @@
         "patch-package": "6.4.7",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
+        "react-flatpickr": "^4.0.11",
         "react-router": "^7.9.4",
         "satellizer": "0.15.5",
         "showdown": "^2.1.0",
