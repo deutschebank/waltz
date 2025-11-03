@@ -2,14 +2,12 @@ import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from "./redux-slices/counter-slice";
 import pageNavReducer from "./redux-slices/page-nav-slice";
 import counter2Reducer from "./redux-slices/counter-slice-2";
-import toastReducer from "./redux-slices/toast-slice"
 
 const store = configureStore({
     reducer: {
         counter: counterReducer,
         pageNav: pageNavReducer,
         counter2: counter2Reducer,
-        toasts: toastReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         // ignore serializable check for page navigations

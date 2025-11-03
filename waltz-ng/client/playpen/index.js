@@ -62,11 +62,27 @@ export default () => {
                     views: { "content@": playpenView6 },
                 })
                 .state("main.playpen.7", {
-                    url: "/7/:id",
+                    url: "/7",
+                    views: { "content@": playpenView7 },
+                })
+                .state("main.playpen.7.react", {
+                    url: "/react",
+                    views: { "content@": playpenView7 },
+                })
+                .state("main.playpen.7.about", {
+                    url: "/about",
+                    views: { "content@": playpenView7 },
+                })
+                .state("main.playpen.7.support", {
+                    url: "/support",
                     views: { "content@": playpenView7 },
                 })
                 .state("main.playpen.8", {
                     url: "/8",
+                    views: { "content@": playpenView8 }
+                })
+                .state("main.playpen.8.react2", {
+                    url: "/react2",
                     views: { "content@": playpenView8 }
                 });
         },

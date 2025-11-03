@@ -21,9 +21,7 @@ const dateOpts:Partial<Options>={
 
 const toDate = (date: Date|string) : Date => date instanceof globalThis.Date ? date : new globalThis.Date(date);
 
-const format = (date:Date) => `${date.getFullYear()}-
-${String(date.getMonth()+1).padStart(2,"0")}-
-${String(date.getDate()).padStart(2,"0")}`;
+const format = (date:Date) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
 
 const CalendarHeatmapControlPanel: React.FC<Props> = ({
     startDate,

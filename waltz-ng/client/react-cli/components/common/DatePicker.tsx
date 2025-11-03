@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useState} from "react";
 import Flatpickr from "react-flatpickr";
-import "flatpickr/dist/themes/airbnb.css";
+import "flatpickr/dist/themes/confetti.css";
 import {Options} from "flatpickr/dist/types/options";
 import styles from "./DatePicker.module.css";
 // Assuming an Icon component exists in React with a similar API

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import TagInput from "../tags-input/TagsInput";
-import "./AliasControl.module.scss";
-// Utility imports
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     getEntityReference,
     updateEntityReference,
 } from "../../../api/entity-alias";
-import { displayError } from "../../../../common/error-utils";
+// import { displayError } from "../../../../common/error-utils";
 import { EntityReference } from "../../../types/Entity";
+import Button from "../button/Button";
+import TagInput from "../tags-input/TagsInput";
+import styles from "./AliasControl.module.scss";
 
 // Types
 type ParentProps = {
@@ -54,7 +54,8 @@ const AliasControl: React.FC<ParentProps> = ({
             setMode(Modes.VIEW); // Switch back to view mode
         },
         onError: (error) => {
-            displayError("Failed to update aliases", error);
+            // displayError("Failed to update aliases", error);
+            console.error("Failed to update aliases", error);
         },
     });
 
@@ -72,29 +73,28 @@ const AliasControl: React.FC<ParentProps> = ({
         <div className="waltz-alias-list">
             {/* Render aliases in VIEW mode */}
             {mode === Modes.VIEW && !isPending && (
-                <>
+                <ul className="list-inline">
                     {aliases.length > 0 ? (
-                        <ul className="list-inline">
-                            {aliases.map((alias: string, index: number) => (
-                                <li className="tag" key={index}>
-                                    {alias}
-                                </li>
-                            ))}
-                        </ul>
+                        aliases.map((alias: string, index: number) => (
+                            <li className={styles.tag} key={index}>
+                                {alias}
+                            </li>
+                        ))
                     ) : (
-                        <ul>
-                            <li className="text-muted">No aliases defined</li>
-                        </ul>
+                        <li className="text-muted" data-testid="no-aliases">
+                            No aliases defined
+                        </li>
                     )}
                     {editable && (
-                        <button
-                            className="btn-skinny"
-                            onClick={() => setMode(Modes.EDIT)}
-                        >
-                            Edit
-                        </button>
+                        <li>
+                            <Button
+                                className="btn-skinny"
+                                onClick={() => setMode(Modes.EDIT)}
+                                label="Edit"
+                            />
+                        </li>
                     )}
-                </>
+                </ul>
             )}
 
             {/* Render TagInput in EDIT mode */}
