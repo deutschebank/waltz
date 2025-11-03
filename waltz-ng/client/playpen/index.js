@@ -80,10 +80,6 @@ export default () => {
                 .state("main.playpen.8", {
                     url: "/8",
                     views: { "content@": playpenView8 }
-                })
-                .state("main.playpen.8.react2", {
-                    url: "/react2",
-                    views: { "content@": playpenView8 }
                 });
         },
     ]);
