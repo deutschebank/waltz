@@ -1,7 +1,7 @@
 
 <script>
     import Flatpickr from 'svelte-flatpickr';
-    import 'flatpickr/dist/themes/confetti.css';
+    import 'flatpickr/dist/themes/airbnb.css';
     import Icon from "./Icon.svelte";
     import {createEventDispatcher} from "svelte";
     import {timeFormat} from "d3-time-format";
