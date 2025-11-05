@@ -1,7 +1,7 @@
 import React from 'react';
 import {FAFlip, FARotate, FASize, FAStack} from "../../types/FontAwesome";
 
-interface IconProps {
+export interface IconProps {
     name?: string;
     size?: FASize;
     flip?: FAFlip;
@@ -12,6 +12,7 @@ interface IconProps {
     spin?: boolean;
     pullLeft?: boolean;
     pullRight?: boolean;
+    style?: React.CSSProperties;
 }
 
 const Icon = ({
@@ -24,7 +25,8 @@ const Icon = ({
     inverse,
     spin,
     pullLeft = false,
-    pullRight = false
+    pullRight = false,
+    style = {},
 }: IconProps) => {
     const classNames: string = [
         "fa",
@@ -42,7 +44,7 @@ const Icon = ({
     .join(" ");
 
     return (
-        <span className="icon" data-ux={name}>
+        <span className="icon" data-ux={name} style={style}>
             <i className={classNames}/>
         </span>
     );

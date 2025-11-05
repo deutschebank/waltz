@@ -1,8 +1,8 @@
 import React, { useState,ChangeEvent,MouseEvent ,useMemo} from "react";
-import Icon from "../Icon";
-import Button from "../button/Button";
+import Icon from "../../Icon";
+import Button from "../../button/Button";
 import {Options} from "flatpickr/dist/types/options";
-import DatePicker from "../DatePicker";
+import DatePicker from "../../DatePicker";
 import styles from "./CalendarHeatmapControlPanel.module.css";
 
 type Props = {
@@ -48,7 +48,7 @@ const CalendarHeatmapControlPanel: React.FC<Props> = ({
         setChangeDateSelection((prev) => !prev)
     };
 
-    const rangeLabel = useMemo(() => `${format(startDate)} -> ${format(endDate)}`, [startDate, endDate]);
+    const rangeLabel = useMemo(() => `${format(startDate)} to ${format(endDate)}`, [startDate, endDate]);
     const [isEditing, setIsEditing] = useState(false);
     return (
         <section className={styles.panel} aria-label="Calendar date range controls">
@@ -62,7 +62,6 @@ const CalendarHeatmapControlPanel: React.FC<Props> = ({
                         aria-label={isEditing ? "Close Data range editor" : "Change date range"}
                 />
             </div>
-
             {isEditing && (
                 <div className={styles.editorRow}>
                     <div className={styles.picker}>
@@ -105,53 +104,5 @@ const CalendarHeatmapControlPanel: React.FC<Props> = ({
     );
 };
 
-
-        {/*// <div className = {styles.wrapper}>*/}
-        {/*//     {changeDateSelection?(*/}
-        {/*//         <>*/}
-        {/*//             <div className={styles.row}>*/}
-        {/*//                 <div className="col-sm-6">*/}
-        {/*//                     <strong>Start Date:</strong>*/}
-        {/*//                     /!*<input type="date" value={format(start)} onChange={handleStartChange}/>*!/*/}
-        {/*//                     <DatePicker*/}
-        {/*//                             origDate={startDate}*/}
-        {/*//                             options={dateOpts}*/}
-        {/*//                             canEdit={true}*/}
-        {/*//                             onChange={(d:Date) => setStartDate(d)}/>*/}
-        {/*//                 </div>*/}
-        {/*//                 <div className="col-sm-6">*/}
-        {/*//                     <strong>End Date:</strong>*/}
-        {/*//                     /!*<input type="date" value={format(end)} onChange={handleEndChange}/>*!/*/}
-        {/*//                     <DatePicker*/}
-        {/*//                         origDate={startDate}*/}
-        {/*//                         options={dateOpts}*/}
-        {/*//                         canEdit={true}*/}
-        {/*//                         onChange={(d:Date) => setEndDate(d)}/>*/}
-        {/*//                 </div>*/}
-        {/*//             </div>*/}
-        {/*//             <div className="row">*/}
-        {/*//                 <div className="col-sm-12">*/}
-        {/*//                     <Button className = "btnbtn-skinny"*/}
-        {/*//                             onClick = {toggleChangeSelection}*/}
-        {/*//                             label={<>Close*/}
-        {/*//                                 <Icon name="times"/></>}*/}
-        {/*//                     />*/}
-        {/*//*/}
-        {/*//*/}
-        {/*//                 </div>*/}
-        {/*//             </div>*/}
-        {/*//         </>*/}
-        {/*//     ):(*/}
-        {/*//         <>*/}
-        {/*//             <b>Date Range:</b> {format(start)} to {format(end)}.{" "}*/}
-        {/*//             <Button className = "btn btn-skinny"*/}
-        {/*//                     onClick = {toggleChangeSelection}*/}
-        {/*//                     label={<>Change Date Range*/}
-        {/*//                         <Icon name="pencil"/></>}*/}
-        {/*//             />*/}
-        {/*//         </>*/}
-        {/*//     )}*/}
-        {/*// </div>*/}
-    // )};
 
 export default CalendarHeatmapControlPanel;

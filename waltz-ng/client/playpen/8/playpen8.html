@@ -1,39 +1,14 @@
-<!--
-  ~ Waltz - Enterprise Architecture
-  ~ Copyright (C) 2016, 2017, 2018, 2019 Waltz open source project
-  ~ See README.md for more information
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~     http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific
-  ~
-  -->
-
 <div>
-    <waltz-page-header name="Playpen"
-                       small="8 - sk"
-                       icon="rocket">
-        <ol class="waltz-breadcrumbs">
-            <li><a ui-sref="main">Home</a></li>
-            <li>Playpen</li>
-        </ol>
-    </waltz-page-header>
-    <waltz-section>
-        <div class="row" >
-            <div class="col-md-12">
-                <waltz-svelte-component component="$ctrl.CounterpartPicker">
-                </waltz-svelte-component>
-            </div>
-        </div>
-    </waltz-section>
+    <div ng-if="$ctrl.reactHidden">
+        <waltz-react-component component="$ctrl.DummyComponentTwo">
+        </waltz-react-component>
+    </div>
 
+    <div class="waltz-basic-info-tile">
+        Angular Redux: {{ $ctrl.reduxStoreValue }}
+    </div>
 
+    <button class="btn btn-plain" ng-click="$ctrl.onClick()">Click Me</button>
+    <button class="btn btn-plain" ng-click="$ctrl.onIncrement()">Increment Angular Redux</button>
 
 </div>

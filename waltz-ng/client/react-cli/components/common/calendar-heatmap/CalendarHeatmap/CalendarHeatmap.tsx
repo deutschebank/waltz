@@ -5,9 +5,9 @@ import {
     dimensions,
     HeatInput,
     MonthBlock,
-} from "./calendar-heatmap-utils";
-import CalenderHeatmapControlPanel from "./CalendarHeatmapControlPanel";
-import Month from "./Month";
+} from "../calendar-heatmap-utils";
+import CalenderHeatmapControlPanel from "../CalendarHeatmapControlPanel/CalendarHeatmapControlPanel";
+import Month from "../Month/Month";
 
 function formatYYYMM(date: Date):string{
     const year = date.getFullYear();

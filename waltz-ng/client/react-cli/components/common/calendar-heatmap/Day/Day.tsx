@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Day.module.css"
-import { dimensions} from "./calendar-heatmap-utils"
+import { dimensions} from "../calendar-heatmap-utils"
 
 export interface DayProps {
     date: Date;

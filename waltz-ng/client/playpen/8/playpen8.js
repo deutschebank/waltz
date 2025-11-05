@@ -1,50 +1,49 @@
-/*
- * Waltz - Enterprise Architecture
- * Copyright (C) 2016, 2017, 2018, 2019 Waltz open source project
- * See README.md for more information
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific
- *
- */
-
-
 import template from "./playpen8.html";
-import {initialiseData} from "../../common";
-import CounterpartPicker from "../../logical-flow/components/edit/svelte/CounterpartPicker.svelte"
-import AllocationSchemePicker from "../../common/svelte/entity-pickers/AllocationSchemePicker.svelte"
+import DummyComponentTwo from "../../react-cli/components/DummyComponentTwo";
+import { initialiseData } from "../../common";
+import store from "../../redux-store";
+import {incremented2} from "../../redux-slices/counter-slice-2";
+import _ from 'lodash';
 
-const initData = {
-    AllocationSchemePicker
+const initialState = {
+    DummyComponentTwo,
+    reactHidden: false
 };
 
 
-function controller($q,
-                    serviceBroker) {
-
-    const vm = initialiseData(this, initData);
+function controller($scope) {
+    const vm = initialiseData(this, initialState);
 
     vm.$onInit = () => {
+        vm.reduxStoreValue = store.getState().counter2.value;
 
+        console.log("ng subscribed");
+        vm.unsubscribe = store.subscribe(() => {
+            const newValue = store.getState().counter2.value;
+            if(!_.isEqual(newValue, vm.reduxStoreValue)) {
+                console.log('ng re renders')
+                vm.reduxStoreValue = newValue;
+                $scope.$applyAsync();
+            }
+        });
     }
+
+    vm.onClick = () => vm.reactHidden = !vm.reactHidden;
+
+    vm.onIncrement = () => store.dispatch(incremented2());
+
+    $scope.$on("$destroy", () => {
+        console.log("ng unsubscribed");
+        vm.unsubscribe();
+    });
 }
 
-controller.$inject = ["$q", "ServiceBroker"];
+controller.$inject = ["$scope"];
 
-const view = {
+export default {
     template,
     controller,
     controllerAs: "$ctrl",
     bindToController: true,
     scope: {}
 };
-
-export default view;

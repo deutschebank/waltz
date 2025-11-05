@@ -1,7 +1,7 @@
 import React ,{useMemo,useState} from "react";
-import Day from "./Day";
-import {dimensions, monthNames, MonthBlock, DayCell} from "./calendar-heatmap-utils";
-import Weeks from "./Weeks"
+import Day from "../Day/Day";
+import {dimensions, monthNames, MonthBlock, DayCell} from "../calendar-heatmap-utils";
+import Weeks from "../Weeks/Weeks"
 import styles from "./Month.module.css";
 
 export interface MonthProps {

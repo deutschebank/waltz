@@ -1,6 +1,6 @@
 import React ,{useMemo,useState} from "react";
 
-import {daysInMonth,dimensions,MonthBlock} from "./calendar-heatmap-utils";
+import {daysInMonth,dimensions,MonthBlock} from "../calendar-heatmap-utils";
 
 export interface WeeksProps {
     monthData :MonthBlock;
