@@ -4,8 +4,8 @@ import "flatpickr/dist/themes/confetti.css";
 import {Options} from "flatpickr/dist/types/options";
 import styles from "./DatePicker.module.css";
 // Assuming an Icon component exists in React with a similar API
-import Icon from "./Icon";
-import Button from "./button/Button";
+import Icon from "../Icon";
+import Button from "../button/Button";
 
 const Modes = {
     VIEW: "VIEW",

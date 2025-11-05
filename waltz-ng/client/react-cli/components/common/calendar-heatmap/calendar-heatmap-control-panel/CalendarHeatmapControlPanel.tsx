@@ -2,7 +2,7 @@ import React, { useState,ChangeEvent,MouseEvent ,useMemo} from "react";
 import Icon from "../../Icon";
 import Button from "../../button/Button";
 import {Options} from "flatpickr/dist/types/options";
-import DatePicker from "../../DatePicker";
+import DatePicker from "../../date-picker/DatePicker";
 import styles from "./CalendarHeatmapControlPanel.module.css";
 
 type Props = {
