@@ -1,10 +1,10 @@
 // src/pages/Home.tsx
 import React, { useState } from "react";
 import AliasControl from "../components/common/alias-control/AliasControl";
-import ComplexityKindPicker from "../components/common/Picker/ComplexityKindPicker";
+import ComplexityKindPicker from "../components/common/picker/ComplexityKindPicker";
 import { ComplexityKind, CostKind, TableRow } from "../types/Grid";
-import CostKindPicker from "../components/common/Picker/CostKindPicker";
-import AppGroupPicker from "../components/common/Picker/AppGroupPicker";
+import CostKindPicker from "../components/common/picker/CostKindPicker";
+import AppGroupPicker from "../components/common/picker/AppGroupPicker";
 import { mkRef } from "../utils/mkRef";
 
 const Home: React.FC = () => {

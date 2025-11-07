@@ -60,7 +60,19 @@ export default () => {
                     views: { "content@": playpenView6 },
                 })
                 .state("main.playpen.7", {
-                    url: "/7/:id",
+                    url: "/7",
+                    views: { "content@": playpenView7 },
+                })
+                .state("main.playpen.7.react", {
+                    url: "/react",
+                    views: { "content@": playpenView7 },
+                })
+                .state("main.playpen.7.about", {
+                    url: "/about",
+                    views: { "content@": playpenView7 },
+                })
+                .state("main.playpen.7.support", {
+                    url: "/support",
                     views: { "content@": playpenView7 },
                 });
         },
