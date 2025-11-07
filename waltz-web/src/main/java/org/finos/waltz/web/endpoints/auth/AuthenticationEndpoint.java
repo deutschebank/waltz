@@ -22,6 +22,7 @@ package org.finos.waltz.web.endpoints.auth;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.Filter;
 import org.finos.waltz.common.IOUtilities;
 import org.finos.waltz.model.authentication.OAuthConfiguration;
 import org.finos.waltz.model.settings.NamedSettings;
@@ -38,9 +39,6 @@ import org.jooq.tools.json.JSONParser;
 import org.jooq.tools.json.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import jakarta.servlet.Filter;
 import spark.Spark;
 
 import java.io.BufferedReader;
@@ -55,7 +53,7 @@ import java.util.function.Supplier;
 import static org.finos.waltz.common.MapUtilities.newHashMap;
 
 
-@Service
+/*@Service*/
 public class AuthenticationEndpoint implements Endpoint {
 
     private static final String BASE_URL = WebUtilities.mkPath("authentication");
@@ -69,7 +67,7 @@ public class AuthenticationEndpoint implements Endpoint {
     private final OAuthConfiguration oauthConfiguration;
 
 
-    @Autowired
+   // @Autowired
     public AuthenticationEndpoint(UserService userService,
                                   UserRoleService userRoleService,
                                   SettingsService settingsService,

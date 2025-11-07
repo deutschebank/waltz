@@ -13,6 +13,7 @@ import org.finos.waltz.web.WebUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class InvolvementKindEndpointController {
         this.userRoleService = userRoleService;
     }
 
+    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     List<InvolvementKind> getAll() {
         return service.findAll();

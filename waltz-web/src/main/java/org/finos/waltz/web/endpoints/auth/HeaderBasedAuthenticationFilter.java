@@ -44,9 +44,7 @@ public class HeaderBasedAuthenticationFilter implements Filter {
     private final String paramName;
     private final String testingOverride = System.getProperty("waltz.test.user");
 
-
     public HeaderBasedAuthenticationFilter(SettingsService settingsService) {
-        //super(settingsService);
 
         paramName = settingsService.getValue(NamedSettings.headerBasedAuthenticationFilterParam)
                 .orElseGet(() -> {
@@ -54,7 +52,7 @@ public class HeaderBasedAuthenticationFilter implements Filter {
                     return "remote-user";
                 });
 
-        LOG.info("Using header param: '" + paramName + "' for authentication purposes");
+        LOG.info("Using header param: '{}' for authentication purposes",paramName);
     }
 
 
@@ -86,13 +84,11 @@ public class HeaderBasedAuthenticationFilter implements Filter {
         LOG.trace("User according to header: {}", userParam);
 
         if (notEmpty(userParam)) {
-            //AuthenticationUtilities.setUser(request, userParam);
             AuthenticationUtilities.setUserForSB(httpRequest, userParam);
         } else {
-            //AuthenticationUtilities.setUserAsAnonymous(request);
             AuthenticationUtilities.setUserAsAnonymousForSB(httpRequest);
-            LOG.info("End of HeaderBasedAuthenticationFilter#doFilter()");
         }
+        LOG.info("End of HeaderBasedAuthenticationFilter#doFilter()");
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }
