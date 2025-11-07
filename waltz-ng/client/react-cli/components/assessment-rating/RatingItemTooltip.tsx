@@ -16,10 +16,10 @@ const RatingItemTooltip: React.FC<RatingItemTooltipProps> = ({assessmentRating, 
             <h4>{ratingItem.name}</h4>
             <h6>{ratingItem.description}</h6>
             <hr/>
-            <div className="small">
+            {!!assessmentRating.comment && <div className="small">
                 <span><Icon name="sticky-note-o"/></span>
                 {assessmentRating.comment}
-            </div>
+            </div>}
             <div className="small text-muted">
                 <span>Last modified by {assessmentRating.lastUpdatedBy}, </span>
                 <DateTime dateTime={assessmentRating.lastUpdatedAt}

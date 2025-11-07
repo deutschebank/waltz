@@ -53,18 +53,17 @@ const AssessmentFavouritesList: React.FC<AssessmentFavouritesListProps> = ({asse
                                                         (item) => item.id === rating.ratingId
                                                     );
                                                     if (!ratingItem) {
-                                                        return null;
+                                                        return <></>;
                                                     }
                                                     return (
                                                         <Tooltip key={ratingItem.id} content={<RatingItemTooltip assessmentRating={rating}
                                                                                              ratingItem={ratingItem}/>}
-                                                                                             showTooltip={!!rating.comment}
                                                                                              placement="left">
                                                             <span style={{display: "flex", gap: "0.5rem"}}>
                                                                 <RatingIndicatorCell
                                                                             rating={ratingItem}
                                                                             showName={true}/>
-                                                                <Icon name="sticky-note-o"/>
+                                                                {!!rating.comment && <Icon name="sticky-note-o"/>}
                                                             </span>
                                                         </Tooltip>
                                                     );

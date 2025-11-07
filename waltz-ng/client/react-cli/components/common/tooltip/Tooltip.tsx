@@ -48,19 +48,15 @@ const Tooltip: React.FC<TooltipProps> = ({
 
     return (
         <>
-            {showTooltip &&
-                <>
-                    <span ref={targetRef}>
-                        {children}
-                    </span>
+            <span ref={targetRef}>
+                {children}
+            </span>
 
-                    {/* required to be none, else will be visible on the DOM */}
-                    {content &&
-                        <div className={styles.content}>
-                            <div ref={contentRef} className={styles.contentRef}>{content}</div>
-                        </div>
-                    }
-                </>
+            {/* required to be none, else will be visible on the DOM */}
+            {showTooltip && content &&
+                <div className={styles.content}>
+                    <div ref={contentRef} className={styles.contentRef}>{content}</div>
+                </div>
             }
         </>
     );
