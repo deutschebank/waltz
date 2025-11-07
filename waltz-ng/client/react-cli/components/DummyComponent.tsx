@@ -13,15 +13,15 @@ import {Person} from "../types/Person";
 import PageHeader from "./common/page-header/PageHeader";
 import {EntityKind} from "../enums/Entity";
 import {NotificationTypeEnum} from "../enums/Notification";
-import {ToastCreateType, ToastType} from "../types/Toast";
+import {ToastCreateType} from "../types/Toast";
 import {BreadCrumbsConfig} from "../types/BreadCrumbs";
-import Markdown from "./common/markdown/Markdown";
 import {useQuery} from "@tanstack/react-query";
 import {staticPanelApi} from "../api/static-panel";
 import Toast from "./common/toast/Toast";
 import Loader from "./common/loader/Loader";
 import StaticPanel from "./common/static-panel/StaticPanel";
 import StaticPanels from "./common/static-panel/StaticPanels";
+import Tooltip from "./common/tooltip/Tooltip";
 
 interface DummyComponentProps {
     helloText?: string;
@@ -156,8 +156,9 @@ const DummyComponent = ({
                     onRemove={onRemovePerson}/>
                 <PageHeader name="Section"
                             small="small-section"
-                            breadcrumbs={breadCrumbsConfig}
-                            summary={<h4>This is a summary</h4>}></PageHeader>
+                            breadcrumbs={breadCrumbsConfig}>
+                    <h4>This is a summary</h4>
+                </PageHeader>
                 <br/>
                 <Section icon="pencil-square-o"
                          name="Static Panel"
@@ -173,6 +174,10 @@ const DummyComponent = ({
                     <StaticPanels groupKey={"HOME"}/>
                 </Section>
                 <Toast type={toastsPlaceholders[0].type} message={toastsPlaceholders[0].message}/>
+                <Tooltip content={<a href={"actor/list"}>This is some tooltip content</a>}
+                         placement="right">
+                    Hover over me
+                </Tooltip>
             </div>
         </div>
 	);

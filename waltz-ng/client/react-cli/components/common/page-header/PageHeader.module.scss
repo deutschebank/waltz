@@ -14,12 +14,11 @@
     border: 1px solid $waltz-border-color-lighter;
 
     h2 {
-        margin: 2px 0 4px 0;
+        display: inline-flex;
+        align-items: end;
+        gap: 0.4rem;
+        margin-top: 2px;
         font-size: 22px;
-
-        small {
-            margin-left: 0.25rem;
-        }
     }
 }
 
@@ -36,11 +35,14 @@
     pointer-events: none;
 
     h2 {
+        display: flex;
         margin: 4px;
         padding-top: 2px;
         padding-left: 36px;
         font-size: medium;
-        display: inline-block;
+        gap: 0.5rem;
+        align-items: end;
+        color: black;
     }
 }
 

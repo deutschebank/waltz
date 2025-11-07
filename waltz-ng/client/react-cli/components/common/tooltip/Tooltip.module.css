@@ -1,0 +1,26 @@
+ .content {
+    display: none;
+    position: relative;
+}
+
+.contentRef {
+    max-width: 32rem;
+    max-height: 24rem;
+    overflow-y: hidden;
+    padding: 0 1rem 0 1rem;
+}
+
+
+.contentRef:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 25%;
+    background: linear-gradient(180deg, rgba(139,167,32,0) 0%, rgba(255,255,255,1) 100%);
+    pointer-events: none;
+
+    /*quick fix for blur affecting the border*/
+    border-radius: 1rem;
+}

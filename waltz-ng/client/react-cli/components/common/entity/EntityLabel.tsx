@@ -1,8 +1,8 @@
 import * as React from "react";
-import _ from "lodash";
 import EntityIcon from "./EntityIcon";
 import {EntityReference} from "../../../types/Entity";
 import {DatabaseNameProvider, HostnameProvider, IsRemovedProvider} from "../../../types/Providers";
+import styles from "./EntityLabel.module.css";
 
 export interface EntityLabelProps {
     ref: EntityReference & Partial<IsRemovedProvider> & Partial<HostnameProvider> & Partial<DatabaseNameProvider>;
@@ -30,10 +30,12 @@ export const EntityLabel = ({ ref, showIcon = true }: EntityLabelProps) => {
 
     return (
         <>
-            {showIcon && <EntityIcon kind={ref?.kind} />}
-            <span className={classes.join(" ")}>
-                {name}
-            </span>
+            <div className={styles.entityLabel}>
+                {showIcon && <EntityIcon kind={ref?.kind}/>}
+                <span className={classes.join(" ")}>
+                    {name}
+                </span>
+            </div>
         </>
     );
 };

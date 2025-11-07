@@ -1,12 +1,15 @@
 import {EntityKind} from "../enums/Entity";
+import {IsRemovedProvider} from "./Providers";
+import {PersonKindEnum} from "../enums/person";
 
-export interface Person {
+export type PersonKindType = keyof typeof PersonKindEnum;
+
+export interface Person extends IsRemovedProvider{
     id: number;
     employeeId: string;
     displayName: string;
     email: string;
-    isRemoved: boolean;
-    personKind: "EMPLOYEE" | "CONTRACTOR" | "UNKNOWN";
+    personKind: PersonKindType;
     title?: string;
     mobilePhone?: string;
     officePhone?: string;
@@ -17,4 +20,9 @@ export interface Person {
     name: string;
     userId: string;
     kind: EntityKind.PERSON;
+}
+
+export interface KeyPersonsAndRole {
+    roleName: string;
+    persons: Person[];
 }

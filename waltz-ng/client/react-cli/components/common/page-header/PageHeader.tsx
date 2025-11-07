@@ -12,7 +12,7 @@ interface PageHeaderProps {
     small?: string;
     breadcrumbs?: BreadCrumbsConfig[];
     actions?: React.ReactNode;
-    summary?: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 const pageHeaderDefaultOffset = 60;
@@ -23,7 +23,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     small = "",
     breadcrumbs,
     actions,
-    summary
+    children
 }) => {
     const [pageY, setPageY] = useState(0);
 
@@ -71,9 +71,9 @@ const PageHeader: React.FC<PageHeaderProps> = ({
                 </button>
             </div>
 
-            {summary && (
+            {children && (
                 <div className="waltz-page-summary waltz-page-summary-attach">
-                    {summary}
+                    {children}
                 </div>
             )}
         </div>

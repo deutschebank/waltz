@@ -14,7 +14,9 @@ export const EntityIcon = ({ kind, showName = false }: EntityIconProps) => {
 
     return (
         <>
-            <Icon name={iconName} />
+            <span style={{color: "black"}}>
+                <Icon name={iconName} size="sm"/>
+            </span>
             {showName && <span>{label}</span>}
         </>
     );

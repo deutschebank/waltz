@@ -8,6 +8,7 @@ interface ViewLinkProps {
     ctx?: any;
     isSecondaryLink?: boolean;
     children: React.ReactNode;
+    showTitle?: boolean;
 }
 
 const routes = {
@@ -182,7 +183,8 @@ const ViewLink: React.FC<ViewLinkProps> = ({
     title: titleProp,
     ctx = {},
     isSecondaryLink = false,
-    children
+    children,
+    showTitle = true
 }) => {
 
     const path = useMemo(() => {
@@ -198,7 +200,7 @@ const ViewLink: React.FC<ViewLinkProps> = ({
         return (
             <a href={path}
                className={isSecondaryLink ? styles.secondaryLink : ""}
-               title={title}>
+               title={showTitle ? title : ""}>
                 {children}
             </a>
         );

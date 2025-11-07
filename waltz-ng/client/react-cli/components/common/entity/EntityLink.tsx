@@ -9,13 +9,15 @@ interface EntityLinkProps {
     isSecondaryLink?: boolean;
     showIcon?: boolean;
     children?: React.ReactNode;
+    showTitle?: boolean
 }
 
 const EntityLink: React.FC<EntityLinkProps> = ({
     ref,
     isSecondaryLink = false,
     showIcon = true,
-    children
+    children,
+    showTitle = true
 }) => {
 
     const state = ref ? kindToViewState(ref.kind) : null;
@@ -25,7 +27,7 @@ const EntityLink: React.FC<EntityLinkProps> = ({
     }
 
     return (
-        <ViewLink state={state} isSecondaryLink={isSecondaryLink} ctx={ref}>
+        <ViewLink state={state} isSecondaryLink={isSecondaryLink} ctx={ref} showTitle={showTitle}>
             {children ? children : <EntityLabel ref={ref} showIcon={showIcon} />}
         </ViewLink>
     );
