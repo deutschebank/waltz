@@ -44,9 +44,17 @@ export const staticPanelPath = {
     save: () => staticPanelBaseUrl,
     findByGroupKey: (groupKey: string) => `${staticPanelBaseUrl}/group?group=${groupKey}`
 }
+export const allocationSchemeBaseUrl = `${BASE_URL}/allocation-scheme`;
+export const allocationSchemePath: {
+    findAll: () => string;} = {
+    findAll: () => `${allocationSchemeBaseUrl}/all`,
+};
+
 
 // Register Data Extract Endpoint Paths Here
 export const dataExtractPath = {
     extract: () => DATA_EXTRACT_BASE_URL,
     allActors: "actor/all",
 };
+
+

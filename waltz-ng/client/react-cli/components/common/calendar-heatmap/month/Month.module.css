@@ -1,0 +1,67 @@
+.monthGroup{}
+
+.monthHeaderText {
+    pointer-events: none;
+    text-anchor: middle;
+    font-size: 14px;
+    fill: #666;
+}
+
+.monthHeaderStrip{
+    fill: #fff;
+}
+
+.monthTitle {
+    fill: #fff;
+    stroke: #ddd;
+    rx: 2px;
+    ry:2px;
+}
+
+.monthBody {
+    transition: transform 0.2s ease-in-out;
+}
+
+.dayWrapper {
+    cursor:pointer;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.dayWrapper:hover {
+    opacity:0.85;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+.activeDay{
+    cursor:pointer;
+    transition: transform 0.2s ease-in-out;
+}
+.activeDay:hover{
+    transform: scale(1.05);
+}
+.inactiveDay {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.dayNumber{
+    font-size:8px;
+    font-weight: 500;
+    text-anchor: middle;
+    dominant-baseline: central;
+    fill:rgba(60,60,60,0.6);
+    user-select: none;
+    pointer-events: none;
+
+}
+
+/*.monthBorder{*/
+/*    fill:none;*/
+/*    stroke: #e0e0e0;*/
+/*    stroke-width:1;*/
+/*    rx:4px;*/
+/*    ry:4px;*/
+/*}*/

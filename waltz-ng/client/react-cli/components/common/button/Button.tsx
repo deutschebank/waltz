@@ -4,7 +4,7 @@ import styles from "./Button.module.scss";
 
 // Type
 type ButtonProps = {
-    label: string;
+    label: React.ReactNode;
     onClick: () => void;
     disabled?: boolean;
     className?: string;

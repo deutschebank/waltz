@@ -16,6 +16,12 @@ export interface ComplexityKind extends BaseKind {
     externalId: string;
 }
 
+export interface AllocationScheme {
+    id: string | number;
+    name: string;
+    description: string;
+}
+
 export interface CostKind extends BaseKind {
     costKind: string;
 }
