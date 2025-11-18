@@ -39,6 +39,8 @@ import org.jooq.tools.json.JSONParser;
 import org.jooq.tools.json.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import spark.Spark;
 
 import java.io.BufferedReader;
@@ -53,7 +55,7 @@ import java.util.function.Supplier;
 import static org.finos.waltz.common.MapUtilities.newHashMap;
 
 
-/*@Service*/
+@Service
 public class AuthenticationEndpoint implements Endpoint {
 
     private static final String BASE_URL = WebUtilities.mkPath("authentication");
@@ -67,7 +69,7 @@ public class AuthenticationEndpoint implements Endpoint {
     private final OAuthConfiguration oauthConfiguration;
 
 
-   // @Autowired
+    @Autowired
     public AuthenticationEndpoint(UserService userService,
                                   UserRoleService userRoleService,
                                   SettingsService settingsService,
@@ -76,10 +78,7 @@ public class AuthenticationEndpoint implements Endpoint {
         this.userRoleService = userRoleService;
         this.settingsService = settingsService;
 
-        this.filter = settingsService
-                .getValue(NamedSettings.authenticationFilter)
-                .flatMap(this::instantiateFilter)
-                .orElseGet(createDefaultFilter());
+        this.filter = null;
 
         this.oauthConfiguration = oauthConfiguration;
     }
