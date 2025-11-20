@@ -1,0 +1,10 @@
+@import "../../../../../style/variables";
+
+.secondaryLink {
+    color: $waltz-font-color;
+    font-weight: bold;
+
+    &:hover {
+        color: $waltz-link-color;
+    }
+}

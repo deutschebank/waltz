@@ -1,0 +1,29 @@
+.root{
+    margin-top: 70px;
+}
+.title{
+    font-weight:700;
+    margin:0 0 12px 0;
+    line-height:1.2;
+}
+
+.svg{
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.clickable {cursor:pointer}
+
+.future {stroke-dasharray: 2 2; fill: #f9f9f9;}
+
+.visuallyHidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding:0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}

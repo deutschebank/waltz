@@ -1,0 +1,22 @@
+.day{
+    cursor:pointer;
+}
+
+.future{
+    stroke-dasharray: 2 2;
+    fill: #f9f9f9;
+}
+
+.empty{
+    fill: #eee;
+    stroke: #bbb;
+}
+.valued{
+    stroke: #1f7fe0;
+}
+
+.focusRing:focus-visible{
+    outline: none;
+    filter: drop-shadow(0 0 0.6px rgba(0,0,0,0.45))
+            drop-shadow(0 0 3px rgba(31,127,224,0.55));
+}

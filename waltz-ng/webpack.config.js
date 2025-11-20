@@ -43,10 +43,11 @@ module.exports = {
     resolve: {
         symlinks: false,
         alias: {
-            svelte: path.resolve("node_modules", "svelte")
+            svelte: path.resolve("node_modules", "svelte"),
+            react: path.resolve("node_modules", "react")
         },
-        extensions: [".svelte", ".js"],
-        mainFields: ["svelte", "browser", "module", "main"]
+        extensions: [".svelte", ".js", ".jsx", ".ts", ".tsx"],
+        mainFields: ["svelte", "react", "browser", "module", "main"]
     },
     optimization: {
         runtimeChunk: "single",
@@ -106,7 +107,7 @@ module.exports = {
                 ],
 
             }, {
-                test: /(\.m?jsx?$)/,
+                test: /\.[jt]sx?$/,
                 use: ["babel-loader"]
             }, {
                 test: /\.s?css$/,

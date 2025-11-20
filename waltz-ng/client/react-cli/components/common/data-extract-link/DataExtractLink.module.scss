@@ -1,0 +1,43 @@
+ul.waltzDataExtract {
+    display: inline-block;
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+
+    li {
+        display: block;
+        position: relative;
+        text-decoration: none;
+        transition-duration: 0.5s;
+
+        &:hover {
+            background-color: #fafafa;
+            cursor: pointer;
+        }
+    }
+
+    ul.dropdown {
+        background: white;
+        visibility: hidden;
+        opacity: 0;
+        min-width: 20rem;
+        position: absolute;
+        left: 0.1em;
+        transition: all 0.5s ease;
+        display: none;
+    }
+
+    li:hover > ul,
+    ul li ul:hover {
+        visibility: visible;
+        opacity: 1;
+        display: block;
+        z-index: 100000;
+        border: 1px solid #666;
+    }
+
+    ul li ul li {
+        clear: both;
+        width: 100%;
+    }
+}
