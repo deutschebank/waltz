@@ -117,6 +117,7 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <playwright.skip>true</playwright.skip>
         <eclipse.jetty.version>9.4.57.v20241219</eclipse.jetty.version>
+        <springdoc-openapi-version>2.7.0</springdoc-openapi-version>
     </properties>
 
 
@@ -152,6 +153,11 @@
                 <groupId>com.sparkjava</groupId>
                 <artifactId>spark-template-freemarker</artifactId>
                 <version>${spark-freemarker.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi-version}</version>
             </dependency>
 
             <!--<dependency>
