@@ -77,9 +77,13 @@ export default () => {
                     url: "/support",
                     views: { "content@": playpenView7 },
                 })
+                .state("main.playpen.7.user", {
+                    url: "/user",
+                    views: { "content@": playpenView7 },
+                })
                 .state("main.playpen.8", {
                     url: "/8",
-                    views: { "content@": playpenView8 }
+                    views: { "content@": playpenView8 },
                 });
         },
     ]);

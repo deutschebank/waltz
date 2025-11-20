@@ -1,4 +1,4 @@
-import {isEmpty} from "lodash";
+import {isEmpty, isString} from "lodash";
 import {RestMethod} from "../types/Http";
 
 export const headers: HeadersInit = {
@@ -27,5 +27,26 @@ export async function fetchResponse(url: string, method: RestMethod = "GET", dat
         method: method,
         headers: headers,
         body: data ? JSON.stringify(data) : null
+    });
+}
+
+export function execute<T>(url: string, method: RestMethod = "GET", data?: object): Promise<T>{
+    return fetch(url, {
+        method: method,
+        headers: headers,
+        body: isString(data) ? data : JSON.stringify(data)
+    }).then(handleResponse);
+}
+
+function handleResponse(response: any) {
+    return response.text().then((text:any) => {
+        const data = text && JSON.parse(text);
+
+        if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject({error, response, text});
+        }
+
+        return { data };
     });
 }
