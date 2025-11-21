@@ -18,7 +18,7 @@
 
 import {initialiseData} from "../common";
 import template from "./user-management.html";
-import UserManagementPanel from "./svelte/UserManagementPanel.svelte"
+import UserManagementPanel from "../react-cli/pages/user/UserManagementPanel";
 
 
 const initialState = {

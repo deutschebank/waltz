@@ -76,6 +76,7 @@ const TagInput: React.FC<TagInputProps> = ({
                                     e.preventDefault();
                                     del(idx);
                                 }}
+                                data-testid="delete-tag"
                             >
                                 <Icon name="xmark" />
                             </a>
@@ -94,17 +95,19 @@ const TagInput: React.FC<TagInputProps> = ({
             {/* Buttons using the custom Button component */}
             <div style={{ paddingTop: "0.2em" }}>
                 <Button
-                    label="Save"
                     className={`btn btn-skinny ${dirty ? styles.dirty : ""}`}
                     onClick={() => onSave?.(tags)} // Call onSave callback
-                />
+                >
+                    Save
+                </Button>
                 <Button
-                    label="Cancel"
                     className="btn btn-skinny"
                     onClick={() => {
                         if (onCancel) onCancel();
                     }}
-                />
+                >
+                    Cancel
+                </Button>
             </div>
         </div>
     );

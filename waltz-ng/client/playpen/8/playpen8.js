@@ -1,12 +1,12 @@
 import template from "./playpen8.html";
-import DummyComponentTwo from "../../react-cli/components/DummyComponentTwo";
+// import DummyComponentTwo from "../../react-cli/components/DummyComponentTwo";
 import { initialiseData } from "../../common";
 import store from "../../redux-store";
 import {incremented2} from "../../redux-slices/counter-slice-2";
 import _ from 'lodash';
 
 const initialState = {
-    DummyComponentTwo,
+    // DummyComponentTwo,
     reactHidden: false
 };
 

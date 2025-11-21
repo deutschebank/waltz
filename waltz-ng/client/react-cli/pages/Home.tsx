@@ -6,6 +6,11 @@ import { ComplexityKind, CostKind, TableRow } from "../types/Grid";
 import CostKindPicker from "../components/common/entity-pickers/CostKindPicker";
 import AppGroupPicker from "../components/common/entity-pickers/AppGroupPicker";
 import { mkRef } from "../utils/mkRef";
+import Popover from "../components/common/popover/Popover";
+import Button from "../components/common/button/Button";
+import reduxStore from "../../redux-store";
+import { addPopover } from "../../redux-slices/popover-slice";
+import { useSliceSelector } from "../hooks/useSliceSelector";
 
 const Home: React.FC = () => {
     //Complexity Kind
@@ -14,7 +19,7 @@ const Home: React.FC = () => {
     >([
         {
             name: "Mike",
-            description: "Lorem Ipsume text !",
+            description: "Complexity kind description",
         },
     ]); // Store for selected complexity kinds
 
@@ -38,7 +43,7 @@ const Home: React.FC = () => {
     const [selectedCostKinds, setSelectedCostKinds] = useState<any[]>([
         {
             name: "Mike",
-            description: "Lorem Ipsume text !",
+            description: "Cost kind description",
         },
     ]); // Store for selected Cost kinds
 
@@ -52,6 +57,17 @@ const Home: React.FC = () => {
     const costKindIds = selectedCostKinds.map((kind) => kind.id);
     const selectionFilterCost = (costKind: CostKind) =>
         !costKindIds.includes(costKind.id);
+
+    //handle popover click
+    const handlePopoverClick = () => {
+        reduxStore.dispatch(
+            addPopover({
+                title: "Popover Example",
+                content: "<p> Hello from Popover!</p>",
+            })
+        );
+    };
+    const popover = useSliceSelector((state) => state.popover.current);
 
     return (
         <div>
@@ -85,6 +101,9 @@ const Home: React.FC = () => {
                     onSelect={onSelectComplexityKind}
                     selectionFilter={selectionFilter}
                 />
+                <h5>3. Popover</h5>
+                <Button onClick={handlePopoverClick}>Add</Button>
+                {popover && <Popover />}
             </div>
         </div>
     );
