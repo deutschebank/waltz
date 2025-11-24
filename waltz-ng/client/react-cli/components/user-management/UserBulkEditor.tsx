@@ -177,6 +177,7 @@ const UserBulkEditor: React.FC = () => {
         type="submit"
         className="btn btn-success"
         disabled={!rowData || isPreviewing}
+        data-testid="preview-button"
       >
         {isPreviewing ? "Previewing..." : "Preview"}
       </Button>
@@ -243,10 +244,15 @@ const UserBulkEditor: React.FC = () => {
         type="submit"
         className="btn btn-success"
         disabled={!rowData || isUploading}
+        data-testid="update-button"
       >
         {isUploading ? "Updating..." : "Update"}
       </Button>
-      <Button className="btn btn-skinny" onClick={() => setMode(Modes.EDIT)}>
+      <Button
+        className="btn btn-skinny"
+        data-testid="back-preview"
+        onClick={() => setMode(Modes.EDIT)}
+      >
         Back
       </Button>
     </form>
@@ -262,7 +268,11 @@ const UserBulkEditor: React.FC = () => {
         <div>Updated: {updatedCount} user/role entries.</div>
       </fieldset>
       <br />
-      <Button className="btn btn-skinny" onClick={() => setMode(Modes.EDIT)}>
+      <Button
+        className="btn btn-skinny"
+        data-testid="back-result"
+        onClick={() => setMode(Modes.EDIT)}
+      >
         Back
       </Button>
     </>

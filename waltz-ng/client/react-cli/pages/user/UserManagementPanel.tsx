@@ -57,6 +57,7 @@ const UserManagementPanel: React.FC = () => {
         checked={selectedTab === TABS.SINGLE}
         onChange={() => setSelectedTab(TABS.SINGLE)}
         id="single"
+        data-testid="single"
       />
       <label className={styles.wtlabel} htmlFor="single">
         <span>
@@ -69,6 +70,7 @@ const UserManagementPanel: React.FC = () => {
         checked={selectedTab === TABS.BULK}
         onChange={() => setSelectedTab(TABS.BULK)}
         id="bulk"
+        data-testid="bulk"
       />
       <label className={styles.wtlabel} htmlFor="bulk">
         <span>

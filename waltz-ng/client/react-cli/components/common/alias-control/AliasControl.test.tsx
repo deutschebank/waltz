@@ -4,6 +4,7 @@ import AliasControl from "./AliasControl";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { mkRef } from "../../../utils/mkRef";
 import "@testing-library/jest-dom";
+import { useToasts } from "../../../context/ToastContext";
 
 // Mocking React Query
 jest.mock("@tanstack/react-query", () => ({
@@ -11,6 +12,10 @@ jest.mock("@tanstack/react-query", () => ({
     useQuery: jest.fn(),
     useQueryClient: jest.fn(),
     useMutation: jest.fn(),
+}));
+
+jest.mock("../../../context/ToastContext", () => ({
+    useToasts: jest.fn(),
 }));
 
 // Mock parentEntityReference
@@ -43,6 +48,7 @@ jest.mock("../tags-input/TagsInput", () => {
 
 describe("AliasControl", () => {
     const aliases = ["Alias1", "Alias2"];
+    const mockAddToast = jest.fn();
     const mockQueryClient = {
         getQueryData: jest.fn(),
         setQueryData: jest.fn(),
@@ -53,6 +59,10 @@ describe("AliasControl", () => {
         (useQuery as jest.Mock).mockReturnValue({
             isPending: false,
             data: aliases,
+        });
+
+        (useToasts as jest.Mock).mockReturnValue({
+            addToast: mockAddToast,
         });
 
         // Mock the "useQueryClient" behavior
