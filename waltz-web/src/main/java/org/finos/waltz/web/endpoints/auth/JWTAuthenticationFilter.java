@@ -24,6 +24,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.finos.waltz.service.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +36,7 @@ import java.io.IOException;
  * about the bearer name.
  */
 
-public class JWTAuthenticationFilter implements Filter {
+public class JWTAuthenticationFilter extends WaltzFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
@@ -43,7 +44,8 @@ public class JWTAuthenticationFilter implements Filter {
     private final JWTVerifier verifier512;
 
 
-    public JWTAuthenticationFilter() {
+    public JWTAuthenticationFilter(SettingsService settingsService) {
+        super(settingsService);
         LOG.info("JWTAuthenticationFilter Loaded  ");
         try {
             Algorithm algorithm256 = Algorithm.HMAC256(JWTUtilities.SECRET);

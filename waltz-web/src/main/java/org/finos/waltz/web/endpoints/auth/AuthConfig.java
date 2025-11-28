@@ -77,7 +77,7 @@ public class AuthConfig {
     private Supplier<Filter> createDefaultFilter() {
         return () -> {
             LOG.info("Using default (jwt) authentication filter");
-            return new JWTAuthenticationFilter();
+            return new JWTAuthenticationFilter(settingsService);
         };
     }
 

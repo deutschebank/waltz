@@ -37,7 +37,7 @@ import static org.finos.waltz.common.StringUtilities.notEmpty;
  * or is specified by a settings: `server.authentication.filter.headerbased.param`
  */
 
-public class HeaderBasedAuthenticationFilter implements Filter {
+public class HeaderBasedAuthenticationFilter extends WaltzFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(HeaderBasedAuthenticationFilter.class);
 
@@ -45,7 +45,7 @@ public class HeaderBasedAuthenticationFilter implements Filter {
     private final String testingOverride = System.getProperty("waltz.test.user");
 
     public HeaderBasedAuthenticationFilter(SettingsService settingsService) {
-
+        super(settingsService);
         paramName = settingsService.getValue(NamedSettings.headerBasedAuthenticationFilterParam)
                 .orElseGet(() -> {
                     LOG.warn("HeaderBasedAuthenticationFilter is configured but no header parameter has been provided in the settings table (key is: 'server.authentication.filter.headerbased.param').  Defaulting to 'remote-user'.");
