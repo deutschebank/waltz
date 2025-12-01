@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * Usage of NavLink is currently not recommended as each react view is embedded within the angular application
+ * causing weird paths to exist on routing. Please use pageInfo slice or ahrefs instead.
+ */
+
 const List: React.FC = () => (
   <nav>
     {/* In bounds for react router to show Not Found if the path os not found*/}
