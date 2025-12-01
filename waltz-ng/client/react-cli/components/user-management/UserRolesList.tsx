@@ -1,35 +1,33 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { setActiveMode, setUserRoles } from "../../../redux-slices/user-management-slice";
-import { roleApi } from "../../api/roles";
-import { userManagementApi } from "../../api/user-management";
+import React, {useState, useMemo, useEffect} from "react";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {setActiveMode, setUserRoles} from "../../../redux-slices/user-management-slice";
+import {roleApi} from "../../api/roles";
+import {userManagementApi} from "../../api/user-management";
 import SearchInput from "../common/SearchInput";
-import { termSearch } from "../../../common";
-import { useToasts } from "../../context/ToastContext";
-import { NotificationTypeEnum } from "../../enums/Notification";
+import {termSearch} from "../../../common";
+import {useToasts} from "../../context/toast/ToastContext";
+import {NotificationTypeEnum} from "../../enums/Notification";
 import NoData from "../common/no-data/NoData";
 import Button from "../common/button/Button";
 import Icon from "../common/Icon";
-import { useSliceSelector } from "../../hooks/useSliceSelector";
+import {useSliceSelector} from "../../hooks/useSliceSelector";
 import reduxStore from "../../../redux-store";
-import { Modes, Roles } from "../../enums/User";
+import {Modes, Roles} from "../../enums/User";
 
 const UserRolesList: React.FC = () => {
   const selectedUser = useSliceSelector((state) => state.userManagement.selectedUser);
   const userRoles = useSliceSelector((state) => state.userManagement.userRoles);
-  const { addToast } = useToasts();
+  const {addToast} = useToasts();
   const [qry, setQry] = useState("");
   const [comment, setComment] = useState("");
   const [expandedReadOnly, setExpandedReadOnly] = useState(false);
 
-  const { data: allRoles = [] } = useQuery({
-    ...roleApi.findAll(),
-  });
+  const {data: allRoles = []} = useQuery(roleApi.findAll());
 
-  const { mutate: updateUserRolesMutation } = useMutation<number, Error>({
+  const {mutate: updateUserRolesMutation} = useMutation<number, Error>({
     mutationFn: () => {
       if (!selectedUser) throw new Error("No user selected");
-      const { mutationFn } = userManagementApi.updateRoles(
+      const {mutationFn} = userManagementApi.updateRoles(
         selectedUser.userName,
         userRoles,
         comment
@@ -199,7 +197,7 @@ const UserRolesList: React.FC = () => {
       </div>
 
       {userReadOnlyRoles.length > 0 && (
-        <div style={{ paddingTop: "1em" }}>
+        <div style={{paddingTop: "1em"}}>
           <NoData type="info">
             This user has {userReadOnlyRoles.length} roles which are read only and cannot
             be edited through this view.

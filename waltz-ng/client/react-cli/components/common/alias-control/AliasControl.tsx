@@ -6,7 +6,7 @@ import { EntityReference } from "../../../types/Entity";
 import Button from "../button/Button";
 import TagInput from "../tags-input/TagsInput";
 import styles from "./AliasControl.module.scss";
-import { useToasts } from "../../../context/ToastContext";
+import { useToasts } from "../../../context/toast/ToastContext";
 import { NotificationTypeEnum } from "../../../enums/Notification";
 
 // Types
