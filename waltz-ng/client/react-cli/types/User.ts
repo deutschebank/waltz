@@ -34,3 +34,15 @@ export interface PreviewRow {
 export type UserBulkResponse<T> = {
   data: T; // Array of user objects
 };
+
+// Defines the shape of the user management state.
+export interface UserManagementState {
+  // The currently selected user, or null if none is selected.
+  selectedUser: IUser | null;
+  // The active mode of the user management panel (e.g., LIST, DETAIL, ADD).
+  activeMode: string;
+  // The roles associated with the selected user.
+  userRoles: Roles[];
+  // The search query for filtering users or roles.
+  searchQry: string;
+}

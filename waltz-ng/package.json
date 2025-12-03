@@ -83,11 +83,11 @@
         "xlsx": "0.17.3"
     },
     "devDependencies": {
-        "@babel/core": "7.19.6",
-        "@babel/preset-env": "7.19.4",
+        "@babel/core": "^7.22.0",
+        "@babel/preset-env": "^7.22.0",
         "@babel/preset-react": "^7.27.1",
         "@babel/preset-typescript": "^7.27.1",
-        "@babel/register": "7.18.9",
+        "@babel/register": "^7.22.0",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.0",
         "@types/jest": "^26.0.24",
