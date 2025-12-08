@@ -2,7 +2,7 @@ module.exports = {
     preset: "ts-jest",
     testEnvironment: "jsdom", // Ensure a DOM-like environment for React tests
     transform: {
-        "^.+\\.tsx?$": "ts-jest",
+        "^.+\\.(js|jsx|ts|tsx)$": "ts-jest",
     },
     moduleNameMapper: {
         "\\.(css|scss)$": "identity-obj-proxy", // Mock styles

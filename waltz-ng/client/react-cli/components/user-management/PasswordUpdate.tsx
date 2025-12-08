@@ -6,7 +6,7 @@ import Button from "../common/button/Button";
 import NoData from "../common/no-data/NoData";
 import { useSliceSelector } from "../../hooks/useSliceSelector";
 import reduxStore from "../../../redux-store";
-import { useToasts } from "../../context/toast/ToastContext";
+import { useToasts } from "../../context/ToastContext";
 import { NotificationTypeEnum } from "../../enums/Notification";
 import { Modes } from "../../enums/User";
 

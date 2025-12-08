@@ -1,33 +1,35 @@
-import React, {useState, useMemo, useEffect} from "react";
-import {useMutation, useQuery} from "@tanstack/react-query";
-import {setActiveMode, setUserRoles} from "../../../redux-slices/user-management-slice";
-import {roleApi} from "../../api/roles";
-import {userManagementApi} from "../../api/user-management";
+import React, { useState, useMemo, useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { setActiveMode, setUserRoles } from "../../../redux-slices/user-management-slice";
+import { roleApi } from "../../api/roles";
+import { userManagementApi } from "../../api/user-management";
 import SearchInput from "../common/SearchInput";
-import {termSearch} from "../../../common";
-import {useToasts} from "../../context/toast/ToastContext";
-import {NotificationTypeEnum} from "../../enums/Notification";
+import { termSearch } from "../../../common";
+import { useToasts } from "../../context/ToastContext";
+import { NotificationTypeEnum } from "../../enums/Notification";
 import NoData from "../common/no-data/NoData";
 import Button from "../common/button/Button";
 import Icon from "../common/Icon";
-import {useSliceSelector} from "../../hooks/useSliceSelector";
+import { useSliceSelector } from "../../hooks/useSliceSelector";
 import reduxStore from "../../../redux-store";
-import {Modes, Roles} from "../../enums/User";
+import { Modes, Roles } from "../../enums/User";
 
 const UserRolesList: React.FC = () => {
   const selectedUser = useSliceSelector((state) => state.userManagement.selectedUser);
   const userRoles = useSliceSelector((state) => state.userManagement.userRoles);
-  const {addToast} = useToasts();
+  const { addToast } = useToasts();
   const [qry, setQry] = useState("");
   const [comment, setComment] = useState("");
   const [expandedReadOnly, setExpandedReadOnly] = useState(false);
 
-  const {data: allRoles = []} = useQuery(roleApi.findAll());
+  const { data: allRoles = [] } = useQuery({
+    ...roleApi.findAll(),
+  });
 
-  const {mutate: updateUserRolesMutation} = useMutation<number, Error>({
+  const { mutate: updateUserRolesMutation } = useMutation<number, Error>({
     mutationFn: () => {
       if (!selectedUser) throw new Error("No user selected");
-      const {mutationFn} = userManagementApi.updateRoles(
+      const { mutationFn } = userManagementApi.updateRoles(
         selectedUser.userName,
         userRoles,
         comment
@@ -69,16 +71,16 @@ const UserRolesList: React.FC = () => {
   const rolesChanged = useMemo(() => {
     const initialRoles = selectedUser?.roles || [];
     const selectableRoleKeys = userSelectableRoles.map((r) => r.key);
-    const initialSelectableRoles = initialRoles.filter((r) =>
+    const initialSelectableRoles = initialRoles.filter((r: Roles) =>
       selectableRoleKeys.includes(r)
     );
-    const currentSelectableRoles = userRoles.filter((r) =>
+    const currentSelectableRoles = userRoles.filter((r: Roles) =>
       selectableRoleKeys.includes(r)
     );
 
     return (
       initialSelectableRoles.length !== currentSelectableRoles.length ||
-      initialSelectableRoles.some((r) => !currentSelectableRoles.includes(r))
+      initialSelectableRoles.some((r: Roles) => !currentSelectableRoles.includes(r))
     );
   }, [selectedUser, userRoles, userSelectableRoles]);
 
@@ -95,7 +97,7 @@ const UserRolesList: React.FC = () => {
 
   const handleSelectRole = (roleKey: Roles) => {
     const newRoles = userRoles.includes(roleKey as Roles)
-      ? userRoles.filter((r) => r !== roleKey)
+      ? userRoles.filter((r: Roles) => r !== roleKey)
       : [...userRoles, roleKey];
     reduxStore.dispatch(setUserRoles(newRoles));
   };
@@ -108,7 +110,7 @@ const UserRolesList: React.FC = () => {
 
   const handleRemoveAll = () => {
     const selectableRoleKeys = userSelectableRoles.map((r) => r.key);
-    const rolesToKeep = userRoles.filter((k) => !selectableRoleKeys.includes(k));
+    const rolesToKeep = userRoles.filter((k: Roles) => !selectableRoleKeys.includes(k));
     reduxStore.dispatch(setUserRoles(rolesToKeep));
   };
 
@@ -150,11 +152,11 @@ const UserRolesList: React.FC = () => {
           <thead>
             <tr>
               <th>
-                <button className="btn btn-skinny" onClick={handleAddAll}>
+                <button className="btn btn-skinny" data-testid="add-all" onClick={handleAddAll}>
                   <Icon name="plus" />
                 </button>
                 /
-                <button className="btn btn-skinny" onClick={handleRemoveAll}>
+                <button className="btn btn-skinny" data-testid="remove-all" onClick={handleRemoveAll}>
                   <Icon name="minus" />
                 </button>
               </th>
@@ -174,6 +176,7 @@ const UserRolesList: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={userRoles.includes(role.key)}
+                        name={role.key}
                         onChange={() => handleSelectRole(role.key)}
                       />
                     </td>
@@ -197,7 +200,7 @@ const UserRolesList: React.FC = () => {
       </div>
 
       {userReadOnlyRoles.length > 0 && (
-        <div style={{paddingTop: "1em"}}>
+        <div style={{ paddingTop: "1em" }}>
           <NoData type="info">
             This user has {userReadOnlyRoles.length} roles which are read only and cannot
             be edited through this view.
@@ -240,6 +243,7 @@ const UserRolesList: React.FC = () => {
           className="btn btn-success"
           disabled={!rolesChanged}
           onClick={() => updateUserRolesMutation()}
+          data-testid="save-updates"
         >
           Save Updates
         </Button>
@@ -249,7 +253,7 @@ const UserRolesList: React.FC = () => {
         >
           Delete User
         </Button>
-        <Button className="btn btn-skinny" onClick={handleCancel}>
+        <Button className="btn btn-skinny" data-testid="cancel" onClick={handleCancel}>
           Cancel
         </Button>
       </span>

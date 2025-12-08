@@ -1,18 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IUser } from "../react-cli/types/User";
+import { IUser, UserManagementState } from "../react-cli/types/User";
 import { Modes, Roles } from "../react-cli/enums/User";
-
-// Defines the shape of the user management state.
-interface UserManagementState {
-  // The currently selected user, or null if none is selected.
-  selectedUser: IUser | null;
-  // The active mode of the user management panel (e.g., LIST, DETAIL, ADD).
-  activeMode: string;
-  // The roles associated with the selected user.
-  userRoles: Roles[];
-  // The search query for filtering users or roles.
-  searchQry: string;
-}
 
 // Defines the initial state for the user management slice.
 const initialState: UserManagementState = {
