@@ -5,7 +5,7 @@ import Home from "../pages/Home";
 import About from "../pages/About";
 import NotFound from "../pages/NotFound";
 import UserManagementPanel from "../pages/user/UserManagementPanel";
-import List from "../components/List/List";
+import List from "../components/list/List";
 
 const AppLayout: React.FC = () => (
     <>

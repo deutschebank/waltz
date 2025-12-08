@@ -1,6 +1,5 @@
 import { fetchJSON, execute } from "./api";
 import { userPath } from "../constants/path";
-import { Person } from "../types/Person";
 import {
   ICreateUser,
   IUser,
@@ -16,9 +15,9 @@ const findAll = () => ({
   },
 });
 
-const whoami = () => ({
+const load = () => ({
   queryKey: ["user", "whoami"],
-  queryFn: async (): Promise<Person> => {
+  queryFn: async (): Promise<IUser> => {
     return await fetchJSON(userPath.whoami());
   },
 });
@@ -86,7 +85,7 @@ const deleteUser = (username: string) => ({
 
 export const userManagementApi = {
   findAll,
-  whoami,
+  load,
   getByUserId,
   updateRoles,
   register,

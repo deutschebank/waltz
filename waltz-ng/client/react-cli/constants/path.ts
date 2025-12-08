@@ -1,4 +1,4 @@
-import { EntityKind, EntityReference } from "../types/Entity";
+import {EntityKind, EntityReference} from "../types/Entity";
 
 export const BASE_URL = "api";
 export const DATA_EXTRACT_BASE_URL = "data-extract";
@@ -13,6 +13,12 @@ export const actorPath = {
 export const allocationSchemeBaseUrl = `${BASE_URL}/allocation-scheme`;
 export const allocationSchemePath = {
   findAll: () => `${allocationSchemeBaseUrl}/all`,
+};
+
+export const bookmarkPath = {
+  load: (ref: EntityReference) => `${BASE_URL}/bookmarks/${ref.kind}/${ref.id}`,
+  save: () => `${BASE_URL}/bookmarks`,
+  remove: (id: number) => `${BASE_URL}/bookmarks/${id}`,
 };
 
 export const complexityKindBaseUrl = `${BASE_URL}/complexity-kind`;
@@ -44,6 +50,8 @@ export const entitySearchPath = {
   search: () => entitySearchBaseUrl,
 };
 
+export const enumValueBaseUrl = `${BASE_URL}/enum-value`;
+
 export const personBaseUrl = `${BASE_URL}/person`;
 export const personPath = {
   getSelf: () => `${personBaseUrl}/self`,
@@ -59,8 +67,7 @@ export const staticPanelBaseUrl = `${BASE_URL}/static-panel`;
 export const staticPanelPath = {
   load: () => staticPanelBaseUrl,
   save: () => staticPanelBaseUrl,
-  findByGroupKey: (groupKey: string) =>
-    `${staticPanelBaseUrl}/group?group=${groupKey}`,
+  findByGroupKey: (groupKey: string) => `${staticPanelBaseUrl}/group?group=${groupKey}`,
 };
 
 // Endpoints: User Management Panel

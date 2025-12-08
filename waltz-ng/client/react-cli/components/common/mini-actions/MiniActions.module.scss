@@ -1,0 +1,11 @@
+.miniActions {
+  padding: 0;
+  display: inline-block;
+  list-style: none;
+
+  li + li::before {
+    content: "|";
+    margin-right: 0.67em;
+    margin-left: 0.67em;
+  }
+}
