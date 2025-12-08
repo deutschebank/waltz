@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./BreadCrumbs.module.scss";
 import ViewLink from "../view-link/ViewLink";
-import {BreadCrumbs as BreadCrumbsConfig} from "../../../types/BreadCrumbs";
+import {BreadCrumbsConfig} from "../../../types/BreadCrumbs";
 
 interface BreadCrumbsProps {
     crumbs: BreadCrumbsConfig[]
