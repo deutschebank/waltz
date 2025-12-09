@@ -8,6 +8,6 @@ const load = () => ({
   }
 });
 
-export const enumLoadApi = {
+export const enumValueApi = {
   load
 };

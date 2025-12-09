@@ -18,18 +18,24 @@ import BookmarkTable from "./BookmarkTable";
 import {nestEnums} from "../../../common/svelte/enum-utils";
 import {userManagementApi} from "../../api/user-management";
 import {bookmarkApi} from "../../api/bookmark";
-import {enumLoadApi} from "../../api/enum-value";
-import {useQuery} from "@tanstack/react-query";
+import {enumValueApi} from "../../api/enum-value";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {IBookmark} from "../../types/Bookmark";
+import {useToasts} from "../../context/ToastContext";
+import {NotificationTypeEnum} from "../../enums/Notification";
 
 interface BookmarkPanelProps {
   primaryEntityRef: any; // Define a proper type for entity reference
 }
 
 const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
+  const queryClient = useQueryClient();
+  const {addToast} = useToasts();
+
   const [selectedKind, setSelectedKind] = useState<any | null>(null);
   const [query, setQuery] = useState("");
-  const [removalCandidate, setRemovalCandidate] = useState<any | null>(null);
-  const [editCandidate, setEditCandidate] = useState<any | null>(null);
+  const [removalCandidate, setRemovalCandidate] = useState<IBookmark | null>(null);
+  const [editCandidate, setEditCandidate] = useState<IBookmark | null>(null);
 
   const {
     data: bookmarks = [],
@@ -37,7 +43,7 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
     error: bookmarksError,
   } = useQuery(bookmarkApi.load(primaryEntityRef));
   const {data: user} = useQuery(userManagementApi.load());
-  const {data: enums} = useQuery(enumLoadApi.load());
+  const {data: enums} = useQuery(enumValueApi.load());
 
   const nestedEnums = useMemo(() => nestEnums(enums), [enums]);
   const bookmarkGroups = useMemo(
@@ -80,16 +86,52 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
     });
   };
 
-  const handleSave = (bookmark: any) => {
-    // Assume save logic is in the hook or store
-    console.log("Saving bookmark:", bookmark);
-    setEditCandidate(null);
-  };
+  const {mutate: saveMutation} = useMutation<number, Error, IBookmark>({
+    mutationFn: (bookmark: IBookmark) => {
+      const {mutationFn} = bookmarkApi.save(bookmark);
+      return mutationFn();
+    },
+    onSuccess: () => {
+      addToast({
+        type: NotificationTypeEnum.SUCCESS,
+        message: "Bookmark saved successfully",
+      });
+      setEditCandidate(null);
+      queryClient.invalidateQueries({
+        queryKey: ["bookmarks", "load", primaryEntityRef.kind, primaryEntityRef.id],
+      });
+    },
+    onError: (error: any) => {
+      const message = error.data?.message || error.message || "Could not save bookmark";
+      addToast({type: NotificationTypeEnum.ERROR, message});
+    },
+  });
+
+  const {mutate: removeMutation} = useMutation<number, Error, number>({
+    mutationFn: (bookmarkId: number) => {
+      const {mutationFn} = bookmarkApi.remove(bookmarkId);
+      return mutationFn();
+    },
+    onSuccess: () => {
+      addToast({
+        type: NotificationTypeEnum.SUCCESS,
+        message: "Bookmark removed successfully",
+      });
+      setRemovalCandidate(null);
+      queryClient.invalidateQueries({
+        queryKey: ["bookmarks", "load", primaryEntityRef.kind, primaryEntityRef.id],
+      });
+    },
+    onError: (error: any) => {
+      const message = error.data?.message || error.message || "Could not remove bookmark";
+      addToast({type: NotificationTypeEnum.ERROR, message});
+    },
+  });
+
+  const handleSave = (bookmark: IBookmark) => saveMutation(bookmark);
 
   const handleRemove = () => {
-    // Assume remove logic is in the hook or store
-    console.log("Removing bookmark:", removalCandidate);
-    setRemovalCandidate(null);
+    if (removalCandidate?.id) removeMutation(removalCandidate.id);
   };
 
   if (isLoadingBookmarks) {
@@ -97,7 +139,7 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
   }
 
   if (bookmarksError) {
-    return <div>Error loading bookmarks.</div>;
+    return <div>Error loading bookmarks: {bookmarksError.message}</div>;
   }
 
   const renderContent = () => {
@@ -124,6 +166,12 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
       <>
         {bookmarks.length > 5 && (
           <>
+            <div style={{display: "flex", justifyContent: "end"}}>
+              <Button className="btn btn-success" onClick={handleCreate}>
+                <Icon name="plus" /> Add bookmark
+              </Button>
+            </div>
+            <br />
             <SearchInput
               value={query}
               onChange={setQuery}
@@ -170,7 +218,9 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
           bookmarkKinds={bookmarkKinds}
         />
       </div>
-      <div className="col-sm-9">{renderContent()}</div>
+      <div className="col-sm-9">
+        <div className="waltz-scroll-region-500">{renderContent()}</div>
+      </div>
     </div>
   );
 };

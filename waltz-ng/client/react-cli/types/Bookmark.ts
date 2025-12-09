@@ -3,9 +3,9 @@ import { EntityReference } from "./Entity";
 export interface IBookmark {
   id?: number;
   bookmarkKind: string;
-  url: string;
-  title: string;
-  isRestricted: boolean;
+  url?: string;
+  title?: string;
+  isRestricted?: boolean;
   parent: EntityReference;
   description?: string;
   lastUpdatedBy?: string;

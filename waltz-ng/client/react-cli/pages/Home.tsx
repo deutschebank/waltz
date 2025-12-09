@@ -94,10 +94,10 @@ const Home: React.FC = () => {
         />
         <h5>4. Bookmark</h5>
         <BookmarkPanel
-          primaryEntityRef={mkRef({
+          primaryEntityRef={{
             kind: "APPLICATION",
             id: 20506,
-          })}
+          }}
         />
         {/* <Button onClick={handlePopoverClick}>Add</Button>
                 {popover && <Popover />} */}
