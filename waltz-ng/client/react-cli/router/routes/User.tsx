@@ -4,7 +4,7 @@ import WaltzPage from "../../pages/WaltzPage";
 import UserManagementPanel from "../../pages/user/UserManagementPanel";
 
 // can there be a better name for this ?
-const useUserRoutes = () => {
+const UserRoutes = () => {
   return (
     <>
       <Route path="user" element={<WaltzPage />}>
@@ -14,4 +14,4 @@ const useUserRoutes = () => {
   );
 };
 
-export default useUserRoutes;
+export default UserRoutes;

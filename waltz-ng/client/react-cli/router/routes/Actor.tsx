@@ -3,7 +3,7 @@ import WaltzPage from "../../pages/WaltzPage";
 import {Route} from "react-router";
 import ActorListView from "../../pages/actor/ActorListView";
 
-const useActorRoutes = () => {
+const ActorRoutes = () => {
   return (
     <>
       <Route path="actor" element={<WaltzPage />}>
@@ -13,4 +13,4 @@ const useActorRoutes = () => {
   );
 };
 
-export default useActorRoutes;
+export default ActorRoutes;

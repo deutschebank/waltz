@@ -1,8 +1,13 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styles from "./NotFound.module.css";
 import Icon from "../../components/common/Icon";
+import {useLocation} from "react-router";
 
 const NotFound = () => {
+    const location = useLocation();
+    useEffect(() => {
+        console.log(location)
+    }, [location]);
   return (
     <div className={styles.content}>
       <div className={styles.contentRow}>

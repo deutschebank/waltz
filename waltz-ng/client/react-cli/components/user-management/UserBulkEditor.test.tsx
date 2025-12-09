@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { useMutation } from "@tanstack/react-query";
-import { useToasts } from "../../context/ToastContext";
+import { useToasts } from "../../context/toast/ToastContext";
 import { userManagementApi } from "../../api/user-management";
 import { NotificationTypeEnum } from "../../enums/Notification";
 import UserBulkEditor from "./UserBulkEditor";
@@ -12,7 +12,7 @@ jest.mock("@tanstack/react-query", () => ({
     useMutation: jest.fn(),
 }));
 
-jest.mock("../../context/ToastContext", () => ({
+jest.mock("../../context/toast/ToastContext", () => ({
     useToasts: jest.fn(),
 }));
 

@@ -1,7 +1,11 @@
-import React from "react";
-import {Outlet} from "react-router";
+import React, {useEffect} from "react";
+import {Outlet, useLocation} from "react-router";
 
 const WaltzPage = () => {
+    const location = useLocation();
+    useEffect(() => {
+        console.log(location)
+    }, [location]);
   return (
     <div>
       <Outlet />

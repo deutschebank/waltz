@@ -14,7 +14,7 @@ jest.mock("@tanstack/react-query", () => ({
     useMutation: jest.fn(),
 }));
 
-jest.mock("../../../context/ToastContext", () => ({
+jest.mock("../../../context/toast/ToastContext", () => ({
     useToasts: jest.fn(),
 }));
 

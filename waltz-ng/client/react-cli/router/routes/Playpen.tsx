@@ -7,7 +7,7 @@ import Home from "../../pages/Home";
 import UserManagementPanel from "../../pages/user/UserManagementPanel";
 import Playpen6Page from "../../pages/playpen/Playpen6Page";
 
-const usePlaypenRoutes = () => {
+const PlaypenRoutes = () => {
   return (
     <>
       <Route path="playpen" element={<WaltzPage />}>
@@ -23,4 +23,4 @@ const usePlaypenRoutes = () => {
   );
 };
 
-export default usePlaypenRoutes;
+export default PlaypenRoutes;
