@@ -1,11 +1,9 @@
 import React from "react";
 import DateTime from "./DateTime";
+import {IBookmark} from "../../types/Bookmark";
 
 interface LastEditedProps {
-  entity: {
-    lastUpdatedBy: string;
-    lastUpdatedAt: string | Date;
-  } | null;
+  entity: Pick<IBookmark, "lastUpdatedBy" | "lastUpdatedAt"> | null;
   showLabel?: boolean;
 }
 
@@ -21,7 +19,7 @@ const LastEdited: React.FC<LastEditedProps> = ({entity, showLabel = false}) => {
       <DateTime
         relative={true}
         formatStr="yyyy-MM-DD HH:mm:ss"
-        dateTime={entity.lastUpdatedAt}
+        dateTime={entity.lastUpdatedAt || ""}
       />
     </span>
   );
