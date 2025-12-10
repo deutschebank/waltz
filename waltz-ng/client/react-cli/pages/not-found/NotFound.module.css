@@ -1,0 +1,12 @@
+.content {
+  height: calc(100vh - 16rem);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: italic;
+}
+
+.contentRow {
+  display: inline-flex;
+}

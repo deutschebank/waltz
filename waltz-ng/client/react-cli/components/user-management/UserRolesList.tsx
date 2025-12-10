@@ -5,7 +5,7 @@ import { roleApi } from "../../api/roles";
 import { userManagementApi } from "../../api/user-management";
 import SearchInput from "../common/SearchInput";
 import { termSearch } from "../../../common";
-import { useToasts } from "../../context/ToastContext";
+import { useToasts } from "../../context/toast/ToastContext";
 import { NotificationTypeEnum } from "../../enums/Notification";
 import NoData from "../common/no-data/NoData";
 import Button from "../common/button/Button";

@@ -4,7 +4,7 @@ import React from "react";
 import { configureStore, Store } from "@reduxjs/toolkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import UserRolesList from "./UserRolesList";
-import { useToasts } from "../../context/ToastContext";
+import { useToasts } from "../../context/toast/ToastContext";
 import { roleApi } from "../../api/roles";
 import { userManagementApi } from "../../api/user-management";
 import userManagementSlice from "../../../redux-slices/user-management-slice";
@@ -13,7 +13,7 @@ import reduxStore from "../../../redux-store";
 import { UserManagementState } from "../../types/User";
 
 // Mock dependencies
-jest.mock("../../context/ToastContext", () => ({
+jest.mock("../../context/toast/ToastContext", () => ({
     useToasts: jest.fn(),
 }));
 

@@ -4,7 +4,7 @@ import AliasControl from "./AliasControl";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { mkRef } from "../../../utils/mkRef";
 import "@testing-library/jest-dom";
-import { useToasts } from "../../../context/ToastContext";
+import { useToasts } from "../../../context/toast/ToastContext";
 
 // Mocking React Query
 jest.mock("@tanstack/react-query", () => ({
@@ -14,7 +14,7 @@ jest.mock("@tanstack/react-query", () => ({
     useMutation: jest.fn(),
 }));
 
-jest.mock("../../../context/ToastContext", () => ({
+jest.mock("../../../context/toast/ToastContext", () => ({
     useToasts: jest.fn(),
 }));
 

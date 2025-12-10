@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useToasts } from "../../context/ToastContext";
+import { useToasts } from "../../context/toast/ToastContext";
 import { NotificationTypeEnum } from "../../enums/Notification";
 import {
     setActiveMode,
@@ -21,7 +21,7 @@ jest.mock("@tanstack/react-query", () => ({
     useQueryClient: jest.fn(),
 }));
 
-jest.mock("../../context/ToastContext", () => ({
+jest.mock("../../context/toast/ToastContext", () => ({
     useToasts: jest.fn(),
 }));
 

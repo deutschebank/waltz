@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useToasts } from "../../context/ToastContext";
+import { useToasts } from "../../context/toast/ToastContext";
 import { NotificationTypeEnum } from "../../enums/Notification";
 import {
   setSelectedUser,
