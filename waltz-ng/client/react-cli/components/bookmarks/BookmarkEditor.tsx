@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import styles from "./BookmarkEditor.module.scss";
+import styles from "./styles/BookmarkEditor.module.scss";
 import Button from "../common/button/Button";
 import {IBookmark} from "../../types/Bookmark";
 

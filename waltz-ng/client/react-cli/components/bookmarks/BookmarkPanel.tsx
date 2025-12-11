@@ -21,9 +21,9 @@ import {bookmarkApi} from "../../api/bookmark";
 import {enumValueApi} from "../../api/enum-value";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {IBookmark} from "../../types/Bookmark";
-import {useToasts} from "../../context/ToastContext";
 import {NotificationTypeEnum} from "../../enums/Notification";
-import { EntityReference } from "../../types/Entity";
+import {EntityReference} from "../../types/Entity";
+import {useToasts} from "../../context/toast/ToastContext";
 
 // Defines the props for the BookmarkPanel component.
 type BookmarkPanelProps = {
@@ -103,7 +103,7 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
   // Initializes a new bookmark object for creation.
   const handleCreate = () => {
     setEditCandidate({
-      bookmarkKind: _.get(selectedKind, "key", "DOCUMENTATION"),
+      bookmarkKind: selectedKind?.key ?? "DOCUMENTATION",
       parent: primaryEntityRef,
       lastUpdatedBy: "ignored, server will set",
     });
@@ -226,7 +226,7 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
           </NoData>
         ) : (
           // Otherwise, display the bookmarks in a table.
-          <BookmarkTable bookmarkGroups={bookmarkGroups} actions={actions}/>
+          <BookmarkTable bookmarkGroups={bookmarkGroups} actions={actions} />
         )}
       </>
     );

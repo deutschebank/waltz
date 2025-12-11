@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./BookmarkRemovalConfirmation.module.scss";
+import styles from "./styles/BookmarkRemovalConfirmation.module.scss";
 import Button from "../common/button/Button";
 
 // Defines the props for the BookmarkRemovalConfirmation component.
