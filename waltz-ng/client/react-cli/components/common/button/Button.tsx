@@ -1,30 +1,31 @@
 // src/components/button/Button.tsx
-import React, { FC, MouseEvent } from "react";
+import React from "react";
 import styles from "./Button.module.scss";
 
 // Type
-type ButtonProps = {
-    label: string;
-    onClick: () => void;
-    disabled?: boolean;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    children: React.ReactNode;
+    onClick?: () => void;
     className?: string;
-};
+    type?: "button" | "submit" | "reset" | undefined;
+}
 
 // Render Button Component
-const Button: FC<ButtonProps> = ({
-    label,
+const Button: React.FC<ButtonProps> = ({
+    type = "button",
+    children,
     onClick,
-    disabled = false,
     className = "",
+    ...rest
 }) => {
     return (
         <button
             data-testid="custom-button"
-            className={className}
+            className={`${className} ${styles.mr}`}
             onClick={onClick}
-            disabled={disabled}
+            {...rest}
         >
-            {label}
+            {children}
         </button>
     );
 };

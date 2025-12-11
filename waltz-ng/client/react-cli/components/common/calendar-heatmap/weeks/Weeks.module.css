@@ -1,0 +1,18 @@
+.week{
+    cursor: pointer;
+}
+
+.weekHighlight{
+    fill: #eee;
+}
+
+.weekHighlightActive{
+    fill: #fff;
+}
+
+.monthGridOutline{
+    fill:none;
+    stroke: #ddd;
+    rx:2px;
+    ry:2px;
+}

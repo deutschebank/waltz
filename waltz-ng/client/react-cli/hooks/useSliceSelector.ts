@@ -13,7 +13,7 @@ export function useSliceSelector<T>(selector: (state: ReduxRootState) => T): T {
                 setSelected(currentVal);
             }
         })
-    }, []);
+    }, [selected]);
 
 
     return selected;
