@@ -3,6 +3,7 @@ import styles from "./BookmarkEditor.module.scss";
 import Button from "../common/button/Button";
 import {IBookmark} from "../../types/Bookmark";
 
+// Defines the props for the BookmarkEditor component.
 interface BookmarkEditorProps {
   doCancel: () => void;
   doSave: (bookmark: IBookmark) => void;
@@ -10,19 +11,28 @@ interface BookmarkEditorProps {
   kinds: any[];
 }
 
+/**
+ * A form component for creating and editing a bookmark.
+ */
 const BookmarkEditor: React.FC<BookmarkEditorProps> = ({
   doCancel,
   doSave,
   bookmark,
   kinds,
 }) => {
+  // State to hold the form's data, initialized with the bookmark prop.
   const [workingCopy, setWorkingCopy] = useState({...bookmark});
 
+  // Handles the form submission.
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     doSave(workingCopy);
   };
 
+  /**
+   * Handles changes to form inputs and updates the workingCopy state.
+   * It supports various input types, including text, select, textarea, and checkbox.
+   */
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -38,6 +48,7 @@ const BookmarkEditor: React.FC<BookmarkEditorProps> = ({
 
   return (
     <>
+      {/* The title of the form changes based on whether it's a new or existing bookmark. */}
       <h4>Bookmark Edit</h4>
       <form autoComplete="off" onSubmit={handleSave}>
         <div className="form-group">
@@ -86,6 +97,7 @@ const BookmarkEditor: React.FC<BookmarkEditorProps> = ({
         <div className="form-group">
           <label htmlFor="kind">Kind</label>
           <select
+            // The 'name' attribute must match the property name in the workingCopy state.
             id="kind"
             name="bookmarkKind"
             value={workingCopy.bookmarkKind}
@@ -111,11 +123,13 @@ const BookmarkEditor: React.FC<BookmarkEditorProps> = ({
           />
         </div>
 
+        {/* Button to submit the form and save the bookmark. */}
         <Button type="submit" className="btn btn-success">
           Save
         </Button>
 
         <Button className="btn btn-link" onClick={doCancel}>
+          {/* Button to cancel the edit and close the form. */}
           Cancel
         </Button>
       </form>

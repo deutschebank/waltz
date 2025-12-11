@@ -92,15 +92,9 @@ const Home: React.FC = () => {
           onSelect={onSelectComplexityKind}
           selectionFilter={selectionFilter}
         />
-        <h5>4. Bookmark</h5>
-        <BookmarkPanel
-          primaryEntityRef={{
-            kind: "APPLICATION",
-            id: 20506,
-          }}
-        />
-        {/* <Button onClick={handlePopoverClick}>Add</Button>
-                {popover && <Popover />} */}
+        <h5>4. Popover</h5>
+        <Button onClick={handlePopoverClick}>Add</Button>
+        {popover && <Popover />}
       </div>
     </div>
   );
