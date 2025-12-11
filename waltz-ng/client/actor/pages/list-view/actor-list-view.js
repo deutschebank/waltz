@@ -17,31 +17,23 @@
  */
 import template from "./actor-list-view.html";
 import {initialiseData} from "../../../common";
-// import ActorListView from "../../components/svelte/ActorListView.svelte"
-import ActorListView from "../../../react-cli/pages/actor/ActorListView";
-const bindings = {}
+const bindings = {};
 
-const initialState = {
-    ActorListView
-};
-
+const initialState = {};
 
 function controller() {
-
-    const vm = initialiseData(this, initialState);
+  const vm = initialiseData(this, initialState);
 }
-
 
 controller.$inject = [];
 
-
 const component = {
-    template,
-    controller,
-    bindings
-}
+  template,
+  controller,
+  bindings,
+};
 
 export default {
-    component,
-    id: "waltzActorListView",
+  component,
+  id: "waltzActorListView",
 };

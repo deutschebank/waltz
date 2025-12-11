@@ -1,6 +1,6 @@
 {
     "name": "waltz-ng",
-    "version": "1.76.0",
+    "version": "1.77.0",
     "description": "To start test server run: `npm run dev-server` and ensure java backend is running on 8443",
     "main": "client/main.js",
     "browserslist": [
@@ -106,6 +106,7 @@
         "jest": "^26.6.3",
         "mocha": "8.4.0",
         "node-libs-browser": "2.2.1",
+        "prettier": "^3.7.4",
         "raw-loader": "4.0.2",
         "sass": "1.55.0",
         "sass-loader": "13.1.0",

@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import PasswordUpdatePanel from "./PasswordUpdate";
 import { useSliceSelector } from "../../hooks/useSliceSelector";
 import reduxStore from "../../../redux-store";
-import { useToasts } from "../../context/ToastContext";
+import { useToasts } from "../../context/toast/ToastContext";
 import { useMutation } from "@tanstack/react-query";
 import { setActiveMode } from "../../../redux-slices/user-management-slice";
 import { Modes } from "../../enums/User";
@@ -16,7 +16,7 @@ jest.mock("../../hooks/useSliceSelector");
 jest.mock("../../../redux-store", () => ({
     dispatch: jest.fn(),
 }));
-jest.mock("../../context/ToastContext");
+jest.mock("../../context/toast/ToastContext");
 jest.mock("../../api/user-management", () => ({
     userManagementApi: {
         resetPassword: jest.fn()

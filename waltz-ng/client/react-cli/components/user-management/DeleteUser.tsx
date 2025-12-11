@@ -7,7 +7,7 @@ import {
 } from "../../../redux-slices/user-management-slice";
 import reduxStore from "../../../redux-store";
 import { userManagementApi } from "../../api/user-management";
-import { useToasts } from "../../context/ToastContext";
+import { useToasts } from "../../context/toast/ToastContext";
 import { NotificationTypeEnum } from "../../enums/Notification";
 import NoData from "../common/no-data/NoData";
 import Button from "../common/button/Button";

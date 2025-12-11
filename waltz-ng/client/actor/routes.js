@@ -19,33 +19,35 @@
 import actorView from "./pages/actor-view/actor-view";
 import listView from "./pages/list-view/actor-list-view";
 
-
 const baseState = {
-    url: "actor"
+  url: "actor",
 };
-
 
 const viewState = {
-    url: "/{id:int}",
-    views: {"content@": actorView}
+  url: "/{id:int}",
+  views: {"content@": actorView},
 };
-
 
 const listViewState = {
-    url: "/list",
-    views: {"content@": listView.id}
+  url: "/list",
+  views: {"content@": listView.id},
 };
 
+const listViewStateCatchAll = {
+  url: "/*path",
+  views: {"content@": listView.id},
+};
 
 function setup($stateProvider) {
-    $stateProvider
-        .state("main.actor", baseState)
-        .state("main.actor.view", viewState)
-        .state("main.actor.list", listViewState);
+  $stateProvider
+    .state("main.actor", baseState)
+    .state("main.actor.view", viewState)
+    .state("main.actor.list", listViewState)
+
+    // this is only a catch-all and should not be used for state changes via pageInfo store/slice
+    .state("main.actor.list.*", listViewStateCatchAll);
 }
 
-
 setup.$inject = ["$stateProvider"];
-
 
 export default setup;
