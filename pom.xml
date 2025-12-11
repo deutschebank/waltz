@@ -27,6 +27,12 @@
     </parent>
     -->
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.7</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.finos</groupId>
@@ -80,7 +86,7 @@
         <annotation-api.version>1.3.2</annotation-api.version>
         <archunit.version>1.0.1</archunit.version>
         <freemarker.version>2.3.32</freemarker.version>
-        <h2.version>2.1.214</h2.version>
+        <h2.version>2.4.240</h2.version>
         <hikari.version>3.4.5</hikari.version>
         <immutables.version>2.9.3</immutables.version>
         <jackson.version>2.15.2</jackson.version>
@@ -88,14 +94,14 @@
         <java.version>17</java.version>
         <javax.mail.version>1.4.7</javax.mail.version>
         <jbcrypt.version>0.4.3</jbcrypt.version>
-        <jgrapht.version>1.4.0</jgrapht.version>
+        <jgrapht.version>1.5.2</jgrapht.version>
         <jool.version>0.9.15</jool.version>
         <jooq.version>3.18.29</jooq.version> <!--If this changes see issue #4553 -->
-        <junit.version>5.10.0</junit.version>
+        <!--<junit.version>5.10.0</junit.version>-->
         <jwt.version>4.3.0</jwt.version>
         <mockito.version>4.11.0</mockito.version>  <!-- 5.3.1 is 9+ -->
         <liquibase.maven.version>4.18.0</liquibase.maven.version>
-        <logback.version>1.3.14</logback.version> <!-- 1.4.x needs 9+ -->
+        <logback.version>1.5.18</logback.version> <!-- 1.4.x needs 9+ -->
         <pcollections.version>4.0.1</pcollections.version>
         <poi.version>5.2.4</poi.version>
         <slf4j.version>2.0.7</slf4j.version>
@@ -110,7 +116,8 @@
 
         <timestamp>${maven.build.timestamp}</timestamp>
         <playwright.skip>true</playwright.skip>
-        <jetty.version>9.4.57.v20241219</jetty.version>
+        <eclipse.jetty.version>9.4.57.v20241219</eclipse.jetty.version>
+        <springdoc-openapi-version>2.7.0</springdoc-openapi-version>
     </properties>
 
 
@@ -147,27 +154,32 @@
                 <artifactId>spark-template-freemarker</artifactId>
                 <version>${spark-freemarker.version}</version>
             </dependency>
-
             <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi-version}</version>
+            </dependency>
+
+            <!--<dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-util</artifactId>
-                <version>${jetty.version}</version>
+                <version>${eclipse.jetty.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-io</artifactId>
-                <version>${jetty.version}</version>
+                <version>${eclipse.jetty.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-webapp</artifactId>
-                <version>${jetty.version}</version>
+                <version>${eclipse.jetty.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-server</artifactId>
-                <version>${jetty.version}</version>
-            </dependency>
+                <version>${eclipse.jetty.version}</version>
+            </dependency>-->
 
             <!-- json -->
             <dependency>
@@ -226,7 +238,7 @@
 
 
             <!-- core -->
-            <dependency>
+            <!--<dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${spring.version}</version>
@@ -250,7 +262,7 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
                 <version>${spring.version}</version>
-            </dependency>
+            </dependency>-->
             <dependency>
                 <groupId>org.jooq</groupId>
                 <artifactId>jool</artifactId>
@@ -367,13 +379,12 @@
                 <scope>test</scope>
             </dependency>
 
-            <dependency>
+           <!-- <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
-                <version>${junit.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
+            </dependency>-->
 
         </dependencies>
     </dependencyManagement>
@@ -397,7 +408,7 @@
             <properties>
                 <jdbc.group>com.h2database</jdbc.group>
                 <jdbc.artifact>h2</jdbc.artifact>
-                <jdbc.version>2.1.212</jdbc.version>
+                <jdbc.version>2.4.240</jdbc.version>
                 <jdbc.driver>org.h2.Driver</jdbc.driver>
                 <jooq.dialect>H2</jooq.dialect>
                 <jooq.group>org.jooq</jooq.group>
@@ -477,7 +488,7 @@
             <properties>
                 <jdbc.group>org.postgresql</jdbc.group>
                 <jdbc.artifact>postgresql</jdbc.artifact>
-                <jdbc.version>42.2.5</jdbc.version>
+                <jdbc.version>42.7.7</jdbc.version>
                 <jdbc.driver>org.postgresql.Driver</jdbc.driver>
                 <jooq.dialect>POSTGRES</jooq.dialect>
                 <jooq.group>org.jooq</jooq.group>

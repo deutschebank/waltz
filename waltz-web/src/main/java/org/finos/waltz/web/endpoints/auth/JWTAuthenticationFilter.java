@@ -22,17 +22,20 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.finos.waltz.service.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import spark.Request;
-import spark.Response;
+
+import java.io.IOException;
 
 
 /**
  * Authentication filter which verifies a jwt token.  We only care
  * about the bearer name.
  */
+
 public class JWTAuthenticationFilter extends WaltzFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
@@ -43,6 +46,7 @@ public class JWTAuthenticationFilter extends WaltzFilter {
 
     public JWTAuthenticationFilter(SettingsService settingsService) {
         super(settingsService);
+        LOG.info("JWTAuthenticationFilter Loaded  ");
         try {
             Algorithm algorithm256 = Algorithm.HMAC256(JWTUtilities.SECRET);
             Algorithm algorithm512 = Algorithm.HMAC512(JWTUtilities.SECRET);
@@ -57,13 +61,14 @@ public class JWTAuthenticationFilter extends WaltzFilter {
     }
 
 
-    @Override
+   /* @Override
     public void handle(Request request, Response response) throws Exception {
         String authorizationHeader = request.headers("Authorization");
         LOG.info("authorizationHeader : {} ", authorizationHeader);
 
         if (authorizationHeader == null) {
             AuthenticationUtilities.setUserAsAnonymous(request);
+            AuthenticationUtilities.setUserAsAnonymousForSB((HttpServletRequest)request.raw());
         } else {
             String token = authorizationHeader.replaceFirst("Bearer ", "");
             DecodedJWT decodedToken = JWT.decode(token);
@@ -77,9 +82,33 @@ public class JWTAuthenticationFilter extends WaltzFilter {
             LOG.info("subject : {} ", decodedJWT.getSubject());
 
             AuthenticationUtilities.setUser(request, decodedJWT.getSubject());
+            AuthenticationUtilities.setUserForSB((HttpServletRequest)request.raw(),decodedJWT.getSubject());
+        }
+    }*/
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+
+        LOG.info("JWT Filter Invoked API:{}", ((HttpServletRequest) servletRequest).getServletPath());
+        String authorizationHeader = httpRequest.getHeader("Authorization");
+        LOG.info("authorizationHeader : {}", authorizationHeader);
+
+        if (authorizationHeader == null) {
+            AuthenticationUtilities.setUserAsAnonymousForSB(httpRequest);
+            filterChain.doFilter(servletRequest, servletResponse);
+        } else {
+            String token = authorizationHeader.replaceFirst("Bearer ", "");
+            DecodedJWT decodedToken = JWT.decode(token);
+
+            JWTVerifier verifier = selectVerifier(decodedToken);
+
+            DecodedJWT decodedJWT = verifier.verify(token);
+            AuthenticationUtilities.setUserForSB(httpRequest, decodedJWT.getSubject());
+            LOG.info("Subject : {}", decodedJWT.getSubject());
+            filterChain.doFilter(servletRequest, servletResponse);
         }
     }
-
 
     private JWTVerifier mkVerifier(Algorithm algorithm) {
         return JWT
@@ -102,5 +131,6 @@ public class JWTAuthenticationFilter extends WaltzFilter {
                 throw new IllegalStateException("Cannot verify against algorithm: " + algorithm);
         }
     }
+
 
 }

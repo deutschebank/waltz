@@ -22,6 +22,7 @@ package org.finos.waltz.web.endpoints.auth;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.Filter;
 import org.finos.waltz.common.IOUtilities;
 import org.finos.waltz.model.authentication.OAuthConfiguration;
 import org.finos.waltz.model.settings.NamedSettings;
@@ -40,7 +41,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import spark.Filter;
 import spark.Spark;
 
 import java.io.BufferedReader;
@@ -78,10 +78,7 @@ public class AuthenticationEndpoint implements Endpoint {
         this.userRoleService = userRoleService;
         this.settingsService = settingsService;
 
-        this.filter = settingsService
-                .getValue(NamedSettings.authenticationFilter)
-                .flatMap(this::instantiateFilter)
-                .orElseGet(createDefaultFilter());
+        this.filter = null;
 
         this.oauthConfiguration = oauthConfiguration;
     }
@@ -90,7 +87,7 @@ public class AuthenticationEndpoint implements Endpoint {
     private Supplier<Filter> createDefaultFilter() {
         return () -> {
             LOG.info("Using default (jwt) authentication filter");
-            return new JWTAuthenticationFilter(settingsService);
+            return null;
         };
     }
 
@@ -174,7 +171,7 @@ public class AuthenticationEndpoint implements Endpoint {
             return newHashMap("token", token);
         }, WebUtilities.transformer);
 
-        Spark.before(WebUtilities.mkPath("api", "*"), filter);
+        //Spark.before(WebUtilities.mkPath("api", "*"), filter);
 
     }
 

@@ -18,6 +18,7 @@
 
 package org.finos.waltz.web;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.finos.waltz.common.EnumUtilities;
 import org.finos.waltz.common.SetUtilities;
 import org.finos.waltz.common.StringUtilities;
@@ -130,6 +131,12 @@ public class WebUtilities {
         requireRole(userRoleService, request, SetUtilities.map(asSet(requiredRoles), Enum::name));
     }
 
+    public static void requireRoleForSB(UserRoleService userRoleService,
+                                   HttpServletRequest request,
+                                   SystemRole... requiredRoles) {
+        requireRoleForSB(userRoleService, request, SetUtilities.map(asSet(requiredRoles), Enum::name));
+    }
+
 
     public static void requireRole(UserRoleService userRoleService,
                                    Request request,
@@ -137,10 +144,43 @@ public class WebUtilities {
         requireRole(userRoleService, request, asSet(requiredRoles));
     }
 
+    public static void requireRoleForSB(UserRoleService userRoleService,
+                                   HttpServletRequest httpServletRequest,
+                                   String... requiredRoles) {
+        requireRoleForSB(userRoleService, httpServletRequest, asSet(requiredRoles));
+    }
+
     public static void requireRole(UserRoleService userRoleService,
                                    Request request,
                                    Set<String> requiredRoles) {
         String user = getUsername(request);
+        if (StringUtilities.isEmpty(user)) {
+            LOG.warn("Required role check failed as no user, roles needed: " + requiredRoles);
+            throw new IllegalArgumentException("Not logged in");
+        }
+        if (! userRoleService.hasRole(user, requiredRoles)) {
+            LOG.warn("Required role check failed as user: " + user + ", did not have required roles: " + requiredRoles);
+            throw new NotAuthorizedException();
+        }
+    }
+
+    public static void requireRoleForSB(UserRoleService userRoleService,
+                                   HttpServletRequest request,
+                                   Set<String> requiredRoles) {
+        String user = getUsernameForSB(request);
+        if (StringUtilities.isEmpty(user)) {
+            LOG.warn("Required role check failed as no user, roles needed: " + requiredRoles);
+            throw new IllegalArgumentException("Not logged in");
+        }
+        if (! userRoleService.hasRole(user, requiredRoles)) {
+            LOG.warn("Required role check failed as user: " + user + ", did not have required roles: " + requiredRoles);
+            throw new NotAuthorizedException();
+        }
+    }
+
+    public static void requireRoleForSB(UserRoleService userRoleService,
+                                   String user,
+                                   Set<String> requiredRoles) {
         if (StringUtilities.isEmpty(user)) {
             LOG.warn("Required role check failed as no user, roles needed: " + requiredRoles);
             throw new IllegalArgumentException("Not logged in");
@@ -165,10 +205,26 @@ public class WebUtilities {
             throw new NotAuthorizedException();
         }
     }
-
+    public static void requireAnyRoleForSB(UserRoleService userRoleService,
+                                           HttpServletRequest request,
+                                      SystemRole... requiredRoles) {
+        String user = getUsernameForSB(request);
+        if (StringUtilities.isEmpty(user)) {
+            LOG.warn("Required role check failed as no user, roles needed: " + Arrays.toString(requiredRoles));
+            throw new IllegalArgumentException("Not logged in");
+        }
+        if (!userRoleService.hasAnyRole(user, requiredRoles)) {
+            LOG.warn("Required role check failed as user: " + user + ", did not have any of required roles: " + Arrays.toString(requiredRoles));
+            throw new NotAuthorizedException();
+        }
+    }
 
     public static String getUsername(Request request) {
         return AuthenticationUtilities.getUsername(request);
+    }
+
+    public static String getUsernameForSB( HttpServletRequest request) {
+        return AuthenticationUtilities.getUsernameForSB(request);
     }
 
 
