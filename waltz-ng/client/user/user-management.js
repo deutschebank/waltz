@@ -18,22 +18,17 @@
 
 import {initialiseData} from "../common";
 import template from "./user-management.html";
-import UserManagementPanel from "./svelte/UserManagementPanel.svelte"
 
-
-const initialState = {
-    UserManagementPanel
-};
+const initialState = {};
 
 function controller() {
-    const vm =  initialiseData(this, initialState);
+  const vm = initialiseData(this, initialState);
 }
 
 export default {
-    template,
-    controller,
-    controllerAs: "ctrl",
-    bindToController: true,
-    scope: {}
+  template,
+  controller,
+  controllerAs: "ctrl",
+  bindToController: true,
+  scope: {},
 };
-

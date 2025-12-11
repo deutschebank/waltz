@@ -1,0 +1,72 @@
+.toastContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    z-index: 10000;
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    padding: 0 1rem 1rem 0;
+    pointer-events: none;
+}
+
+.toast {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    width: 40rem;
+    height: 6rem;
+    border-radius: 0.2rem;
+    border: 1px solid #999999;
+    padding: 0.75rem 1.5rem;
+    pointer-events: auto;
+    animation: fadeOut 15s forwards;
+}
+
+.toast:hover {
+    animation: none;
+}
+
+@keyframes fadeOut {
+    from{
+        opacity: 1;
+    }
+    to{
+        opacity: 0;
+    }
+}
+
+.toastPane {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: end;
+    height: 100%;
+    width: 40rem;
+    margin-right: 1.5rem; /* might need to be removed in the future */
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.toastIcon {
+    grid-column: 1;
+    scale: 110%;
+}
+
+.toastText {
+    grid-column: 2;
+    font-size: smaller;
+    align-self: start;
+    overflow-y: auto;
+    max-height: 4.5rem; /* Corresponds to toast height minus padding */
+}
+
+.toastDismiss {
+    grid-column: 3;
+    cursor: pointer;
+    align-self: start;
+}

@@ -22,44 +22,62 @@ import playpenView1 from "./1/playpen1";
 import playpenView2 from "./2/playpen2";
 import playpenView3 from "./3/playpen3";
 import playpenView4 from "./4/playpen4";
+import playpenView6 from "./6/playpen6";
+import playpenView7 from "./7/playpen7";
+import playpenView8 from "./8/playpen8";
+
 import list from "./list.html";
 
 export default () => {
+  const module = angular.module("waltz.playpen", []);
 
-    const module = angular.module("waltz.playpen", []);
+  module.config([
+    "$stateProvider",
+    ($stateProvider) => {
+      $stateProvider
+        .state("main.playpen", {
+          url: "playpen",
+          views: {
+            "content@": { template: list },
+          },
+        })
+        .state("main.playpen.1", {
+          url: "/1",
+          views: { "content@": playpenView1 },
+        })
+        .state("main.playpen.2", {
+          url: "/2",
+          views: { "content@": playpenView2 },
+        })
+        .state("main.playpen.3", {
+          url: "/3?{id:int}",
+          views: { "content@": playpenView3 },
+        })
+        .state("main.playpen.4", {
+          url: "/4?kind&{id:int}",
+          views: { "content@": playpenView4 },
+        })
+        .state("main.playpen.6", {
+          url: "/6",
+          views: { "content@": playpenView6 },
+        })
+        .state("main.playpen.7", {
+          url: "/7",
+          views: { "content@": playpenView7 },
+        })
+        // we offload routing within playpen 7 to react router, by using wildcard
+        // all paths playpen/7/* will be mapped to the react-component
+        // this is only a catch-all and should not be used for state changes via pageInfo store/slice
+        .state("main.playpen.7.*", {
+          url: "/*path",
+          views: { "content@": playpenView7 },
+        })
+        .state("main.playpen.8", {
+          url: "/8",
+          views: { "content@": playpenView8 },
+        });
+    },
+  ]);
 
-
-    module.config([
-        "$stateProvider",
-        ($stateProvider) => {
-            $stateProvider
-                .state("main.playpen", {
-                    url: "playpen",
-                    views: {
-                        "content@": { template: list }
-                    }
-                })
-                .state("main.playpen.1", {
-                    url: "/1",
-                    views: { "content@": playpenView1 }
-                })
-                .state("main.playpen.2", {
-                    url: "/2",
-                    views: { "content@": playpenView2 }
-                })
-                .state("main.playpen.3", {
-                    url: "/3?{id:int}",
-                    views: { "content@": playpenView3 }
-                })
-                .state("main.playpen.4", {
-                    url: "/4?kind&{id:int}",
-                    views: { "content@": playpenView4 }
-                });
-
-        }
-    ]);
-
-
-    return module.name;
-
+  return module.name;
 };

@@ -22,6 +22,8 @@ import {activeSections} from "./dynamic-section/section-store";
 import toasts from "./svelte-stores/toast-store";
 import popover from "./svelte-stores/popover-store";
 import pageInfo from "./svelte-stores/page-navigation-store";
+import {navigate} from "./redux-slices/page-nav-slice";
+import reduxStore from "./redux-store";
 
 
 function warmUpCache($q, serviceBroker) {
@@ -230,33 +232,64 @@ configureInactivityTimer.$inject = [
 
 function configureSvelteStoreListener($transitions, $state, $scope) {
 
-    $transitions.onSuccess({}, (x, y, z) => {
-        const target = x.targetState();
-
+    $transitions.onSuccess({}, (transition) => {
+        const target = transition.targetState();
         pageInfo.set({
             state: target.state().name,
             params: target.params(),
             options: target.options(),
             isNotification: true
         });
-
     });
-
 
     pageInfo.subscribe((nextPg) => {
-        $scope.$applyAsync(() => {
-            if (!nextPg?.isNotification) {
-                $state.go(nextPg?.state, nextPg?.params, nextPg?.options);
+        if (nextPg && !nextPg.isNotification) {
+            if(!$state.is(nextPg.state, nextPg.params)) {
+                $scope.$applyAsync(() => {
+                    $state.go(nextPg.state, nextPg.params, nextPg.options);
+                });
             }
-        })
+        }
     });
+}
+
+function configureReduxStoreListener($transitions, $state, $scope) {
+
+    $transitions.onSuccess({}, (transition) => {
+        const target = transition.targetState();
+        reduxStore.dispatch(navigate({
+            state: target.state().name,
+            params: target.params(),
+            options: target.options(),
+            isNotification: true
+        }));
+    });
+
+    const unsubscribe = reduxStore.subscribe(() => {
+        const nextPg = reduxStore.getState().pageNav;
+        if (nextPg && !nextPg.isNotification) {
+            if(!$state.is(nextPg.state, nextPg.params)) {
+                $scope.$applyAsync(() => {
+                    $state.go(nextPg.state, nextPg.params, nextPg.options);
+                });
+            }
+        }
+    });
+
+    $scope.$on("$destroy", unsubscribe);
 }
 
 configureSvelteStoreListener.$inject = [
     "$transitions",
     "$state",
     "$rootScope"
-]
+];
+
+configureReduxStoreListener.$inject = [
+    "$transitions",
+    "$state",
+    "$rootScope"
+];
 
 function setup(module) {
     module
@@ -266,7 +299,8 @@ function setup(module) {
         .run(configureStateChangeListener)
         .run(configureInactivityTimer)
         .run(configureRouteDebugging)
-        .run(configureSvelteStoreListener);
+        .run(configureSvelteStoreListener)
+        .run(configureReduxStoreListener);
 
 }
 

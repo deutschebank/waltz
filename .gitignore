@@ -22,3 +22,5 @@ npm-debug.log
 pom.xml.versionsBackup
 /waltz-test-common/screenshots/
 /waltz-ng/mocha-test-results.txt
+*.DS_Store
+package-lock.json
