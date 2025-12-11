@@ -19,11 +19,28 @@
 
 
 <div>
-    <waltz-react-component component="ctrl.AppView"
-                            parent-entity-ref="ctrl.parentEntityRef">
-    </waltz-react-component>
+    <waltz-page-header icon="desktop"
+                       name="{{ ctrl.app.name }}"
+                       small="{{ ctrl.app.assetCode }}">
+        <breadcrumbs>
+            <ol class="waltz-breadcrumbs">
+                <li><a ui-sref="main">Home</a></li>
+                <li><a ui-sref="main.app">Applications</a></li>
+                <li><span ng-bind="ctrl.app.name"></span></li>
+            </ol>
+        </breadcrumbs>
+        <actions>
+            <waltz-favourites-button parent-entity-ref="ctrl.parentEntityRef">
+            </waltz-favourites-button>
+        </actions>
+    </waltz-page-header>
 
-    <br/>
+
+    <!-- OVERVIEW -->
+    <waltz-app-overview parent-entity-ref="ctrl.parentEntityRef">
+    </waltz-app-overview>
+
+    <br>
 
     <waltz-dynamic-sections-view parent-entity-ref="ctrl.parentEntityRef">
     </waltz-dynamic-sections-view>

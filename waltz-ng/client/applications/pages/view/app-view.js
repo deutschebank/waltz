@@ -17,16 +17,13 @@
  */
 
 import { CORE_API } from "../../../common/services/core-api-utils";
-import AppView from "../../../react-cli/pages/application/AppView";
 
 import template from "./app-view.html";
-import {mkRef} from "../../../react-cli/utils/mkRef";
 
 
 const initialState = {
     app: {},
-    parentEntityRef: {},
-    AppView
+    parentEntityRef: {}
 };
 
 
@@ -61,7 +58,7 @@ function controller($stateParams,
     vm.$onInit = () => {
         const id = $stateParams.id;
         const entityReference = { id, kind: "APPLICATION" };
-        vm.parentEntityRef = mkRef(entityReference);
+        vm.parentEntityRef = entityReference;
         loadAll(id);
     };
 
