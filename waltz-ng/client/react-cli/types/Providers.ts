@@ -20,3 +20,16 @@ export interface ReferencableProvider {
     description?: string;
     entityLifecycleStatus?: EntityLifecycleStatus;
 }
+
+export type IsReadOnlyProvider = {
+    isReadOnly: boolean
+}
+
+export type ProvenanceProvider = {
+    provenance: string
+}
+
+export type LastUpdatedProvider = {
+    lastUpdatedAt: string;
+    lastUpdatedBy: string;
+}

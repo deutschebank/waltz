@@ -2,6 +2,8 @@
     margin-right: 0;
     margin-left: 0;
     margin-bottom: 4px;
+    display: flex;
+    flex-direction: column;
 }
 
 .showBorder {
@@ -23,12 +25,15 @@
     letter-spacing: 1px;
     background: linear-gradient(270deg, rgb(254, 254, 254) 50%, #f9f9f4 100%);
     transition: font-weight ease-in 0.3s;
-}
-
-.name > * {
     padding-top: 2px;
     padding-left: 8px;
     padding-bottom: 2px;
+    margin: 0;
+
+    * {
+        color: #959595;
+        margin: 0;
+    }
 }
 
 .subSection:hover .name {
@@ -41,7 +46,7 @@
 }
 
 .controls {
-    padding-bottom: 2px;
+    padding: 2px;
     font-size: smaller;
     height: 1.8em;
     margin: 0;
@@ -50,10 +55,10 @@
     border-top: 1px solid #f9f9f4;
     background: linear-gradient(90deg, rgb(254, 254, 254) 50%, #f9f9f4 100%);
     transition: font-weight ease-in-out 300ms;
-}
+    align-content: center;
 
-.controls > * {
-    padding-top: 4px;
-    padding-right: 4px;
-    float: right;
+    * {
+        height: 1.2em;
+        float: right;
+    }
 }

@@ -1,6 +1,6 @@
 {
     "name": "waltz-ng",
-    "version": "1.77.0",
+    "version": "1.78.0",
     "description": "To start test server run: `npm run dev-server` and ensure java backend is running on 8443",
     "main": "client/main.js",
     "browserslist": [
@@ -68,8 +68,8 @@
         "moment": "2.29.1",
         "ng-tags-input": "3.2.0",
         "patch-package": "6.4.7",
-        "react": "^19.1.1",
-        "react-dom": "^19.1.1",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
         "react-flatpickr": "^4.0.11",
         "react-router": "^7.9.4",
         "satellizer": "0.15.5",
