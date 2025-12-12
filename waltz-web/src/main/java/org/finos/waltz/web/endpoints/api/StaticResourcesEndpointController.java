@@ -27,6 +27,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import spark.Request;
+import spark.Response;
+import spark.Spark;
 
 import java.io.*;
 import java.net.URL;
@@ -70,7 +73,7 @@ public class StaticResourcesEndpointController {
                 String message = format(
                         "Serving %s in response to request for %s",
                         resolvedPath,
-                        request.getRequestURI());
+                        request.getServletPath());
                 LOG.info(message);
 
 
@@ -81,7 +84,6 @@ public class StaticResourcesEndpointController {
                 copyStream(modifiedStream, byteArrayOutputStream); // Copy stream content to output
                 byte[] fileBytes = byteArrayOutputStream.toByteArray();
                 String mimeType = getMimeType(resolvedPath);
-
                 ResponseEntity<byte[]> body = ResponseEntity.ok()
                         .headers(headers)
                         .contentType(MediaType.parseMediaType(mimeType))
@@ -117,7 +119,6 @@ public class StaticResourcesEndpointController {
      * index.html need to have a <base href="/[site_context]/" /> tag in the head section to ensure
      * html5 mode works correctly in AngularJS.  This method will ensure the existing <base href="/" /> tag
      * is replace with one that includes the correct site context as deployed.
-     *
      * @param request
      * @param resolvedPath
      * @param resourceStream
@@ -172,7 +173,7 @@ public class StaticResourcesEndpointController {
 
     private String resolvePath(HttpServletRequest request) {
         final String indexPath = "static/index.html";
-        String path = request.getRequestURI().replaceFirst("/", "");
+        String path = request.getServletPath().replaceFirst("/", "");
         String resourcePath = path.length() > 0 ? ("static/" + path) : indexPath;
 
         URL resource = classLoader.getResource(resourcePath);
