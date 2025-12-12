@@ -24,3 +24,4 @@ pom.xml.versionsBackup
 /waltz-ng/mocha-test-results.txt
 *.DS_Store
 package-lock.json
+dependency-reduced-pom.xml
