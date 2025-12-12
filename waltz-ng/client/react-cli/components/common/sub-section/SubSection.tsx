@@ -11,7 +11,7 @@ interface SubSectionProps {
 
 const SubSection: React.FC<SubSectionProps> = ({ showBorder = true, header, content, controls, changes }) => {
     return (
-        <div className={`${styles.subSection} ${showBorder ? styles.showBorder : ''}`}>
+        <div className={`${styles.subSection} + " " + ${showBorder ? styles.showBorder : ''}`}>
             <div className={styles.name}>
                 {header}
             </div>

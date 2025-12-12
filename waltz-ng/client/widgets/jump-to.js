@@ -46,6 +46,16 @@ const directive = function() {
     }
 };
 
+// helper for react (middleware of sorts)
+export function jumpToMiddleware(sectionId) {
+    const section = _.find(dynamicSections, section => section.componentId === sectionId);
+    if (section != null) {
+        activeSections.add(section);
+    } else {
+        console.log("waltz-jump-to section is null");
+    }
+}
+
 
 directive.$inject=[];
 

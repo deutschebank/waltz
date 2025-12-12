@@ -1,0 +1,33 @@
+.assessmentFavouritesList {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.assessmentFavourtiesList td {
+    padding: 0.5rem;
+    vertical-align: top;
+}
+
+.assessmentName {
+    font-weight: bold;
+}
+
+.readOnlyIcon {
+    margin-left: 0.5rem;
+}
+
+.ratingsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ratingItem {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.noRating {
+    color: #999;
+}

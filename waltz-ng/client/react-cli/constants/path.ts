@@ -15,6 +15,30 @@ export const allocationSchemePath = {
   findAll: () => `${allocationSchemeBaseUrl}/all`,
 };
 
+export const applicationBaseUrl = `${BASE_URL}/app`;
+export const applicationPath = {
+    getById: (id: number) => `${applicationBaseUrl}/id/${id}`
+}
+
+export const appGoupBaseUrl = `${BASE_URL}/app-group`;
+export const appGroupPath = {
+    findRelatedByEntityRef: (ref: EntityReference) => `${appGoupBaseUrl}/related/${ref.kind}/${ref.id}`,
+}
+
+export const assessmentDefinitonBaseUrl = `${BASE_URL}/assessment-definition`;
+export const assessmentDefinitionPath = {
+    getById: (id: number) => `${assessmentDefinitonBaseUrl}/id/${id}`,
+    findAll: () => assessmentDefinitonBaseUrl,
+    findByKind: (kind: EntityKind) => `${assessmentDefinitonBaseUrl}/kind/${kind}`,
+    findByEntityReference: (ref: EntityReference) => `${assessmentDefinitonBaseUrl}/kind/${ref.kind}/id/${ref.id}`,
+    findFavouritesForUser: () => `${assessmentDefinitonBaseUrl}/favourites`
+}
+
+export const assessmentRatingBaseUrl = `${BASE_URL}/assessment-rating`;
+export const assessmentRatingPath = {
+    findForEntityReference: (ref: EntityReference) => `${assessmentRatingBaseUrl}/entity/${ref.kind}/${ref.id}`
+}
+
 export const complexityKindBaseUrl = `${BASE_URL}/complexity-kind`;
 export const complexityKindPath = {
   findAll: () => complexityKindBaseUrl,
@@ -44,6 +68,32 @@ export const entitySearchPath = {
   search: () => entitySearchBaseUrl,
 };
 
+export const favouritesBaseUrl = `${BASE_URL}/favourites`;
+export const favouritesPath = {
+    getFavouritesGroup: () => `${favouritesBaseUrl}/group`,
+    getFavouritesGroupEntries: () => `${favouritesBaseUrl}/entries`,
+    addApplication: (applicationId: number) => `${favouritesBaseUrl}/application/${applicationId}`,
+    removeApplication: (applicationId: number) => `${favouritesBaseUrl}/application/${applicationId}`,
+}
+
+export const involvementViewBaseUrl = `${BASE_URL}/involvement-view`;
+export const involvementViewPath = {
+    findKeyInvolvementsForEntity: (entityRef: EntityReference) => `${involvementViewBaseUrl}/entity/kind/${entityRef.kind}/id/${entityRef.id}/key`,
+    findAllInvolvementsForEntityByDirection: (entityRef: EntityReference) => `${involvementViewBaseUrl}/entity/kind/${entityRef.kind}/id/${entityRef.id}/all-by-direction`,
+    findAllInvolvementsByEmployeeId: (employeeId: number) => `${involvementViewBaseUrl}/employee/${employeeId}`
+}
+
+export const measurableRatingBaseUrl = `${BASE_URL}/measurable-rating`;
+export const measurableRatingPath = {
+    getPrimaryRatingsViewBySelector: () => `${measurableRatingBaseUrl}/primary-ratings/view`,
+};
+
+export const orgUnitBaseUrl = `${BASE_URL}/org-unit`;
+export const orgUnitPath = {
+    loadAll: () => orgUnitBaseUrl,
+    getById: (id: number) => `${orgUnitBaseUrl}/${id}`,
+};
+
 export const personBaseUrl = `${BASE_URL}/person`;
 export const personPath = {
   getSelf: () => `${personBaseUrl}/self`,
@@ -54,6 +104,12 @@ export const rolePath = {
   findAll: () => roleBaseUrl,
   getViewById: (id: number) => `${roleBaseUrl}/view/${id}`,
 };
+
+export const ratingSchemeBaseUrl = `${BASE_URL}/rating-scheme`;
+export const ratingSchemePath = {
+    findAll: () => ratingSchemeBaseUrl,
+    getById: (id: number) => `${ratingSchemeBaseUrl}/id/${id}`
+}
 
 export const staticPanelBaseUrl = `${BASE_URL}/static-panel`;
 export const staticPanelPath = {
