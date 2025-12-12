@@ -56,6 +56,7 @@ import org.finos.waltz.web.json.OverlayDiagramWidgetInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -205,11 +206,13 @@ public class AggregateOverlayDiagramEndpointController {
         return aggregateOverlayDiagramService.save(saveCommand, principal.getName());
     }
 
-    @PostMapping("id/{id}/status")
+
+    @PostMapping("/id/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public boolean updateStatus(@PathVariable("id") long diagramId,
                                 @RequestBody ReleaseLifecycleStatusChangeCommand command,
                                 Principal principal) {
-        ensureUserHasEditRights(principal.getName());
+        //ensureUserHasEditRights(principal.getName());
         return aggregateOverlayDiagramService.updateStatus(diagramId, command, principal.getName());
     }
 
