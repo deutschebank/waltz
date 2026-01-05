@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import styles from "./styles/BookmarkEditor.module.scss";
 import Button from "../common/button/Button";
-import {IBookmark} from "../../types/Bookmark";
+import {BookmarkType} from "../../types/Bookmark";
 
 // Defines the props for the BookmarkEditor component.
 interface BookmarkEditorProps {
   doCancel: () => void;
-  doSave: (bookmark: IBookmark) => void;
-  bookmark: IBookmark;
+  doSave: (bookmark: BookmarkType) => void;
+  bookmark: BookmarkType;
   kinds: any[];
 }
 

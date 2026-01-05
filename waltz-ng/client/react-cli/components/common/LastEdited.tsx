@@ -1,9 +1,9 @@
 import React from "react";
 import DateTime from "./DateTime";
-import {IBookmark} from "../../types/Bookmark";
+import {BookmarkType} from "../../types/Bookmark";
 
 interface LastEditedProps {
-  entity: Pick<IBookmark, "lastUpdatedBy" | "lastUpdatedAt"> | null;
+  entity: Pick<BookmarkType, "lastUpdatedBy" | "lastUpdatedAt"> | null;
   showLabel?: boolean;
 }
 

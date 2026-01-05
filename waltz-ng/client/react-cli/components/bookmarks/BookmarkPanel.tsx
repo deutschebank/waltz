@@ -20,7 +20,7 @@ import {userManagementApi} from "../../api/user-management";
 import {bookmarkApi} from "../../api/bookmark";
 import {enumValueApi} from "../../api/enum-value";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {IBookmark} from "../../types/Bookmark";
+import {BookmarkType} from "../../types/Bookmark";
 import {NotificationTypeEnum} from "../../enums/Notification";
 import {EntityReference} from "../../types/Entity";
 import {useToasts} from "../../context/toast/ToastContext";
@@ -45,9 +45,9 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
   // State for the search query string.
   const [query, setQuery] = useState("");
   // State to hold the bookmark being considered for removal.
-  const [removalCandidate, setRemovalCandidate] = useState<IBookmark | null>(null);
+  const [removalCandidate, setRemovalCandidate] = useState<BookmarkType | null>(null);
   // State to hold the bookmark being edited or created.
-  const [editCandidate, setEditCandidate] = useState<IBookmark | null>(null);
+  const [editCandidate, setEditCandidate] = useState<BookmarkType | null>(null);
 
   // Fetches bookmarks for the primary entity.
   const {
@@ -110,8 +110,8 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
   };
 
   // Mutation for saving (creating or updating) a bookmark.
-  const {mutate: saveMutation} = useMutation<number, Error, IBookmark>({
-    mutationFn: (bookmark: IBookmark) => {
+  const {mutate: saveMutation} = useMutation<number, Error, BookmarkType>({
+    mutationFn: (bookmark: BookmarkType) => {
       const {mutationFn} = bookmarkApi.save(bookmark);
       return mutationFn();
     },
@@ -156,7 +156,7 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
   });
 
   // Handler to trigger the save mutation.
-  const handleSave = (bookmark: IBookmark) => saveMutation(bookmark);
+  const handleSave = (bookmark: BookmarkType) => saveMutation(bookmark);
 
   // Handler to trigger the remove mutation.
   const handleRemove = () => {

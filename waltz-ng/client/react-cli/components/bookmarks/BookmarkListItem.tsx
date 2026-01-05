@@ -3,10 +3,10 @@ import _ from "lodash";
 import Icon from "../common/Icon";
 import MiniActions, {Action} from "../common/mini-actions/MiniActions";
 import LastEdited from "../common/LastEdited";
-import {IBookmark} from "../../types/Bookmark";
+import {BookmarkType} from "../../types/Bookmark";
 
 interface BookmarkListItemProps {
-  bookmark: IBookmark;
+  bookmark: BookmarkType;
   actions?: Action[];
 }
 

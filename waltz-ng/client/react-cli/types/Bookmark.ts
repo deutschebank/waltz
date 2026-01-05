@@ -1,6 +1,6 @@
 import { EntityReference } from "./Entity";
 
-export interface IBookmark {
+export interface BookmarkType {
   id?: number;
   bookmarkKind: string;
   url?: string;
@@ -14,6 +14,6 @@ export interface IBookmark {
   icon?: string;
 }
 
-export interface IBookmarkBasic extends Omit<IBookmark, "parent"> {
+export interface BookmarkBasic extends Omit<BookmarkType, "parent"> {
   parent: EntityReference;
 }
