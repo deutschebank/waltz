@@ -76,6 +76,9 @@ export const entitySearchPath = {
 };
 
 export const enumValueBaseUrl = `${BASE_URL}/enum-value`;
+export const enumValuePath = {
+  findAll: () => enumValueBaseUrl,
+};
 
 export const favouritesBaseUrl = `${BASE_URL}/favourites`;
 export const favouritesPath = {

@@ -1,11 +1,13 @@
 import React, {useState} from "react";
 import _ from "lodash";
 import Icon from "../common/Icon";
+import { BookmarkKinds } from "../../types/Bookmark";
+
 
 // Defines the props for the BookmarkCategoryMenu component.
 interface BookmarkCategoryMenuProps {
-  bookmarkKinds: any[];
-  onKindSelect: (kind: any) => void;
+  bookmarkKinds: BookmarkKinds[];
+  onKindSelect: (kind: BookmarkKinds | null) => void; 
 }
 
 /**
@@ -16,13 +18,13 @@ const BookmarkCategoryMenu: React.FC<BookmarkCategoryMenuProps> = ({
   onKindSelect,
 }) => {
   // State to keep track of the currently selected category.
-  const [selected, setSelected] = useState<any | null>(null);
+  const [selected, setSelected] = useState<BookmarkKinds | null>(null);
 
   /**
    * Compares two bookmark kinds for equality.
    * They are considered equal if they are the same object or have the same 'key' property.
    */
-  const eq = (k1: any, k2: any) => {
+  const eq = (k1: BookmarkKinds | null, k2: BookmarkKinds | null) => {
     if (_.isNil(k1) || _.isNil(k2)) { // Handles cases where one or both kinds are null.
       return false;
     }
@@ -30,7 +32,7 @@ const BookmarkCategoryMenu: React.FC<BookmarkCategoryMenuProps> = ({
   };
 
   // Handles the click event on a bookmark category.
-  const handleKindSelected = (k: any) => {
+  const handleKindSelected = (k: BookmarkKinds) => {
     // Toggles the selection: deselects if the same kind is clicked again, otherwise selects the new kind.
     const newSelected = eq(selected, k) ? null : k;
     setSelected(newSelected);

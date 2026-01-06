@@ -20,7 +20,7 @@ import {userManagementApi} from "../../api/user-management";
 import {bookmarkApi} from "../../api/bookmark";
 import {enumValueApi} from "../../api/enum-value";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {BookmarkType} from "../../types/Bookmark";
+import {BookmarkKinds, BookmarkType} from "../../types/Bookmark";
 import {NotificationTypeEnum} from "../../enums/Notification";
 import {EntityReference} from "../../types/Entity";
 import {useToasts} from "../../context/toast/ToastContext";
@@ -41,7 +41,7 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
   const {addToast} = useToasts();
 
   // State for the selected bookmark kind/category.
-  const [selectedKind, setSelectedKind] = useState<any | null>(null);
+  const [selectedKind, setSelectedKind] = useState<BookmarkKinds | null>(null);
   // State for the search query string.
   const [query, setQuery] = useState("");
   // State to hold the bookmark being considered for removal.
@@ -83,20 +83,20 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
   const editAction = {
     icon: "pencil",
     name: "Edit",
-    handleAction: (d: any) => setEditCandidate(d),
+    handleAction: (d: BookmarkType) => setEditCandidate(d),
   };
 
   // Action definition for removing a bookmark.
   const removeAction = {
     icon: "trash",
     name: "Remove",
-    handleAction: (d: any) => setRemovalCandidate(d),
+    handleAction: (d: BookmarkType) => setRemovalCandidate(d),
   };
 
   const actions = canEdit ? [editAction, removeAction] : [];
 
   // Handles selection of a bookmark kind from the category menu.
-  const handleKindSelect = (kind: any) => {
+  const handleKindSelect = (kind: BookmarkKinds | null) => {
     setSelectedKind(kind);
   };
 
@@ -200,7 +200,7 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
         {bookmarks.length > 5 && (
           <>
             <div style={{display: "flex", justifyContent: "end", marginBottom: "6px"}}>
-              <Button className="btn btn-success" onClick={handleCreate}>
+              <Button className="btn btn-success" style={{marginRight: "0px"}} onClick={handleCreate}>
                 <Icon name="plus" /> Add bookmark
               </Button>
             </div>

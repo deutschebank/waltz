@@ -1,10 +1,11 @@
 import React from "react";
 import styles from "./styles/BookmarkRemovalConfirmation.module.scss";
 import Button from "../common/button/Button";
+import { BookmarkType } from "../../types/Bookmark";
 
 // Defines the props for the BookmarkRemovalConfirmation component.
 interface BookmarkRemovalConfirmationProps {
-  bookmark: any; // Consider defining a more specific type for bookmark
+  bookmark: BookmarkType;
   doRemove: () => void;
   doCancel: () => void;
 }

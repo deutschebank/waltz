@@ -1,6 +1,7 @@
 import React from "react";
 import BookmarkListItem from "./BookmarkListItem";
 import {Action} from "../common/mini-actions/MiniActions";
+import { BookmarkType } from "../../types/Bookmark";
 
 // Defines the props for the BookmarkTable component.
 interface BookmarkTableProps {
@@ -25,7 +26,7 @@ const BookmarkTable: React.FC<BookmarkTableProps> = ({
       {bookmarkGroups.map((group, idx) => (
         <tbody key={idx}>
           {/* Iterates over each bookmark within a group and renders a BookmarkListItem. */}
-          {group.value.map((bookmark: any) => (
+          {group.value.map((bookmark: BookmarkType) => (
             <BookmarkListItem key={bookmark.id} actions={actions} bookmark={bookmark} />
           ))}
         </tbody>
