@@ -67,13 +67,19 @@ public class DIBaseConfiguration {
     @Value("${database.pool.min:2}")
     private int dbPoolMin;
 
+    @Value("${spring.datasource.hikari.maximumPoolSize:10}")
+    private int dbExecutorPoolMax;
+
+    @Value("${spring.datasource.hikari.minimumIdle:2}")
+    private int dbExecutorPoolMin;
+
     @Value("${jooq.dialect}")
     private String dialect;
 
     @Value("${database.performance.query.slow.threshold:10}")
     private int databasePerformanceQuerySlowThreshold;
 
-    @Bean
+   /* @Bean
     public DataSource dataSource() {
 
         HikariConfig dsConfig = new HikariConfig();
@@ -83,15 +89,15 @@ public class DIBaseConfiguration {
         dsConfig.setDriverClassName(dbDriver);
         dsConfig.setMaximumPoolSize(dbPoolMax);
         dsConfig.setMinimumIdle(dbPoolMin);
+        dsConfig.setPoolName("WAZLTZ-DB-POOL");
         return new HikariDataSource(dsConfig);
     }
-
+*/
 
     @Bean
     public DBExecutorPoolInterface dbExecutorPool() {
-        return new DBExecutorPool(dbPoolMin, dbPoolMax);
+        return new DBExecutorPool(dbExecutorPoolMin, dbExecutorPoolMax);
     }
-
 
     @Bean
     public DSLContext dsl(DataSource dataSource) {
