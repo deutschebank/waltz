@@ -135,12 +135,12 @@ public class StaticResourcesEndpointController {
                 String line = lower(lines.get(i));
 
                 if (line.contains("<base href=")) {
-                    LOG.info("Found <base> tag: " + line + ", adding context path: " + request.getContextPath());
+                    LOG.info("Found <base> tag: " + line + ", adding context path: " + request.getRequestURI());
                     line = line.replaceFirst(
                             "<base href=(['\"])/(['\"])\\s*/>",
                             format(
-                                    "\t<base href=\"%s/\" />",
-                                    request.getContextPath()));
+                                    "\t<base href=\"%s\" />",
+                                    request.getRequestURI()));
                     LOG.info("Updated <base> tag: " + line);
                     lines.set(i, line);
 
