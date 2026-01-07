@@ -54,7 +54,7 @@ public class StaticResourcesEndpointController {
             .getClassLoader();
 
 
-    @GetMapping("/**")
+    //@GetMapping("/**")
     public Object register(HttpServletRequest request) {
         LOG.debug("Registering static resources");
 
