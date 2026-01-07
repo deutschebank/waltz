@@ -27,14 +27,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
 import java.io.*;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static org.finos.waltz.common.IOUtilities.copyStream;
@@ -54,10 +54,10 @@ public class StaticResourcesEndpointController {
             .getClassLoader();
 
 
-    //@GetMapping("/**")
+    @GetMapping("/**")
     public Object register(HttpServletRequest request) {
         LOG.debug("Registering static resources");
-
+        logRequestInfo(request);
         String resolvedPath = resolvePath(request);
 
         if (resolvedPath == null) {
@@ -97,6 +97,16 @@ public class StaticResourcesEndpointController {
         }
     }
 
+    private void logRequestInfo(HttpServletRequest request) {
+        LOG.info("RequestURI: {}", request.getRequestURI());
+        LOG.info("RequestURL: {}", request.getRequestURL());
+        LOG.info("Request Context: {}", request.getContextPath());
+        Map<String, String> headers = Collections.list(request.getHeaderNames())
+                .stream()
+                .collect(Collectors.toMap(h -> h, request::getHeader));
+        LOG.info("Request Headers: {}", headers);
+    }
+
 
     /**
      * We want to add a cache-control: max-age value to all resources except html.
@@ -119,6 +129,7 @@ public class StaticResourcesEndpointController {
      * index.html need to have a <base href="/[site_context]/" /> tag in the head section to ensure
      * html5 mode works correctly in AngularJS.  This method will ensure the existing <base href="/" /> tag
      * is replace with one that includes the correct site context as deployed.
+     *
      * @param request
      * @param resolvedPath
      * @param resourceStream
