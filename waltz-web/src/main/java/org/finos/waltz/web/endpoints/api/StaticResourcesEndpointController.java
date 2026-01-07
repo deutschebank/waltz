@@ -30,11 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static org.finos.waltz.common.IOUtilities.copyStream;
@@ -57,7 +54,6 @@ public class StaticResourcesEndpointController {
     @GetMapping("/**")
     public Object register(HttpServletRequest request) {
         LOG.debug("Registering static resources");
-        logRequestInfo(request);
         String resolvedPath = resolvePath(request);
 
         if (resolvedPath == null) {
@@ -96,17 +92,6 @@ public class StaticResourcesEndpointController {
             return null;
         }
     }
-
-    private void logRequestInfo(HttpServletRequest request) {
-        LOG.info("RequestURI: {}", request.getRequestURI());
-        LOG.info("RequestURL: {}", request.getRequestURL());
-        LOG.info("Request Context: {}", request.getContextPath());
-        Map<String, String> headers = Collections.list(request.getHeaderNames())
-                .stream()
-                .collect(Collectors.toMap(h -> h, request::getHeader));
-        LOG.info("Request Headers: {}", headers);
-    }
-
 
     /**
      * We want to add a cache-control: max-age value to all resources except html.
