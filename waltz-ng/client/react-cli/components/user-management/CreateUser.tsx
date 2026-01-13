@@ -11,7 +11,7 @@ import { userManagementApi } from "../../api/user-management";
 import Button from "../common/button/Button";
 import reduxStore from "../../../redux-store";
 import { Modes } from "../../enums/User";
-import { CreateUser } from "../../types/User";
+import { CreateUserType } from "../../types/User";
 
 /**
  * CreateUser component provides a form to register a new user.
@@ -25,8 +25,8 @@ const CreateUser: React.FC = () => {
   const { addToast } = useToasts();
 
   // Mutation for handling the user registration API call.
-  const registerMutation = useMutation<boolean, Error, CreateUser>({
-    mutationFn: ({ userName, password }: CreateUser) => {
+  const registerMutation = useMutation<boolean, Error, CreateUserType>({
+    mutationFn: ({ userName, password }: CreateUserType) => {
       const { mutationFn } = userManagementApi.register({
         userName,
         password,

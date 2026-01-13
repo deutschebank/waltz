@@ -16,7 +16,7 @@ export interface UserInfo {
   comment?: string;
 }
 
-export interface CreateUser {
+export interface CreateUserType {
   userName: string;
   password: string;
 }
