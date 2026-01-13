@@ -50,8 +50,8 @@ const register = (newUser: ICreateUser) => ({
 
 const resetPassword = (
   userName: string,
-  newPassword: any,
-  currentPassword: any
+  newPassword: string,
+  currentPassword: string | null
 ) => ({
   mutationKey: ["user", "resetPassword", userName],
   mutationFn: async (): Promise<boolean> => {
@@ -63,14 +63,14 @@ const resetPassword = (
   },
 });
 
-const bulkUploadPreview = (mode: string, rows: any = []) => ({
+const bulkUploadPreview = (mode: string, rows: string) => ({
   mutationKey: ["user", "bulkUploadPreview", mode],
   mutationFn: async (): Promise<UserBulkResponse<PreviewRow[]>> => {
     return await execute(userPath.bulkUploadPreview(mode), "POST", rows);
   },
 });
 
-const bulkUpload = (mode: string, rows: any = []) => ({
+const bulkUpload = (mode: string, rows: string) => ({
   mutationKey: ["user", "bulkUpload", mode],
   mutationFn: async (): Promise<UserBulkResponse<number>> => {
     return await execute(userPath.bulkUpload(mode), "POST", rows);

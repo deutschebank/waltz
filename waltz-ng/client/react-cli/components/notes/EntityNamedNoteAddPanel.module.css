@@ -1,0 +1,17 @@
+.typeList {
+    padding-top: 0.5em;
+    padding-left: 1em;
+}
+
+/* .typeList {
+    padding-bottom: 0.5em;
+} */
+
+.editBox {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #59a1f1;
+    background-color: #e9f7fa;
+    padding: 1.5em 2em;
+    border-radius: 2px;
+}

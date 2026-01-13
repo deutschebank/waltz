@@ -30,11 +30,11 @@ export async function fetchResponse(url: string, method: RestMethod = "GET", dat
     });
 }
 
-export function execute<T>(url: string, method: RestMethod = "GET", data?: object): Promise<T>{
+export function execute<T>(url: string, method: RestMethod = "GET", data?: object | string): Promise<T>{
     return fetch(url, {
         method: method,
         headers: headers,
-        body: isString(data) ? data : JSON.stringify(data)
+        body: method === "POST" && isString(data) ? data : JSON.stringify(data)
     }).then(handleResponse);
 }
 

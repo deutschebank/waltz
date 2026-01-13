@@ -29,6 +29,7 @@ export interface PreviewRow {
   resolvedUser: string | null;
   resolvedRole: string | null;
   resolvedComment: string | null;
+  status: string | null;
 }
 
 export type UserBulkResponse<T> = {

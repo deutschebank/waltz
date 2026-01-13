@@ -18,7 +18,7 @@
 
 import {initialiseData} from "../../../common/index";
 import template from "./entity-named-notes-section.html";
-import EntityNamedNotesSection from "./EntityNamedNotesSection.svelte";
+import EntityNamedNotesSection from "../../../react-cli/components/notes/EntityNamedNotesSection"
 
 
 const bindings = {
