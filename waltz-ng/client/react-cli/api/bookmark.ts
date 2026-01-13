@@ -1,11 +1,11 @@
 import {fetchJSON, execute} from "./api";
 import {bookmarkPath} from "../constants/path";
-import {IBookmark, IBookmarkBasic} from "../types/Bookmark";
+import {BookmarkType, BookmarkBasic} from "../types/Bookmark";
 import _ from "lodash";
 import {EntityReference} from "../types/Entity";
 import {toEntityRef} from "../../common/entity-utils";
 
-function stripExtraneousFields(bookmark: IBookmark): IBookmarkBasic {
+function stripExtraneousFields(bookmark: BookmarkType): BookmarkBasic {
   const simplifiedBookmark = _.pick(bookmark, [
     "id",
     "bookmarkKind",
@@ -18,18 +18,18 @@ function stripExtraneousFields(bookmark: IBookmark): IBookmarkBasic {
 
   const simplifiedParent = {parent: toEntityRef(bookmark.parent)};
 
-  return Object.assign({}, simplifiedBookmark, simplifiedParent) as IBookmarkBasic;
+  return Object.assign({}, simplifiedBookmark, simplifiedParent) as BookmarkBasic;
 }
 
 const load = (ref: EntityReference) => ({
   queryKey: ["bookmarks", "load", ref.kind, ref.id],
-  queryFn: async (): Promise<IBookmark[]> => {
+  queryFn: async (): Promise<BookmarkType[]> => {
     return await fetchJSON(bookmarkPath.load(ref));
   },
   enabled: !!ref,
 });
 
-const save = (bookmark: IBookmark) => ({
+const save = (bookmark: BookmarkType) => ({
   mutationKey: ["bookmarks", "save", bookmark.id],
   mutationFn: async (): Promise<number> => {
     return await execute(bookmarkPath.save(), "POST", stripExtraneousFields(bookmark));

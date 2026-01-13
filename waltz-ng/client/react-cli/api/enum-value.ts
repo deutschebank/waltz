@@ -1,15 +1,6 @@
 import {fetchJSON} from "./api";
 import {enumValuePath} from "../constants/path";
-
-type ENUMValueType = {
-  key: string;
-  name: string;
-  icon: string;
-  description: string;
-  position: number;
-  type: string;
-  iconColor: string;
-};
+import { ENUMValueType } from "../types/EnumValue";
 
 const load = () => ({
   queryKey: ["enum", "load"],
