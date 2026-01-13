@@ -1,8 +1,8 @@
 import { fetchJSON, execute } from "./api";
 import { userPath } from "../constants/path";
 import {
-  ICreateUser,
-  IUser,
+  CreateUser,
+  UserInfo,
   UserBulkResponse,
   PreviewRow,
 } from "../types/User";
@@ -10,21 +10,21 @@ import { Roles } from "../enums/User";
 
 const findAll = () => ({
   queryKey: ["user", "findAll"],
-  queryFn: async (): Promise<IUser[]> => {
+  queryFn: async (): Promise<UserInfo[]> => {
     return await fetchJSON(userPath.findAll());
   },
 });
 
 const load = () => ({
   queryKey: ["user", "whoami"],
-  queryFn: async (): Promise<IUser> => {
+  queryFn: async (): Promise<UserInfo> => {
     return await fetchJSON(userPath.whoami());
   },
 });
 
 const getByUserId = (userId: string) => ({
   queryKey: ["user", "getByUserId", userId],
-  queryFn: async (): Promise<IUser> => {
+  queryFn: async (): Promise<UserInfo> => {
     return await fetchJSON(userPath.getByUserId(userId));
   },
   enabled: !!userId,
@@ -40,7 +40,7 @@ const updateRoles = (userName: string, roles: Roles[], comment: string) => ({
   },
 });
 
-const register = (newUser: ICreateUser) => ({
+const register = (newUser: CreateUser) => ({
   mutationKey: ["user", "register"],
   mutationFn: async (): Promise<boolean> => {
     return await execute(userPath.register(), "POST", newUser);

@@ -8,7 +8,7 @@ export interface Role {
   isCustom?: boolean;
 }
 
-export interface IUser {
+export interface UserInfo {
   userId?: string;
   name?: string;
   userName: string;
@@ -16,7 +16,7 @@ export interface IUser {
   comment?: string;
 }
 
-export interface ICreateUser {
+export interface CreateUser {
   userName: string;
   password: string;
 }
@@ -38,7 +38,7 @@ export type UserBulkResponse<T> = {
 // Defines the shape of the user management state.
 export interface UserManagementState {
   // The currently selected user, or null if none is selected.
-  selectedUser: IUser | null;
+  selectedUser: UserInfo | null;
   // The active mode of the user management panel (e.g., LIST, DETAIL, ADD).
   activeMode: string;
   // The roles associated with the selected user.

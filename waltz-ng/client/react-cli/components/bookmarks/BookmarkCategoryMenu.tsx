@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import _ from "lodash";
 import Icon from "../common/Icon";
 import { BookmarkKinds } from "../../types/Bookmark";
 
@@ -25,7 +24,7 @@ const BookmarkCategoryMenu: React.FC<BookmarkCategoryMenuProps> = ({
    * They are considered equal if they are the same object or have the same 'key' property.
    */
   const eq = (k1: BookmarkKinds | null, k2: BookmarkKinds | null) => {
-    if (_.isNil(k1) || _.isNil(k2)) { // Handles cases where one or both kinds are null.
+    if (k1 === null || k2 === null) { // Handles cases where one or both kinds are null.
       return false;
     }
     return k1 === k2 || k1.key === k2.key;
