@@ -8,7 +8,7 @@ import {EntityReference} from "../../types/Entity";
 import {noteApi} from "../../api/note";
 import {noteTypeApi} from "../../api/note-type";
 import {NamedNote, NamedNoteType, Note} from "../../types/NamedNote";
-import Button from "../common/button/Button";
+import Button from "../common/button/Button"; 
 import Icon from "../common/Icon";
 import LastEdited from "../common/LastEdited";
 import Loader from "../common/loader/Loader";
@@ -32,7 +32,7 @@ const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({parent
     const {addToast} = useToasts();
 
     // State for controlling the UI mode (VIEW, ADD, UPDATE, REMOVE).
-    const [mode, setMode] = useState(Modes.VIEW);
+    const [mode, setMode] = useState<Modes>(Modes.VIEW);
     // State for the currently selected note for editing or removal.
     const [selectedNote, setSelectedNote] = useState<NamedNoteType | null>(null);
     // State for the type of the currently selected note.
@@ -115,8 +115,15 @@ const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({parent
      * Combines notes with their corresponding type information.
      */
     const notesWithTypes = useMemo(() => {
-        const typesById = _.keyBy(noteTypesWithOps, (d) => d.entity.id);
-        return _.chain(notes)
+        const typesById = noteTypesWithOps.reduce(
+            (acc, d) => {
+                acc[d.entity.id] = d;
+                return acc;
+            },
+            {} as Record<number, (typeof noteTypesWithOps)[0]>
+        );
+
+        return notes
             .map((note) => {
                 const typeAndOps = typesById[note.namedNoteTypeId!];
                 return {
@@ -125,19 +132,14 @@ const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({parent
                     operations: typeAndOps?.operations,
                 };
             })
-            .orderBy((d) => d.type?.name)
-            .value();
+            .sort((a, b) => (a.type?.name ?? "").localeCompare(b.type?.name ?? ""));
     }, [notes, noteTypesWithOps]);
 
     /**
      * Filters note types to find which ones are available for the user to add.
      */
     const availableNoteTypes = useMemo(
-        () =>
-            _.chain(noteTypesWithOps)
-                .filter((t) => _.includes(t.operations, "ADD"))
-                .map((t) => t.entity)
-                .value(),
+        () => noteTypesWithOps.filter((t) => t.operations.includes("ADD")).map((t) => t.entity),
         [noteTypesWithOps]
     );
 

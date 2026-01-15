@@ -11,7 +11,7 @@ export interface NamedNote {
         position: number;
         isReadOnly: boolean;
     };
-    operations: [];
+    operations: string[];
 }
 
 export interface NamedNoteType extends Partial<LastUpdatedProvider>, Partial<ProvenanceProvider> {

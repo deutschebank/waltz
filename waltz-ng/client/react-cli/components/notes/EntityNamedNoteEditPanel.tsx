@@ -51,7 +51,7 @@ const EntityNamedNoteEditPanel: React.FC<EntityNamedNoteEditPanelProps> = ({
                         </td>
                         {/* Live preview of the markdown text. Shows a placeholder if the input is empty. */}
                         <td style={{verticalAlign: "top"}}>
-                            <div className={styles.preview}>
+                            <div className={styles.preview} data-testid="note-preview">
                                 <Markdown text={working || "*Preview will appear here*"} />
                             </div>
                         </td>
