@@ -24,6 +24,7 @@ const EntityNamedNoteEditPanel: React.FC<EntityNamedNoteEditPanelProps> = ({
     onSave,
     onCancel,
 }) => {
+    // State to hold the note text as it's being edited, initialized with the current note text.
     const [working, setWorking] = useState(note.noteText);
 
     return (
@@ -39,6 +40,7 @@ const EntityNamedNoteEditPanel: React.FC<EntityNamedNoteEditPanelProps> = ({
                 </colgroup>
                 <tbody>
                     <tr>
+                        {/* Text area for markdown input, which updates the 'working' state on change. */}
                         <td>
                             <textarea
                                 rows={8}
@@ -47,6 +49,7 @@ const EntityNamedNoteEditPanel: React.FC<EntityNamedNoteEditPanelProps> = ({
                                 onChange={(e) => setWorking(e.target.value)}
                             />
                         </td>
+                        {/* Live preview of the markdown text. Shows a placeholder if the input is empty. */}
                         <td style={{verticalAlign: "top"}}>
                             <div className={styles.preview}>
                                 <Markdown text={working || "*Preview will appear here*"} />

@@ -23,31 +23,46 @@ type EntityNamedNotesSectionProps = {
     parentEntityRef: EntityReference;
 };
 
+/**
+ * A component that displays and manages named notes for a given entity.
+ * It allows viewing, adding, updating, and removing notes.
+ */
 const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({parentEntityRef}) => {
     const queryClient = useQueryClient();
     const {addToast} = useToasts();
 
+    // State for controlling the UI mode (VIEW, ADD, UPDATE, REMOVE).
     const [mode, setMode] = useState(Modes.VIEW);
+    // State for the currently selected note for editing or removal.
     const [selectedNote, setSelectedNote] = useState<NamedNoteType | null>(null);
+    // State for the type of the currently selected note.
     const [selectedType, setSelectedType] = useState<NamedNote["entity"] | null>(null);
 
+    // Fetches available note types for the user and entity.
     const {
         data: noteTypesWithOps = [],
         isLoading: isLoadingNoteTypes,
         error: noteTypesError,
     } = useQuery(noteTypeApi.findForRefAndUser(parentEntityRef));
 
+    // Fetches existing notes for the entity.
     const {
         data: notes = [],
         isLoading: isLoadingNotes,
         error: notesError,
     } = useQuery(noteApi.findForEntityReference(parentEntityRef));
 
+    /**
+     * Resets the selected note and type states.
+     */
     function clearSelected() {
         setSelectedNote(null);
         setSelectedType(null);
     }
 
+    /**
+     * Invalidates and refetches note and note type queries to refresh data.
+     */
     function fetchReactQueries() {
         queryClient.invalidateQueries({
             queryKey: noteTypeApi.findForRefAndUser(parentEntityRef).queryKey,
@@ -57,6 +72,9 @@ const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({parent
         });
     }
 
+    /**
+     * Mutation to remove a note.
+     */
     const {mutate: removeNote} = useMutation<boolean, Error, NamedNoteType>({
         mutationFn: (note: NamedNoteType) => {
             const {mutationFn} = noteApi.remove(note.entityReference!, note.namedNoteTypeId!);
@@ -68,23 +86,34 @@ const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({parent
             setMode(Modes.VIEW);
             clearSelected();
         },
-        onError: (e: any) => displayError("Failed to remove note", e),
+        onError: (e) => displayError("Failed to remove note", e),
     });
 
-    const {mutate: saveNote} = useMutation<boolean, Error, {noteTypeId: number; noteText: string}>({
-        mutationFn: (vars: {noteTypeId: number; noteText: string}) => {
+    /**
+     * Mutation to save (create or update) a note.
+     */
+    const {mutate: saveNote} = useMutation<
+        boolean,
+        Error,
+        {noteTypeId: number; noteText: string; action: "create" | "update"}
+    >({
+        mutationFn: (vars) => {
             const {mutationFn} = noteApi.save(parentEntityRef, vars.noteTypeId, vars.noteText);
             return mutationFn();
         },
-        onSuccess: () => {
+        onSuccess: (_data, variables) => {
             fetchReactQueries();
-            addToast({type: NotificationTypeEnum.SUCCESS, message: "Saved note"});
+            const message = variables.action === "update" ? "Updated note" : "Saved note";
+            addToast({type: NotificationTypeEnum.SUCCESS, message});
             setMode(Modes.VIEW);
             clearSelected();
         },
-        onError: (e: any) => displayError("Failed to save note", e),
+        onError: (e) => displayError("Failed to save note", e),
     });
 
+    /**
+     * Combines notes with their corresponding type information.
+     */
     const notesWithTypes = useMemo(() => {
         const typesById = _.keyBy(noteTypesWithOps, (d) => d.entity.id);
         return _.chain(notes)
@@ -100,6 +129,9 @@ const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({parent
             .value();
     }, [notes, noteTypesWithOps]);
 
+    /**
+     * Filters note types to find which ones are available for the user to add.
+     */
     const availableNoteTypes = useMemo(
         () =>
             _.chain(noteTypesWithOps)
@@ -109,37 +141,60 @@ const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({parent
         [noteTypesWithOps]
     );
 
+    /**
+     * Handles the cancellation of an action (add, update, remove).
+     * @param message The message to display in the toast notification.
+     */
     const onCancel = (message: string) => {
         setMode(Modes.VIEW);
         clearSelected();
         addToast({type: "INFO", message});
     };
 
+    /**
+     * Sets the mode to REMOVE and selects the note to be removed.
+     */
     const handleShowRemovalConfirmation = (note: NamedNoteType) => {
         setMode(Modes.REMOVE);
         clearSelected();
         setSelectedNote(note);
     };
 
+    /**
+     * Sets the mode to UPDATE and selects the note and its type for editing.
+     */
     const handleShowUpdatePanel = (nt: Note) => {
         setMode(Modes.UPDATE);
         setSelectedNote(nt.note);
         setSelectedType(nt.type);
     };
 
+    /**
+     * Sets the mode to ADD to show the add panel.
+     */
     const handleShowAddPanel = () => {
         setMode(Modes.ADD);
         clearSelected();
     };
 
+    /**
+     * Calls the saveNote mutation to update an existing note.
+     */
     const handleUpdateNote = (updatedText: string) => {
         if (selectedNote) {
-            saveNote({noteTypeId: selectedNote.namedNoteTypeId!, noteText: updatedText});
+            saveNote({
+                noteTypeId: selectedNote.namedNoteTypeId!,
+                noteText: updatedText,
+                action: "update",
+            });
         }
     };
 
+    /**
+     * Calls the saveNote mutation to create a new note.
+     */
     const handleCreateNote = (newNote: {noteTypeId: number; noteText: string}) => {
-        saveNote(newNote);
+        saveNote({...newNote, action: "create"});
     };
 
     if (isLoadingNoteTypes || isLoadingNotes) {
@@ -150,6 +205,9 @@ const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({parent
         return <div>Error loading notes: {noteTypesError?.message || notesError?.message}</div>;
     }
 
+    /**
+     * Renders the appropriate panel based on the current mode (VIEW, REMOVE, ADD, UPDATE).
+     */
     const renderContent = () => {
         switch (mode) {
             case Modes.REMOVE:

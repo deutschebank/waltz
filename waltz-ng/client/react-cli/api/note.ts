@@ -1,6 +1,6 @@
 import {execute, fetchJSON} from "./api";
 import {EntityReference} from "../types/Entity";
-import {NamedNote, NamedNoteType} from "../types/NamedNote";
+import {NamedNoteType} from "../types/NamedNote";
 import {notesPath} from "../constants/path";
 
 const findForEntityReference = (ref: EntityReference) => ({

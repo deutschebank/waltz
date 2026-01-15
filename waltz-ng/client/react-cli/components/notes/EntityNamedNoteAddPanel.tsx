@@ -24,16 +24,27 @@ const EntityNamedNoteAddPanel: React.FC<EntityNamedNoteAddPanelProps> = ({
     onCreate,
     onCancel,
 }) => {
+    // State to manage which view is shown: LIST of note types or EDIT a new note.
     const [mode, setMode] = useState(Modes.LIST);
+    // State to hold the type of note the user has selected to create.
     const [selectedType, setSelectedType] = useState<NamedNote["entity"] | null>(null);
 
+    // An empty note object to pass to the edit panel when creating a new note.
     const emptyNote = {noteText: ""};
 
+    /**
+     * Switches to the edit mode and sets the selected note type.
+     * @param type The note type selected by the user.
+     */
     function onShowEditPanel(type: NamedNote["entity"]) {
         setMode(Modes.EDIT);
         setSelectedType(type);
     }
 
+    /**
+     * Creates a new note object and calls the onCreate prop.
+     * @param updatedText The text content of the new note.
+     */
     function handleCreateNote(updatedText: string) {
         if (selectedType) {
             const newEvt = {
@@ -44,6 +55,7 @@ const EntityNamedNoteAddPanel: React.FC<EntityNamedNoteAddPanelProps> = ({
         }
     }
 
+    // Effect to reset the component's state when the available note types change.
     useEffect(() => {
         setMode(Modes.LIST);
         setSelectedType(null);
@@ -51,6 +63,7 @@ const EntityNamedNoteAddPanel: React.FC<EntityNamedNoteAddPanelProps> = ({
 
     return (
         <>
+            {/* Render the edit panel when in EDIT mode with a selected type */}
             {mode === Modes.EDIT && selectedType && (
                 <EntityNamedNoteEditPanel
                     note={emptyNote}
@@ -59,6 +72,7 @@ const EntityNamedNoteAddPanel: React.FC<EntityNamedNoteAddPanelProps> = ({
                     onCancel={onCancel}
                 />
             )}
+            {/* Render the list of available note types when in LIST mode */}
             {mode === Modes.LIST && (
                 <div className={styles.editBox}>
                     <h4>
