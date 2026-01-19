@@ -124,6 +124,17 @@ public class WebUtilities {
                 getRequiredRoleForEntityKind(kind, op, additionalKind));
     }
 
+    public static void requireEditRoleForEntityForSB(UserRoleService userRoleService,
+                                                HttpServletRequest req,
+                                                EntityKind kind,
+                                                Operation op,
+                                                EntityKind additionalKind) {
+        requireRoleForSB(
+                userRoleService,
+                req,
+                getRequiredRoleForEntityKind(kind, op, additionalKind));
+    }
+
 
     public static void requireRole(UserRoleService userRoleService,
                                    Request request,
