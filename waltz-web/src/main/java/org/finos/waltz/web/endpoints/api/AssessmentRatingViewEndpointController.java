@@ -36,7 +36,7 @@ import static org.finos.waltz.web.WebUtilities.mkPath;
 
 
 @RestController
-@RequestMapping("/api/assessment-rating-view")
+@RequestMapping("/api/assessment-rating-view/")
 public class AssessmentRatingViewEndpointController {
 
     private final AssessmentRatingViewService assessmentRatingViewService;

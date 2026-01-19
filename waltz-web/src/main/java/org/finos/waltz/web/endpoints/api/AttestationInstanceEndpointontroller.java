@@ -42,7 +42,7 @@ import static org.finos.waltz.web.WebUtilities.*;
 
 
 @RestController
-@RequestMapping("/api/attestation-instance")
+@RequestMapping("/api/attestation-instance/")
 public class AttestationInstanceEndpointontroller {
     private static final Logger LOG = LoggerFactory.getLogger(AttestationInstanceEndpoint.class);
 
