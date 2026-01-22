@@ -304,6 +304,14 @@ public class WebUtilities {
     }
 
 
+    public static <T> T readBodyForSB(HttpServletRequest request,
+                                 Class<T> objClass) throws IOException {
+        return getJsonMapper().readValue(
+                request.getInputStream(),
+                objClass);
+    }
+
+
     public static <T> List<T> readList(Request request, Class<T> itemClass) throws IOException {
         return (List<T>) readBody(request, List.class);
     }
