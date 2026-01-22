@@ -13,6 +13,8 @@ import org.jooq.DSLContext;
 import org.jooq.JSONFormat;
 import org.jooq.Result;
 import org.jooq.Select;
+import org.jooq.lambda.Unchecked;
+import org.jooq.lambda.tuple.Tuple2;
 import org.jooq.lambda.tuple.Tuple3;
 import org.supercsv.io.CsvListWriter;
 import org.supercsv.prefs.CsvPreference;
@@ -276,5 +278,30 @@ public class DirectQueryBasedExtractorUtilities {
             }
         });
         return rowNum.get();
+    }
+
+    public static Object writeAsMultiSheetExcel(DSLContext dsl,
+                                                String suggestedFilenameStem,
+                                                HttpServletResponse response,
+                                                Tuple2<String, Select<?>>... sheetDefinitions) {
+        SXSSFWorkbook workbook = new SXSSFWorkbook(2000);
+
+        for (Tuple2<String, Select<?>> sheetDef : sheetDefinitions) {
+            SXSSFSheet sheet = workbook.createSheet(ExtractorUtilities.sanitizeSheetName(sheetDef.v1));
+            writeExcelHeader(sheetDef.v2, sheet);
+            writeExcelBody(sheetDef.v2, sheet, dsl);
+
+            int endFilterColumnIndex = sheetDef.v2.fields().length == 0
+                    ? 0
+                    : sheetDef.v2.fields().length - 1;
+
+            sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, endFilterColumnIndex));
+            sheet.createFreezePane(0, 1);
+        }
+
+        return Unchecked.supplier(() -> writeExcelToResponse(
+                suggestedFilenameStem,
+                response,
+                workbook));
     }
 }
