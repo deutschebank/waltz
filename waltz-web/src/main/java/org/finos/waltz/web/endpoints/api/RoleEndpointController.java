@@ -19,8 +19,10 @@
 package org.finos.waltz.web.endpoints.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.servlet.http.HttpServletRequest;
 import org.finos.waltz.model.role.Role;
 import org.finos.waltz.model.role.RoleView.RoleView;
+import org.finos.waltz.model.user.SystemRole;
 import org.finos.waltz.service.role.RoleService;
 import org.finos.waltz.service.user.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +34,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Map;
 
-import static org.finos.waltz.web.WebUtilities.mkPath;
+import static org.finos.waltz.web.WebUtilities.*;
 
 
 @RestController
@@ -64,22 +67,31 @@ public class RoleEndpointController {
     }
 
     @PostMapping
-    public Long createCustomRole(@RequestBody RoleCreateCommand command) {
+    public Long createCustomRole(HttpServletRequest request) {
         // TODO: Implement security check, for example using Spring Security's @PreAuthorize
         // requireAnyRole(userRoleService, request, SystemRole.USER_ADMIN, SystemRole.ADMIN);
-        return roleService.create(command.key(), command.name(), command.description());
+        requireAnyRoleForSB(userRoleService, request, SystemRole.USER_ADMIN, SystemRole.ADMIN);
+        try {
+            Map<String, String> body = (Map<String, String>) readBodyForSB(request, Map.class);
+            String key = body.get("key");
+            String roleName = body.get("name");
+            String description = body.get("description");
+            return roleService.create(key, roleName, description);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
      * A simple DTO (Data Transfer Object) to represent the request body for creating a role.
      * Using a record provides immutability and conciseness.
      */
-    public record RoleCreateCommand(
+    /*public record RoleCreateCommand(
             @JsonProperty("key") String key,
             @JsonProperty("name") String name,
             @JsonProperty("description") String description
     ) {
-    }
+    }*/
 
 
 }

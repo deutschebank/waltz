@@ -63,9 +63,9 @@ public class BulkUploadController {
 
     @PostMapping("resolve")
     public List<ResolveRowResponse> resolveRoute(@RequestBody ResolveBulkUploadRequestParameters resolveParams,
-                                                 Principal principal) {
-        String username = principal.getName();
-        ensureUserHasAdminRights(username, resolveParams.rowSubjectKind(), resolveParams.targetDomain().kind());
+                                                 HttpServletRequest principal) {
+        String username = getUsernameForSB(principal);
+        ensureUserHasAdminRights(principal, resolveParams.rowSubjectKind(), resolveParams.targetDomain().kind());
         LOG.info("User: {} resolving bulk upload: {}", username, resolveParams);
 
         return service.resolve(resolveParams);

@@ -255,12 +255,12 @@ public class SurveyInstanceEndpointController {
         return surveyInstanceService.withdrawOpenSurveysForTemplate(templateId, principal.getName());
     }
 
-    private void requireRole(UserRoleService userRoleService, Principal principal, SystemRole role) throws Exception {
+    /*private void requireRole(UserRoleService userRoleService, Principal principal, SystemRole role) throws Exception {
         String username = principal.getName();
         if (!userRoleService.hasRole(username, role)) {
             throw new Exception("User " + username + " does not have role " + role);
         }
-    }
+    }*/
 
     private EntityReference mkRef(String kind, long id) {
         return EntityReference.mkRef(

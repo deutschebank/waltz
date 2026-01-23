@@ -64,11 +64,12 @@ import static org.finos.waltz.common.StreamUtilities.mkSiphon;
 import static org.finos.waltz.common.StringUtilities.joinUsing;
 import static org.finos.waltz.model.utils.IdUtilities.indexById;
 import static org.finos.waltz.web.WebUtilities.readIdSelectionOptionsFromBody;
+import static org.finos.waltz.web.endpoints.extracts.DirectQueryBasedExtractorUtilities.formatReport;
 
 
 @RestController
 @RequestMapping("/data-extract/logical-flow-view/")
-public class LogicalFlowViewExtractorController extends CustomDataExtractor {
+public class LogicalFlowViewExtractorController  {
 
     private final LogicalFlowService logicalFlowService;
 
@@ -82,9 +83,6 @@ public class LogicalFlowViewExtractorController extends CustomDataExtractor {
         this.logicalFlowService = logicalFlowService;
     }
 
-
-    @Override
-    public void register() {}
 
 
     @PostMapping()
