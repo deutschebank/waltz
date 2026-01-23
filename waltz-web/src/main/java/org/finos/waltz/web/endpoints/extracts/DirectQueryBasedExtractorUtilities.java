@@ -304,4 +304,35 @@ public class DirectQueryBasedExtractorUtilities {
                 response,
                 workbook));
     }
+
+    public static Object writeExtract(String suggestedFilenameStem,
+                                  byte[] dataBytes,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response) throws IOException {
+        ExtractFormat format = parseExtractFormat(request);
+        switch (format) {
+            case SVG:
+                return writeSvg(suggestedFilenameStem, dataBytes, response);
+            default:
+                throw new IllegalArgumentException("Cannot write extract using format: " + format);
+        }
+    }
+
+    private static Object writeSvg(String suggestedFilenameStem,
+                            byte[] dataBytes,
+                            HttpServletResponse httpResponse) throws IOException {
+
+        httpResponse.setHeader("Content-Type", "image/svg+xml");
+        httpResponse.setHeader("Content-Disposition", "attachment; filename=" + suggestedFilenameStem + ".svg");
+        httpResponse.setHeader("Content-Transfer-Encoding", "7bit");
+
+        httpResponse.setContentLength(dataBytes.length);
+        httpResponse.getOutputStream().write(dataBytes);
+        httpResponse.getOutputStream().flush();
+        httpResponse.getOutputStream().close();
+
+        return httpResponse;
+    }
+
+
 }
