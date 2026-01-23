@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import Icon from "../common/Icon";
 import { BookmarkKinds } from "../../types/Bookmark";
+import Button from "../common/button/Button";
 interface BookmarkCategoryMenuProps {
   bookmarkKinds: BookmarkKinds[];
   onKindSelect: (kind: BookmarkKinds | null) => void; 
@@ -27,9 +28,7 @@ const BookmarkCategoryMenu: React.FC<BookmarkCategoryMenuProps> = ({
     return k1 === k2 || k1.key === k2.key;
   };
 
-  // Handles the click event on a bookmark category.
   const handleKindSelected = (k: BookmarkKinds) => {
-    // Toggles the selection: deselects if the same kind is clicked again, otherwise selects the new kind.
     const newSelected = eq(selected, k) ? null : k;
     setSelected(newSelected);
     onKindSelect(newSelected);
@@ -37,7 +36,6 @@ const BookmarkCategoryMenu: React.FC<BookmarkCategoryMenuProps> = ({
 
   return (
     <ul className="list-group">
-      {/* Maps over the bookmark kinds to render a list item for each. */}
       {bookmarkKinds.map((bookmarkKind) => (
         <li
           key={bookmarkKind.key}
@@ -46,19 +44,18 @@ const BookmarkCategoryMenu: React.FC<BookmarkCategoryMenuProps> = ({
           }`}
         >
           {bookmarkKind.count > 0 ? (
-            <button
+            <Button
               className="btn-skinny text-left"
               style={{width: "100%"}}
               onClick={() => handleKindSelected(bookmarkKind)}
             >
               <Icon name={bookmarkKind.icon} /> {bookmarkKind.name}
               {eq(selected, bookmarkKind) && (
-                // Shows a close icon if the category is currently selected.
                 <span className="pull-right">
                   <Icon name="close" />
                 </span>
               )}
-            </button>
+            </Button>
           ) : (
             <span>
               <Icon name={bookmarkKind.icon} /> {bookmarkKind.name}

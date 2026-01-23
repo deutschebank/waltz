@@ -3,7 +3,6 @@ import styles from "./styles/BookmarkEditor.module.scss";
 import Button from "../common/button/Button";
 import {BookmarkKinds, BookmarkType} from "../../types/Bookmark";
 
-// Defines the props for the BookmarkEditor component.
 interface BookmarkEditorProps {
   doCancel: () => void;
   doSave: (bookmark: BookmarkType) => void;
@@ -20,10 +19,8 @@ const BookmarkEditor: React.FC<BookmarkEditorProps> = ({
   bookmark,
   kinds,
 }) => {
-  // State to hold the form's data, initialized with the bookmark prop.
   const [workingCopy, setWorkingCopy] = useState({...bookmark});
 
-  // Handles the form submission.
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     doSave(workingCopy);

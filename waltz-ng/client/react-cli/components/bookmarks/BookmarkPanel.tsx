@@ -34,17 +34,11 @@ type BookmarkPanelProps = {
  * It allows users to view, filter, search, add, edit, and remove bookmarks.
  */
 const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
-  // React Query client for cache invalidation.
   const queryClient = useQueryClient();
   const {addToast} = useToasts();
-
-  // State for the selected bookmark kind/category.
   const [selectedKind, setSelectedKind] = useState<BookmarkKinds | null>(null);
-  // State for the search query string.
   const [query, setQuery] = useState("");
-  // State to hold the bookmark being considered for removal.
   const [removalCandidate, setRemovalCandidate] = useState<BookmarkType | null>(null);
-  // State to hold the bookmark being edited or created.
   const [editCandidate, setEditCandidate] = useState<BookmarkType | null>(null);
 
   // Fetches bookmarks for the primary entity.
@@ -77,14 +71,12 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
     [user]
   );
 
-  // Action definition for editing a bookmark.
   const editAction = {
     icon: "pencil",
     name: "Edit",
     handleAction: (d: BookmarkType) => setEditCandidate(d),
   };
 
-  // Action definition for removing a bookmark.
   const removeAction = {
     icon: "trash",
     name: "Remove",
@@ -169,7 +161,6 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
 
   // Renders the main content area based on the current state.
   const renderContent = () => {
-    // If a bookmark is marked for removal, show the confirmation dialog.
     if (removalCandidate) {
       return (
         <BookmarkRemovalConfirmation
@@ -179,7 +170,6 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
         />
       );
     }
-    // If a bookmark is being edited or created, show the editor form.
     if (editCandidate) {
       return (
         <BookmarkEditor
@@ -190,7 +180,6 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
         />
       );
     }
-    // Default view: shows search, add button, and the list of bookmarks.
     return (
       <>
         {bookmarks.length > 5 && (
@@ -221,7 +210,6 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
             )}
           </NoData>
         ) : (
-          // Otherwise, display the bookmarks in a table.
           <BookmarkTable bookmarkGroups={bookmarkGroups} actions={actions} />
         )}
       </>
@@ -229,7 +217,6 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
   };
 
   return (
-    // Main layout with two columns.
     <div className="row row-mini-gutters">
       <div className="col-sm-3">
         <BookmarkCategoryMenu

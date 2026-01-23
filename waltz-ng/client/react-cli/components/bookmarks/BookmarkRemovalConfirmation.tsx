@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./styles/BookmarkRemovalConfirmation.module.scss";
 import Button from "../common/button/Button";
 import {BookmarkType} from "../../types/Bookmark";
+
 interface BookmarkRemovalConfirmationProps {
   bookmark: BookmarkType;
   doRemove: () => void;

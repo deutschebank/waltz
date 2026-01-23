@@ -50,13 +50,13 @@ const UserSelectList: React.FC = () => {
     <>
       <p>
         Use the search below to select a user and edit their roles or
-        <button
+        <Button
           className="btn btn-skinny"
           data-testid="add-user-btn"
           onClick={() => reduxStore.dispatch(setActiveMode(Modes.ADD))}
         >
           <Icon name="plus" /> add a new user
-        </button>
+        </Button>
         .
       </p>
       <SearchInput

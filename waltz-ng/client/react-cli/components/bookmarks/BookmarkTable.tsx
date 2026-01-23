@@ -6,7 +6,7 @@ import {BookmarkType, BookmarkGroup} from "../../types/Bookmark";
 interface BookmarkTableProps {
   bookmarkGroups: BookmarkGroup[];
   actions: Action[];
-  children?: React.ReactNode; // For the footer slot
+  children?: React.ReactNode;
 }
 
 /**
