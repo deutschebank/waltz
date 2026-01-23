@@ -1,11 +1,10 @@
 import React from "react";
 import BookmarkListItem from "./BookmarkListItem";
 import {Action} from "../common/mini-actions/MiniActions";
-import { BookmarkType } from "../../types/Bookmark";
+import {BookmarkType, BookmarkGroup} from "../../types/Bookmark";
 
-// Defines the props for the BookmarkTable component.
 interface BookmarkTableProps {
-  bookmarkGroups: any[];
+  bookmarkGroups: BookmarkGroup[];
   actions: Action[];
   children?: React.ReactNode; // For the footer slot
 }
@@ -20,18 +19,14 @@ const BookmarkTable: React.FC<BookmarkTableProps> = ({
   children,
 }) => {
   return (
-    // Renders a standard HTML table with Bootstrap classes.
     <table className="table table-condensed table-hover">
-      {/* Iterates over each group of bookmarks. */}
       {bookmarkGroups.map((group, idx) => (
         <tbody key={idx}>
-          {/* Iterates over each bookmark within a group and renders a BookmarkListItem. */}
           {group.value.map((bookmark: BookmarkType) => (
             <BookmarkListItem key={bookmark.id} actions={actions} bookmark={bookmark} />
           ))}
         </tbody>
       ))}
-      {/* Renders any children passed to the component, typically used for a table footer. */}
       {children}
     </table>
   );

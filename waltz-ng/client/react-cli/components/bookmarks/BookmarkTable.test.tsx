@@ -1,26 +1,41 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import {render, screen} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import BookmarkTable from "./BookmarkTable";
+import {BookmarkGroup, BookmarkType} from "../../types/Bookmark";
+import {EntityKind, EntityLifecycleStatus} from "../../enums/Entity";
 
-jest.mock("./BookmarkListItem", () => ({ bookmark }: { bookmark: any }) => (
+jest.mock("./BookmarkListItem", () => ({bookmark}: {bookmark: BookmarkType}) => (
   <tr>
     <td>{bookmark.title}</td>
   </tr>
 ));
 
+const baseBookmark: BookmarkType = {
+  id: 0,
+  bookmarkKind: "DOCUMENTATION",
+  parent: {
+    kind: EntityKind.APPLICATION,
+    id: 1,
+    name: "test",
+    description: "test",
+    externalId: "test",
+    entityLifecycleStatus: EntityLifecycleStatus.ACTIVE,
+  },
+};
+
 describe("BookmarkTable", () => {
-  const mockBookmarkGroups = [
+  const mockBookmarkGroups: BookmarkGroup[] = [
     {
       key: "DOCUMENTATION",
       value: [
-        { id: 1, title: "Doc Bookmark 1" },
-        { id: 2, title: "Doc Bookmark 2" },
+        {...baseBookmark, id: 1, title: "Doc Bookmark 1"},
+        {...baseBookmark, id: 2, title: "Doc Bookmark 2"},
       ],
     },
     {
-      key: "REPORTING",
-      value: [{ id: 3, title: "Report Bookmark 1" }],
+      key: "REPORTING", // Assuming REPORTING is also a valid BookmarkKind
+      value: [{...baseBookmark, id: 3, title: "Report Bookmark 1"}],
     },
   ];
 

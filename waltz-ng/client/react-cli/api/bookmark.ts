@@ -1,22 +1,22 @@
 import {fetchJSON, execute} from "./api";
 import {bookmarkPath} from "../constants/path";
 import {BookmarkType, BookmarkBasic} from "../types/Bookmark";
-import _ from "lodash";
 import {EntityReference} from "../types/Entity";
 import {toEntityRef} from "../../common/entity-utils";
 
 function stripExtraneousFields(bookmark: BookmarkType): BookmarkBasic {
-  const simplifiedBookmark = _.pick(bookmark, [
-    "id",
-    "bookmarkKind",
-    "url",
-    "title",
-    "isRestricted",
-    "description",
-    "lastUpdatedBy",
-  ]);
+  const {id, bookmarkKind, url, title, isRestricted, description, lastUpdatedBy, parent} = bookmark;
 
-  const simplifiedParent = {parent: toEntityRef(bookmark.parent)};
+  const simplifiedBookmark = {
+    id,
+    bookmarkKind,
+    url,
+    title,
+    isRestricted,
+    description,
+    lastUpdatedBy,
+  };
+  const simplifiedParent = {parent: toEntityRef(parent)};
 
   return Object.assign({}, simplifiedBookmark, simplifiedParent) as BookmarkBasic;
 }

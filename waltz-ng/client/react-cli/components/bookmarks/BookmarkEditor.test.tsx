@@ -2,10 +2,10 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import BookmarkEditor from "./BookmarkEditor";
-import { IBookmark } from "../../types/Bookmark";
+import {BookmarkType, BookmarkKinds} from "../../types/Bookmark";
 
 describe("BookmarkEditor", () => {
-  const mockBookmark: IBookmark = {
+  const mockBookmark: BookmarkType = {
       id: 1,
       title: "Waltz",
       url: "https://waltz.example.com",
@@ -22,9 +22,9 @@ describe("BookmarkEditor", () => {
       }
   };
 
-  const mockKinds = [
-    { key: "DOCUMENTATION", name: "Documentation" },
-    { key: "REPORTING", name: "Reporting" },
+  const mockKinds: BookmarkKinds[] = [
+    { key: "DOCUMENTATION", name: "Documentation", icon: "book", count: 0 },
+    { key: "REPORTING", name: "Reporting", icon: "file-text", count: 0 },
   ];
 
   it("renders the form with initial bookmark data", () => {

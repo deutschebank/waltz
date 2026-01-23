@@ -1,4 +1,4 @@
-export type ENUMValueType = {
+export type EnumValueType = {
   key: string;
   name: string;
   icon: string;

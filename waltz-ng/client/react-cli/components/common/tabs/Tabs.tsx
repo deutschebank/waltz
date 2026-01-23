@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
 import styles from "./Tabs.module.scss";
 
-// Type definition for a single tab item.
 type TabsItem = {
   id: string;
   label: string;
@@ -11,7 +10,6 @@ type TabsItem = {
   renderPanel: () => React.ReactNode;
 };
 
-// Type definition for the props of the Tabs component.
 type TabsProps = {
   tabs: TabsItem[];
   defaultTabId?: string;
@@ -49,7 +47,6 @@ const Tabs: React.FC<TabsProps> = ({tabs, defaultTabId, onChange}) => {
   // Renders the tabs and the content of the active tab.
   return (
     <div className={styles.waltzTabs} style={{paddingTop: "1em"}}>
-      {/* Maps over the tabs array to render each tab's radio input and label. */}
       {tabs.map((tab) => (
         <React.Fragment key={tab.id}>
           <input

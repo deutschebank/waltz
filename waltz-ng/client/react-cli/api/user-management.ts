@@ -1,10 +1,10 @@
 import { fetchJSON, execute } from "./api";
 import { userPath } from "../constants/path";
 import {
-  CreateUser,
+  CreateUserType,
   UserInfo,
-  UserBulkResponse,
-  PreviewRow,
+  UserBulkUploadPreviewResponse,
+  UserBulkUploadResponse,
 } from "../types/User";
 import { Roles } from "../enums/User";
 
@@ -40,7 +40,7 @@ const updateRoles = (userName: string, roles: Roles[], comment: string) => ({
   },
 });
 
-const register = (newUser: CreateUser) => ({
+const register = (newUser: CreateUserType) => ({
   mutationKey: ["user", "register"],
   mutationFn: async (): Promise<boolean> => {
     return await execute(userPath.register(), "POST", newUser);
@@ -64,14 +64,14 @@ const resetPassword = (
 
 const bulkUploadPreview = (mode: string, rows: any = []) => ({
   mutationKey: ["user", "bulkUploadPreview", mode],
-  mutationFn: async (): Promise<UserBulkResponse<PreviewRow[]>> => {
+  mutationFn: async (): Promise<UserBulkUploadPreviewResponse> => {
     return await execute(userPath.bulkUploadPreview(mode), "POST", rows);
   },
 });
 
 const bulkUpload = (mode: string, rows: any = []) => ({
   mutationKey: ["user", "bulkUpload", mode],
-  mutationFn: async (): Promise<UserBulkResponse<number>> => {
+  mutationFn: async (): Promise<UserBulkUploadResponse> => {
     return await execute(userPath.bulkUpload(mode), "POST", rows);
   },
 });

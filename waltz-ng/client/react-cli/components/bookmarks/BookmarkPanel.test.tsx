@@ -8,7 +8,7 @@ import {bookmarkApi} from "../../api/bookmark";
 import {userManagementApi} from "../../api/user-management";
 import {enumValueApi} from "../../api/enum-value";
 import {EntityReference} from "../../types/Entity";
-import {IBookmark} from "../../types/Bookmark";
+import {BookmarkType} from "../../types/Bookmark";
 import roles from "../../../user/system-roles";
 
 // Mock dependencies
@@ -47,7 +47,7 @@ const primaryEntityRef: EntityReference = {
   entityLifecycleStatus: "UNKNOWN",
 };
 
-const mockBookmarks: IBookmark[] = [
+const mockBookmarks: BookmarkType[] = [
   {
     id: 1,
     bookmarkKind: "DOCUMENTATION",
@@ -90,7 +90,7 @@ const queryClient = new QueryClient({
 });
 
 const renderComponent = (
-  bookmarks: IBookmark[] | null = mockBookmarks,
+  bookmarks: BookmarkType[] | null = mockBookmarks,
   user: any = mockUser,
   isLoading = false,
   error: Error | null = null

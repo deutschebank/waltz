@@ -1,9 +1,7 @@
 import React from "react";
 import styles from "./styles/BookmarkRemovalConfirmation.module.scss";
 import Button from "../common/button/Button";
-import { BookmarkType } from "../../types/Bookmark";
-
-// Defines the props for the BookmarkRemovalConfirmation component.
+import {BookmarkType} from "../../types/Bookmark";
 interface BookmarkRemovalConfirmationProps {
   bookmark: BookmarkType;
   doRemove: () => void;
@@ -22,17 +20,14 @@ const BookmarkRemovalConfirmation: React.FC<BookmarkRemovalConfirmationProps> = 
   return (
     <div className={styles.removalWarning}>
       <h3>Confirm bookmark removal</h3>
-      {/* Confirmation message. */}
       Are you sure you want to remove this bookmark ?
       <div>
-        {/* Displays the title and URL of the bookmark to be removed. */}
-        <b>{bookmark.title}</b>
-        <p>{bookmark.url}</p>
+        <b>{bookmark?.title}</b>
+        <p>{bookmark?.url}</p>
       </div>
       <Button className="btn btn-warning" onClick={doRemove}>
         Remove
       </Button>
-      {/* The cancel button simply calls the doCancel function passed in props. */}
       <Button className="btn btn-link" onClick={doCancel}>
         Cancel
       </Button>

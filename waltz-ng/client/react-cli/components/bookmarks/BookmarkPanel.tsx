@@ -1,5 +1,4 @@
 import React, {useState, useMemo} from "react";
-import _ from "lodash";
 import BookmarkCategoryMenu from "./BookmarkCategoryMenu";
 import SearchInput from "../common/SearchInput";
 import Icon from "../common/Icon";
@@ -20,12 +19,12 @@ import {userManagementApi} from "../../api/user-management";
 import {bookmarkApi} from "../../api/bookmark";
 import {enumValueApi} from "../../api/enum-value";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {BookmarkKinds, BookmarkType} from "../../types/Bookmark";
+import {BookmarkGroup, BookmarkKinds, BookmarkType} from "../../types/Bookmark";
 import {NotificationTypeEnum} from "../../enums/Notification";
 import {EntityReference} from "../../types/Entity";
 import {useToasts} from "../../context/toast/ToastContext";
+import {Roles} from "../../enums/User";
 
-// Defines the props for the BookmarkPanel component.
 type BookmarkPanelProps = {
   primaryEntityRef: EntityReference;
 };
@@ -37,7 +36,6 @@ type BookmarkPanelProps = {
 const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
   // React Query client for cache invalidation.
   const queryClient = useQueryClient();
-  // Custom hook for displaying toast notifications.
   const {addToast} = useToasts();
 
   // State for the selected bookmark kind/category.
@@ -63,7 +61,7 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
   // Memoized calculation to nest enum values for efficient use.
   const nestedEnums = useMemo(() => nestEnums(enums), [enums]);
   // Memoized calculation to filter and group bookmarks based on kind and search query.
-  const bookmarkGroups = useMemo(
+  const bookmarkGroups: BookmarkGroup[] = useMemo(
     () => nestBookmarks(nestedEnums, filterBookmarks(bookmarks, selectedKind, query)),
     [nestedEnums, bookmarks, selectedKind, query]
   );
@@ -75,7 +73,7 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
 
   // Memoized check to determine if the current user has editing permissions.
   const canEdit = useMemo(
-    () => _.includes(user?.roles, roles.BOOKMARK_EDITOR.key),
+    () => user?.roles?.includes(roles.BOOKMARK_EDITOR.key as Roles) ?? false,
     [user]
   );
 
@@ -155,10 +153,8 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
     },
   });
 
-  // Handler to trigger the save mutation.
   const handleSave = (bookmark: BookmarkType) => saveMutation(bookmark);
 
-  // Handler to trigger the remove mutation.
   const handleRemove = () => {
     if (removalCandidate?.id) removeMutation(removalCandidate.id); // Ensures removal candidate and its ID exist.
   };
@@ -213,7 +209,7 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
           </>
         )}
         {/* If there are no bookmarks, show a message and an add button if user can edit. */}
-        {_.isEmpty(bookmarkGroups) ? (
+        {bookmarkGroups.length === 0 ? (
           <NoData>
             No bookmarks
             {canEdit && (

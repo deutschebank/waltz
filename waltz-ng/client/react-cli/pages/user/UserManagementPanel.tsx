@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {useSliceSelector} from "../../hooks/useSliceSelector";
 import Icon from "../../components/common/Icon";
 import UserSelectList from "../../components/user-management/UserSelectList";
@@ -61,7 +61,6 @@ const UserManagementPanel: React.FC = () => {
     },
   ];
 
-  // Main render method for the component, including tab navigation.
   return (
     <div>
       <Tabs tabs={tabs} defaultTabId={TABS.SINGLE} />

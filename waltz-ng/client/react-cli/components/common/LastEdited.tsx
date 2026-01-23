@@ -3,7 +3,7 @@ import DateTime from "./DateTime";
 import {BookmarkType} from "../../types/Bookmark";
 
 interface LastEditedProps {
-  entity: Pick<BookmarkType, "lastUpdatedBy" | "lastUpdatedAt"> | null;
+  entity: Pick<BookmarkType, "lastUpdatedBy" | "lastUpdatedAt">;
   showLabel?: boolean;
 }
 

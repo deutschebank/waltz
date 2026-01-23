@@ -1,10 +1,10 @@
 import {fetchJSON} from "./api";
 import {enumValuePath} from "../constants/path";
-import { ENUMValueType } from "../types/EnumValue";
+import {EnumValueType} from "../types/EnumValue";
 
 const load = () => ({
   queryKey: ["enum", "load"],
-  queryFn: async (): Promise<ENUMValueType[]> => {
+  queryFn: async (): Promise<EnumValueType[]> => {
     return await fetchJSON(enumValuePath.findAll());
   },
 });

@@ -1,9 +1,6 @@
 import React, {useState} from "react";
 import Icon from "../common/Icon";
 import { BookmarkKinds } from "../../types/Bookmark";
-
-
-// Defines the props for the BookmarkCategoryMenu component.
 interface BookmarkCategoryMenuProps {
   bookmarkKinds: BookmarkKinds[];
   onKindSelect: (kind: BookmarkKinds | null) => void; 
@@ -24,7 +21,7 @@ const BookmarkCategoryMenu: React.FC<BookmarkCategoryMenuProps> = ({
    * They are considered equal if they are the same object or have the same 'key' property.
    */
   const eq = (k1: BookmarkKinds | null, k2: BookmarkKinds | null) => {
-    if (k1 === null || k2 === null) { // Handles cases where one or both kinds are null.
+    if (k1 === null || k2 === null) { 
       return false;
     }
     return k1 === k2 || k1.key === k2.key;
@@ -49,7 +46,6 @@ const BookmarkCategoryMenu: React.FC<BookmarkCategoryMenuProps> = ({
           }`}
         >
           {bookmarkKind.count > 0 ? (
-            // If there are bookmarks of this kind, render a clickable button.
             <button
               className="btn-skinny text-left"
               style={{width: "100%"}}
@@ -65,7 +61,6 @@ const BookmarkCategoryMenu: React.FC<BookmarkCategoryMenuProps> = ({
             </button>
           ) : (
             <span>
-              {/* If there are no bookmarks of this kind, render non-clickable text. */}
               <Icon name={bookmarkKind.icon} /> {bookmarkKind.name}
             </span>
           )}

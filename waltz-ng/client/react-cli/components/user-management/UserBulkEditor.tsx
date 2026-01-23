@@ -5,7 +5,7 @@ import { useToasts } from "../../context/toast/ToastContext";
 import { NotificationTypeEnum } from "../../enums/Notification";
 import Button from "../common/button/Button";
 import Icon from "../common/Icon";
-import { UserBulkResponse } from "../../types/User";
+import { PreviewRow, UserBulkUploadPreviewResponse, UserBulkUploadResponse } from "../../types/User";
 
 // Defines the modes for bulk uploading user roles.
 const UploadModes = {
@@ -28,21 +28,10 @@ const uploadModeLabels: { [key: string]: string } = {
   REPLACE: "Replace",
 };
 
-// Defines the structure for a preview row.
-interface PreviewRow {
-  givenUser: string;
-  givenRole: string;
-  givenComment: string;
-  resolvedUser: string | null;
-  resolvedRole: string | null;
-  resolvedComment: string | null;
-}
-
 /**
  * UserBulkEditor provides a UI for bulk editing user roles via CSV data.
  */
 const UserBulkEditor: React.FC = () => {
-  // Hook for displaying toast notifications.
   const { addToast } = useToasts();
   // State for the selected upload mode (e.g., ADD, REMOVE, REPLACE).
   const [uploadMode, setUploadMode] = useState<string>(UploadModes.ADD);
@@ -57,7 +46,7 @@ const UserBulkEditor: React.FC = () => {
 
   // Mutation for fetching a preview of the bulk upload.
   const { mutate: previewMutation, isPending: isPreviewing } = useMutation<
-    UserBulkResponse<PreviewRow[]>,
+    UserBulkUploadPreviewResponse,
     Error
   >({
     mutationFn: () => {
@@ -79,7 +68,7 @@ const UserBulkEditor: React.FC = () => {
 
   // Mutation for performing the bulk upload of user roles.
   const { mutate: uploadMutation, isPending: isUploading } = useMutation<
-    UserBulkResponse<number>,
+    UserBulkUploadResponse,
     Error
   >({
     mutationFn: () => {
