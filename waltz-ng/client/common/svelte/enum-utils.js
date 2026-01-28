@@ -16,12 +16,13 @@
  *
  */
 
+import _ from "lodash";
 import {nest} from "d3-collection";
 
 export const nestEnums = (enums = []) => nest()
     .key(d => d.type)
     .key(d => d.key)
-    .rollup(_.first)
+    .rollup(values => values[0])
     .object(enums);
 
 export const getIcon = (nestedEnums, kind, key) => _.get(nestedEnums, [kind, key, "icon"], "circle-o");

@@ -48,7 +48,7 @@ function controller($element, $compile, $scope) {
         vm.sectionScope.onRemove = vm.onRemove;
         vm.sectionScope.canRemove = vm.canRemove;
 
-        if (vm.section.componentId && !vm.section.svelteComponent) {
+        if (vm.section.componentId && !vm.section.svelteComponent && !vm.section.reactComponent) {
             const linkFn = $compile(sectionToTemplate(vm.section, vm.renderMode));
             const content = linkFn(vm.sectionScope);
             $element.append(content);
