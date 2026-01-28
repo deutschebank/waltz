@@ -129,14 +129,14 @@ const UserRolesList: React.FC = () => {
       <h4>{selectedUser.userName}</h4>
       <p>
         You can search for a role to edit below, delete this user or
-        <button
+        <Button
           className="btn btn-skinny"
           title="Save or discard changes to roles before editing password"
           disabled={rolesChanged}
           onClick={() => reduxStore.dispatch(setActiveMode(Modes.PASSWORD))}
         >
           <Icon name="key" /> change the user's password
-        </button>
+        </Button>
       </p>
       <SearchInput value={qry} onChange={setQry} placeholder="Search for a role..." />
       <br />
@@ -152,13 +152,13 @@ const UserRolesList: React.FC = () => {
           <thead>
             <tr>
               <th>
-                <button className="btn btn-skinny" data-testid="add-all" onClick={handleAddAll}>
+                <Button className="btn btn-skinny" data-testid="add-all" onClick={handleAddAll}>
                   <Icon name="plus" />
-                </button>
+                </Button>
                 /
-                <button className="btn btn-skinny" data-testid="remove-all" onClick={handleRemoveAll}>
+                <Button className="btn btn-skinny" data-testid="remove-all" onClick={handleRemoveAll}>
                   <Icon name="minus" />
-                </button>
+                </Button>
               </th>
               <th>Role</th>
               <th>Key</th>

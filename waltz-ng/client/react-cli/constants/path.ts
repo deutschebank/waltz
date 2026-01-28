@@ -1,4 +1,4 @@
-import { EntityKind, EntityReference } from "../types/Entity";
+import {EntityKind, EntityReference} from "../types/Entity";
 
 export const BASE_URL = "api";
 export const DATA_EXTRACT_BASE_URL = "data-extract";
@@ -14,6 +14,7 @@ export const allocationSchemeBaseUrl = `${BASE_URL}/allocation-scheme`;
 export const allocationSchemePath = {
   findAll: () => `${allocationSchemeBaseUrl}/all`,
 };
+
 
 export const applicationBaseUrl = `${BASE_URL}/app`;
 export const applicationPath = {
@@ -38,6 +39,12 @@ export const assessmentRatingBaseUrl = `${BASE_URL}/assessment-rating`;
 export const assessmentRatingPath = {
     findForEntityReference: (ref: EntityReference) => `${assessmentRatingBaseUrl}/entity/${ref.kind}/${ref.id}`
 }
+
+export const bookmarkPath = {
+  load: (ref: EntityReference) => `${BASE_URL}/bookmarks/${ref.kind}/${ref.id}`,
+  save: () => `${BASE_URL}/bookmarks`,
+  remove: (id: number) => `${BASE_URL}/bookmarks/${id}`,
+};
 
 export const complexityKindBaseUrl = `${BASE_URL}/complexity-kind`;
 export const complexityKindPath = {
@@ -66,6 +73,11 @@ export const entityAliasPath = {
 export const entitySearchBaseUrl = `${BASE_URL}/entity-search`;
 export const entitySearchPath = {
   search: () => entitySearchBaseUrl,
+};
+
+export const enumValueBaseUrl = `${BASE_URL}/enum-value`;
+export const enumValuePath = {
+  findAll: () => enumValueBaseUrl,
 };
 
 export const favouritesBaseUrl = `${BASE_URL}/favourites`;
@@ -115,8 +127,7 @@ export const staticPanelBaseUrl = `${BASE_URL}/static-panel`;
 export const staticPanelPath = {
   load: () => staticPanelBaseUrl,
   save: () => staticPanelBaseUrl,
-  findByGroupKey: (groupKey: string) =>
-    `${staticPanelBaseUrl}/group?group=${groupKey}`,
+  findByGroupKey: (groupKey: string) => `${staticPanelBaseUrl}/group?group=${groupKey}`,
 };
 
 // Endpoints: User Management Panel

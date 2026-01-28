@@ -15,7 +15,7 @@
  * See the License for the specific
  *
  */
-import BookmarkPanel from "../bookmarks/svelte/BookmarkPanel.svelte";
+import BookmarkPanel from "../react-cli/components/bookmarks/BookmarkPanel";
 import InvolvementsSection from "../involvement-kind/components/svelte/InvolvementsSection.svelte";
 
 
@@ -44,7 +44,7 @@ const flowClassificationRulesSection = {
 };
 
 const bookmarksSection = {
-    svelteComponent: BookmarkPanel,
+    reactComponent: BookmarkPanel,
     componentId: "bookmarks-section",
     name: "Bookmarks",
     icon: "rocket",
