@@ -1,5 +1,4 @@
 import React from "react";
-import _ from "lodash";
 import Icon from "../common/Icon";
 import MiniActions, {Action} from "../common/mini-actions/MiniActions";
 import LastEdited from "../common/LastEdited";
@@ -24,7 +23,7 @@ const BookmarkListItem: React.FC<BookmarkListItemProps> = ({bookmark, actions = 
             <Icon name="lock" /> Permissions may be required
           </small>
         )}
-        <div className={`text-muted ${_.isNil(bookmark.description) ? "italics" : ""}`}>
+        <div className={`text-muted ${!bookmark.description ? "italics" : ""}`}>
           {bookmark.description || "No description provided"}
         </div>
       </td>

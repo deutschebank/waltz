@@ -5,7 +5,7 @@ import React from "react";
 import UserSelectList from "./UserSelectList";
 import { userManagementApi } from "../../api/user-management";
 import reduxStore from "../../../redux-store";
-import { Modes } from "../../enums/User";
+import { VisualStateModes } from "../../enums/VisualState";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Mock the API module
@@ -137,7 +137,7 @@ describe("UserSelectList", () => {
         });
         expect(reduxStore.dispatch).toHaveBeenCalledWith({
             type: "userManagement/setActiveMode",
-            payload: Modes.DETAIL,
+            payload: VisualStateModes.DETAIL,
         });
     });
 
@@ -154,7 +154,7 @@ describe("UserSelectList", () => {
 
         expect(reduxStore.dispatch).toHaveBeenCalledWith({
             type: "userManagement/setActiveMode",
-            payload: Modes.ADD,
+            payload: VisualStateModes.ADD,
         });
     });
 });

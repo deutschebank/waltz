@@ -7,7 +7,7 @@ import reduxStore from "../../../redux-store";
 import { useToasts } from "../../context/toast/ToastContext";
 import { useMutation } from "@tanstack/react-query";
 import { setActiveMode } from "../../../redux-slices/user-management-slice";
-import { Modes } from "../../enums/User";
+import { VisualStateModes } from "../../enums/VisualState";
 import { NotificationTypeEnum } from "../../enums/Notification";
 import { userManagementApi } from "../../api/user-management";
 
@@ -142,9 +142,9 @@ describe("PasswordUpdatePanel", () => {
         const cancelButton = screen.getByRole("button", { name: "Cancel" });
         fireEvent.click(cancelButton);
 
-        expect(mockSetActiceMode).toHaveBeenCalledWith(Modes.DETAIL);
+        expect(mockSetActiceMode).toHaveBeenCalledWith(VisualStateModes.DETAIL);
         expect(mockDispatch).toHaveBeenCalledWith(
-            mockSetActiceMode(Modes.DETAIL)
+            mockSetActiceMode(VisualStateModes.DETAIL)
         );
     });
 
@@ -175,7 +175,7 @@ describe("PasswordUpdatePanel", () => {
 
             await waitFor(() => {
                 expect(mockDispatch).toHaveBeenCalledWith(
-                    mockSetActiceMode(Modes.DETAIL)
+                    mockSetActiceMode(VisualStateModes.DETAIL)
                 );
             });
         });

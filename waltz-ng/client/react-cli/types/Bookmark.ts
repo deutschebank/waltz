@@ -28,6 +28,6 @@ export interface BookmarkKinds {
   count: number;
 }
 
-export interface BookmarkBasic extends Omit<BookmarkType, "parent"> {
+export interface BookmarkBasic {
   parent: EntityReference;
 }

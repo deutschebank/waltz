@@ -12,7 +12,8 @@ import {
 import { userManagementApi } from "../../api/user-management";
 import reduxStore from "../../../redux-store";
 import CreateUser from "./CreateUser";
-import { Modes, Roles } from "../../enums/User";
+import { UserRoles } from "../../enums/User";
+import { VisualStateModes } from "../../enums/VisualState";
 
 // Mock external modules
 jest.mock("@tanstack/react-query", () => ({
@@ -268,16 +269,16 @@ describe("CreateUser", () => {
             expect(reduxStore.dispatch).toHaveBeenCalledWith(
                 setSelectedUser({
                     userId: "testUser",
-                    roles: [Roles.ADMIN],
+                    roles: [UserRoles.ADMIN],
                     name: "testUser",
                     userName: "testUser",
                 })
             );
             expect(reduxStore.dispatch).toHaveBeenCalledWith(
-                setUserRoles([Roles.ADMIN])
+                setUserRoles([UserRoles.ADMIN])
             );
             expect(reduxStore.dispatch).toHaveBeenCalledWith(
-                setActiveMode(Modes.DETAIL)
+                setActiveMode(VisualStateModes.DETAIL)
             );
         });
     });
@@ -339,7 +340,7 @@ describe("CreateUser", () => {
         fireEvent.click(cancelButton);
 
         expect(reduxStore.dispatch).toHaveBeenCalledWith(
-            setActiveMode(Modes.LIST)
+            setActiveMode(VisualStateModes.LIST)
         );
     });
 });

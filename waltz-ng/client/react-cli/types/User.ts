@@ -1,7 +1,6 @@
-import {Roles} from "../enums/User";
+import { UserRoles } from "../enums/User";
 export interface Role {
-  id: number;
-  key: Roles;
+  key: UserRoles;
   name: string;
   description: string;
   userSelectable?: boolean;
@@ -12,7 +11,7 @@ export interface UserInfo {
   userId?: string;
   name?: string;
   userName: string;
-  roles: Roles[];
+  roles: UserRoles[];
   comment?: string;
 }
 
@@ -42,6 +41,6 @@ export type UserBulkUploadResponse = {
 export interface UserManagementState {
   selectedUser: UserInfo | null;
   activeMode: string;
-  userRoles: Roles[];
+  userRoles: UserRoles[];
   searchQry: string;
 }

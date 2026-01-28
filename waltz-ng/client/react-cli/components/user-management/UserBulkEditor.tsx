@@ -6,19 +6,13 @@ import { NotificationTypeEnum } from "../../enums/Notification";
 import Button from "../common/button/Button";
 import Icon from "../common/Icon";
 import { PreviewRow, UserBulkUploadPreviewResponse, UserBulkUploadResponse } from "../../types/User";
+import { VisualStateModes } from "../../enums/VisualState";
 
 // Defines the modes for bulk uploading user roles.
 const UploadModes = {
   ADD: "ADD_ONLY",
   REMOVE: "REMOVE_ONLY",
   REPLACE: "REPLACE",
-};
-
-// Defines the different view modes for the component.
-const Modes = {
-  EDIT: "EDIT",
-  PREVIEW: "PREVIEW",
-  RESULT: "RESULT",
 };
 
 // Maps upload mode keys to user-friendly labels.
@@ -33,14 +27,13 @@ const uploadModeLabels: { [key: string]: string } = {
  */
 const UserBulkEditor: React.FC = () => {
   const { addToast } = useToasts();
-  // State for the selected upload mode (e.g., ADD, REMOVE, REPLACE).
   const [uploadMode, setUploadMode] = useState<string>(UploadModes.ADD);
   // State for the raw CSV data input by the user.
   const [rowData, setRowData] = useState<string>("");
   // State for storing the preview data returned from the server.
   const [preview, setPreview] = useState<PreviewRow[]>([]);
   // State to control the current view mode (EDIT, PREVIEW, RESULT).
-  const [mode, setMode] = useState<string>(Modes.EDIT);
+  const [mode, setMode] = useState<string>(VisualStateModes.EDIT);
   // State to store the count of updated entries after a successful upload.
   const [updatedCount, setUpdatedCount] = useState<number>(0);
 
@@ -55,7 +48,7 @@ const UserBulkEditor: React.FC = () => {
     },
     onSuccess: (response) => {
       setPreview(response.data);
-      setMode(Modes.PREVIEW);
+      setMode(VisualStateModes.PREVIEW);
     },
     onError: (error: any) => {
       const message = error.data?.message || error.message;
@@ -77,7 +70,7 @@ const UserBulkEditor: React.FC = () => {
     },
     onSuccess: (res) => {
       setUpdatedCount(res.data);
-      setMode(Modes.RESULT);
+      setMode(VisualStateModes.RESULT);
     },
     onError: (error: any) => {
       const message =
@@ -240,7 +233,7 @@ const UserBulkEditor: React.FC = () => {
       <Button
         className="btn btn-skinny"
         data-testid="back-preview"
-        onClick={() => setMode(Modes.EDIT)}
+        onClick={() => setMode(VisualStateModes.EDIT)}
       >
         Back
       </Button>
@@ -260,7 +253,7 @@ const UserBulkEditor: React.FC = () => {
       <Button
         className="btn btn-skinny"
         data-testid="back-result"
-        onClick={() => setMode(Modes.EDIT)}
+        onClick={() => setMode(VisualStateModes.EDIT)}
       >
         Back
       </Button>
@@ -269,11 +262,11 @@ const UserBulkEditor: React.FC = () => {
 
   // Determines which mode to render based on the current state.
   switch (mode) {
-    case Modes.PREVIEW:
+    case VisualStateModes.PREVIEW:
       return renderPreviewMode();
-    case Modes.RESULT:
+    case VisualStateModes.RESULT:
       return renderResultMode();
-    case Modes.EDIT:
+    case VisualStateModes.EDIT:
     default:
       return renderEditMode();
   }

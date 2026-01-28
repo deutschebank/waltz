@@ -11,7 +11,7 @@ import {
 } from "../../../redux-slices/user-management-slice";
 import { userManagementApi } from "../../api/user-management";
 import reduxStore from "../../../redux-store";
-import { Modes } from "../../enums/User";
+import { VisualStateModes } from "../../enums/VisualState";
 import { useSliceSelector } from "../../hooks/useSliceSelector";
 import DeleteUser from "./DeleteUser";
 
@@ -157,7 +157,7 @@ describe("DeleteUser", () => {
             );
             expect(reduxStore.dispatch).toHaveBeenCalledWith(setUserRoles([]));
             expect(reduxStore.dispatch).toHaveBeenCalledWith(
-                setActiveMode(Modes.LIST)
+                setActiveMode(VisualStateModes.LIST)
             );
             expect(mockInvalidateQueries).toHaveBeenCalledWith({
                 queryKey: ["user", "findAll"],
@@ -242,7 +242,7 @@ describe("DeleteUser", () => {
         );
 
         expect(reduxStore.dispatch).toHaveBeenCalledWith(
-            setActiveMode(Modes.DETAIL)
+            setActiveMode(VisualStateModes.DETAIL)
         );
     });
 });

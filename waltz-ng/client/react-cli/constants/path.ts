@@ -103,7 +103,7 @@ export const measurableRatingPath = {
 export const notesBaseUrl = `${BASE_URL}/entity-named-note`;
 export const notesPath = {
   save: (ref: EntityReference, noteTypeId: number) => `${notesBaseUrl}/entity-ref/${ref.kind}/${ref.id}/${noteTypeId}`,
-  remove: (ref: EntityReference, noteTypeId: number) => `api/entity-named-note/entity-ref/${ref.kind}/${ref.id}/${noteTypeId}`,
+  remove: (ref: EntityReference, noteTypeId: number) => `${notesBaseUrl}/entity-ref/${ref.kind}/${ref.id}/${noteTypeId}`,
   findForEntityReference: (ref: EntityReference) => `${notesBaseUrl}/entity-ref/${ref.kind}/${ref.id}`,
 };
 

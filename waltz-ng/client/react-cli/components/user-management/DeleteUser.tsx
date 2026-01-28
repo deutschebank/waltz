@@ -12,15 +12,13 @@ import { NotificationTypeEnum } from "../../enums/Notification";
 import NoData from "../common/no-data/NoData";
 import Button from "../common/button/Button";
 import { useSliceSelector } from "../../hooks/useSliceSelector";
-import { Modes } from "../../enums/User";
+import { VisualStateModes } from "../../enums/VisualState";
 
 /**
  * DeleteUser component provides a confirmation dialog for deleting a user.
  */
 const DeleteUser: React.FC = () => {
-  // Retrieves the currently selected user from the Redux store.
   const selectedUser = useSliceSelector((state) => state.userManagement.selectedUser);
-  // Hook for displaying toast notifications.
   const { addToast } = useToasts();
   // Hook to access the query client for cache invalidation.
   const queryClient = useQueryClient();
@@ -39,7 +37,7 @@ const DeleteUser: React.FC = () => {
       });
       reduxStore.dispatch(setSelectedUser(null));
       reduxStore.dispatch(setUserRoles([]));
-      reduxStore.dispatch(setActiveMode(Modes.LIST));
+      reduxStore.dispatch(setActiveMode(VisualStateModes.LIST));
       // Invalidate the user list query to refetch the data
       queryClient.invalidateQueries({
         queryKey: ["user", "findAll"],
@@ -55,12 +53,10 @@ const DeleteUser: React.FC = () => {
     },
   });
 
-  // Renders a message if no user is selected.
   if (!selectedUser) {
     return <NoData>No user selected</NoData>;
   }
 
-  // Handles the confirmation of the delete action.
   const handleDelete = () => {
     deleteUserMutation(selectedUser.userName);
   };
@@ -75,7 +71,7 @@ const DeleteUser: React.FC = () => {
       </Button>
       <Button
         className="btn btn-skinny"
-        onClick={() => reduxStore.dispatch(setActiveMode(Modes.DETAIL))}
+        onClick={() => reduxStore.dispatch(setActiveMode(VisualStateModes.DETAIL))}
       >
         Cancel
       </Button>

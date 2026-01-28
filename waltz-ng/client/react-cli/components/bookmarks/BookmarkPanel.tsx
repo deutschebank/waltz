@@ -23,7 +23,7 @@ import {BookmarkGroup, BookmarkKinds, BookmarkType} from "../../types/Bookmark";
 import {NotificationTypeEnum} from "../../enums/Notification";
 import {EntityReference} from "../../types/Entity";
 import {useToasts} from "../../context/toast/ToastContext";
-import {Roles} from "../../enums/User";
+import {UserRoles} from "../../enums/User";
 
 type BookmarkPanelProps = {
   primaryEntityRef: EntityReference;
@@ -67,7 +67,7 @@ const BookmarkPanel: React.FC<BookmarkPanelProps> = ({primaryEntityRef}) => {
 
   // Memoized check to determine if the current user has editing permissions.
   const canEdit = useMemo(
-    () => user?.roles?.includes(roles.BOOKMARK_EDITOR.key as Roles) ?? false,
+    () => user?.roles?.includes(roles.BOOKMARK_EDITOR.key as UserRoles) ?? false,
     [user]
   );
 

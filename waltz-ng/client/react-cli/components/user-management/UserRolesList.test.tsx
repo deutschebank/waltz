@@ -8,7 +8,7 @@ import { useToasts } from "../../context/toast/ToastContext";
 import { roleApi } from "../../api/roles";
 import { userManagementApi } from "../../api/user-management";
 import userManagementSlice from "../../../redux-slices/user-management-slice";
-import { Modes } from "../../enums/User";
+import { VisualStateModes } from "../../enums/VisualState";
 import reduxStore from "../../../redux-store";
 import { UserManagementState } from "../../types/User";
 
@@ -96,7 +96,7 @@ const renderComponent = (selectedUser: any = mockSelectedUser) => {
             userManagement: {
                 selectedUser,
                 userRoles: selectedUser?.roles || [],
-                activeMode: Modes.LIST,
+                activeMode: VisualStateModes.LIST,
             },
         },
     });
@@ -250,7 +250,7 @@ describe("UserRolesList", () => {
         });
 
         await waitFor(() => {
-            expect(store.getState().userManagement.activeMode).toBe(Modes.LIST);
+            expect(store.getState().userManagement.activeMode).toBe(VisualStateModes.LIST);
         });
     });
 
@@ -299,7 +299,7 @@ describe("UserRolesList", () => {
             type: "WARNING",
             message: "Changes to roles for testuser discarded",
         });
-        expect(store.getState().userManagement.activeMode).toBe(Modes.LIST);
+        expect(store.getState().userManagement.activeMode).toBe(VisualStateModes.LIST);
     });
 
     it("should display and toggle read-only roles", async () => {

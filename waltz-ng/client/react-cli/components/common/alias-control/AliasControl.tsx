@@ -8,6 +8,7 @@ import TagInput from "../tags-input/TagsInput";
 import styles from "./AliasControl.module.scss";
 import { useToasts } from "../../../context/toast/ToastContext";
 import { NotificationTypeEnum } from "../../../enums/Notification";
+import { VisualStateModes } from "../../../enums/VisualState";
 
 // Types
 type ParentProps = {
@@ -15,17 +16,11 @@ type ParentProps = {
   editable?: boolean;
 };
 
-// ENUMS
-enum Modes {
-  VIEW = "VIEW",
-  EDIT = "EDIT",
-}
-
 const AliasControl: React.FC<ParentProps> = ({
   parentEntityReference,
   editable = false,
 }) => {
-  const [mode, setMode] = useState<Modes>(Modes.VIEW); // View/Edit state
+  const [mode, setMode] = useState<VisualStateModes>(VisualStateModes.VIEW); // View/Edit state
   const queryClient = useQueryClient(); // Required to update the query data
   const { addToast } = useToasts();
 
@@ -48,7 +43,7 @@ const AliasControl: React.FC<ParentProps> = ({
         type: NotificationTypeEnum.SUCCESS,
         message: "Updated aliases successfully",
       });
-      setMode(Modes.VIEW); // Switch back to view mode
+      setMode(VisualStateModes.VIEW);
     },
     onError: (error) => {
       displayError("Failed to update aliases", error);
@@ -56,20 +51,18 @@ const AliasControl: React.FC<ParentProps> = ({
     },
   });
 
-  // on save call the mutation with new aliases
   const onSave = (newAliases: string[]) => {
     mutation.mutate(newAliases);
   };
 
-  // Cancel edit mode
   const onCancel = () => {
-    setMode(Modes.VIEW);
+    setMode(VisualStateModes.VIEW);
   };
 
   return (
     <div className="waltz-alias-list">
       {/* Render aliases in VIEW mode */}
-      {mode === Modes.VIEW && !isPending && (
+      {mode === VisualStateModes.VIEW && !isPending && (
         <ul className="list-inline">
           {aliases.length > 0 ? (
             aliases.map((alias: string, index: number) => (
@@ -84,7 +77,7 @@ const AliasControl: React.FC<ParentProps> = ({
           )}
           {editable && (
             <li>
-              <Button className="btn-skinny" onClick={() => setMode(Modes.EDIT)}>
+              <Button className="btn-skinny" onClick={() => setMode(VisualStateModes.EDIT)}>
                 Edit
               </Button>
             </li>
@@ -93,10 +86,10 @@ const AliasControl: React.FC<ParentProps> = ({
       )}
 
       {/* Render TagInput in EDIT mode */}
-      {mode === Modes.EDIT && (
+      {mode === VisualStateModes.EDIT && (
         <TagInput
           value={aliases}
-          list={aliases} // Assuming some suggestions could come from the current aliases list
+          list={aliases}
           onSave={onSave}
           onCancel={onCancel}
         />

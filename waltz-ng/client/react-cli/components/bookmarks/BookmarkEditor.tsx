@@ -45,7 +45,6 @@ const BookmarkEditor: React.FC<BookmarkEditorProps> = ({
 
   return (
     <>
-      {/* The title of the form changes based on whether it's a new or existing bookmark. */}
       <h4>Bookmark Edit</h4>
       <form autoComplete="off" onSubmit={handleSave}>
         <div className="form-group">
@@ -119,14 +118,10 @@ const BookmarkEditor: React.FC<BookmarkEditorProps> = ({
             onChange={handleChange}
           />
         </div>
-
-        {/* Button to submit the form and save the bookmark. */}
         <Button type="submit" className="btn btn-success">
           Save
         </Button>
-
         <Button className="btn btn-link" onClick={doCancel}>
-          {/* Button to cancel the edit and close the form. */}
           Cancel
         </Button>
       </form>

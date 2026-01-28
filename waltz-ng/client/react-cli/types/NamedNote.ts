@@ -1,26 +1,30 @@
-import {EntityReference} from "./Entity";
+import {EntityKind, EntityReference} from "./Entity";
 import {LastUpdatedProvider, ProvenanceProvider} from "./Providers";
 
-export interface NamedNote {
-    entity: {
-        id: number;
-        description: string;
-        name: string;
-        externalId: string;
-        applicableEntityKinds: string[];
-        position: number;
-        isReadOnly: boolean;
-    };
-    operations: string[];
+export interface NoteTypeEntity {
+  id: number;
+  description: string;
+  name: string;
+  externalId: string;
+  applicableEntityKinds: EntityKind[];
+  position: number;
+  isReadOnly: boolean;
 }
 
-export interface NamedNoteType extends Partial<LastUpdatedProvider>, Partial<ProvenanceProvider> {
-    entityReference?: EntityReference;
-    namedNoteTypeId?: number;
-    noteText: string;
+export interface TypeWithOperations {
+  entity: NoteTypeEntity;
+  operations: string[];
 }
 
-export interface Note {
-    type: NamedNote["entity"];
-    note: NamedNoteType;
+export interface Note
+  extends Partial<LastUpdatedProvider>, Partial<ProvenanceProvider> {
+  entityReference?: EntityReference;
+  namedNoteTypeId?: number;
+  noteText: string;
+}
+
+export interface NoteWithType {
+  type: NoteTypeEntity;
+  note: Note;
+  operations: string[];
 }

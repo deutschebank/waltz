@@ -10,15 +10,9 @@ import {EntityReference} from "../../types/Entity";
 import personApi from "../../api/person"
 import {useQuery} from "@tanstack/react-query";
 import {EntityKind} from "../../enums/Entity";
-
-
-const Modes = {
-    ADD: "add",
-    LIST: "list"
-};
+import { VisualStateModes } from "../../enums/VisualState";
 
 const searchKinds = [EntityKind.PERSON];
-
 export interface PersonListProps {
     people: Person[];
     canAdd?: boolean;
@@ -37,22 +31,22 @@ export const PersonList = ({
     onRemove = (p: Person) => Promise.resolve()
 }: PersonListProps) => {
 
-    const [mode, setMode] = useState(Modes.LIST);
+    const [mode, setMode] = useState(VisualStateModes.LIST);
     const {data: self} = useQuery(personApi.getSelf());
 
     const initiateAddition = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
-        setMode(Modes.ADD);
+        setMode(VisualStateModes.ADD);
     }, []);
 
     const doAdd = useCallback((person: Person) => {
         onAdd(person)
-            .then(() => setMode(Modes.LIST));
+            .then(() => setMode(VisualStateModes.LIST));
     }, [onAdd]);
 
     const cancelAdd = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
-        setMode(Modes.LIST);
+        setMode(VisualStateModes.LIST);
     }, []);
 
 
@@ -67,7 +61,7 @@ export const PersonList = ({
 
     return (
         <>
-            {mode === Modes.LIST &&
+            {mode === VisualStateModes.LIST &&
                 <ul className="list-unstyled">
                     {peopleList?.map(p => (
                         <li key={p.person.id} className={`waltz-visibility-parent ${p.person.isRemoved ? "removed" : ""}`}>
@@ -103,7 +97,7 @@ export const PersonList = ({
                     }
                 </ul>
             }
-            {mode === Modes.ADD &&
+            {mode === VisualStateModes.ADD &&
                 <div>
                     <strong>Add additional person</strong>
                     <EntitySearchSelector entityKinds={searchKinds}
