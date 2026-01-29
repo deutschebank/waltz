@@ -66,7 +66,7 @@ public class MeasurableCategoryEndpointController {
         return measurableCategoryService.findPopulatedCategoriesForRef(EntityReference.mkRef(kind, id));
     }
 
-    @GetMapping("/save")
+    @PostMapping("/save")
     Long save(HttpServletRequest request, @RequestBody MeasurableCategory body) {
         String username = getUsernameForSB(request);
         return measurableCategoryService
