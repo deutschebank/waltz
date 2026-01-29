@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./EntityNamedNoteRemovalPanel.module.css";
+import styles from "./styles/EntityNamedNoteRemovalPanel.module.css";
 import Button from "../common/button/Button";
 import Icon from "../common/Icon";
 import Markdown from "../common/markdown/Markdown";

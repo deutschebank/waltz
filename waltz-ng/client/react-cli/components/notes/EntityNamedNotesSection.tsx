@@ -22,6 +22,7 @@ import {
   NoteTypeEntity,
   TypeWithOperations,
 } from "../../types/NamedNote";
+import EntityNamedNotesGrid from "./EntityNamedNotesGrid";
 
 type EntityNamedNotesSectionProps = {
   parentEntityRef: EntityReference;
@@ -234,67 +235,12 @@ const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({
       default:
         return (
           <>
-            <table className="table table-condensed small">
-              <colgroup>
-                <col width="30%" />
-                <col width="70%" />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th>Note Type</th>
-                  <th>Note Text</th>
-                </tr>
-              </thead>
-              <tbody>
-                {notesWithTypes.length > 0 ? (
-                  notesWithTypes.map((nt) => (
-                    <tr key={nt.type?.id} className="waltz-visibility-parent">
-                      <td>
-                        <div className="note-title">{nt.type?.name}</div>
-                        <div className="small text-muted">{nt.type?.description}</div>
-                        <div className="small text-muted">
-                          Last Modified: <LastEdited entity={nt.note} />
-                        </div>
-                        {nt.operations && nt.operations.length > 0 && (
-                          <div className="actions waltz-visibility-child-30">
-                            {nt.operations.includes("UPDATE") && (
-                              <Button
-                                className="btn-skinny action"
-                                onClick={() => handleShowUpdatePanel(nt)}
-                              >
-                                <Icon name="edit" /> Edit
-                              </Button>
-                            )}
-                            {nt.operations.includes("REMOVE") && (
-                              <Button
-                                className="btn-skinny action"
-                                onClick={() => handleShowRemovalConfirmation(nt.note)}
-                              >
-                                <Icon name="trash" /> Delete
-                              </Button>
-                            )}
-                          </div>
-                        )}
-                      </td>
-                      <td>
-                        <Markdown
-                          context={{ref: parentEntityRef}}
-                          text={nt.note.noteText}
-                        />
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={2}>
-                      <NoData>
-                        <b>No Notes</b> have been added
-                      </NoData>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+            <EntityNamedNotesGrid
+              parentEntityRef={parentEntityRef}
+              notesWithTypes={notesWithTypes}
+              onEdit={handleShowUpdatePanel}
+              onDelete={handleShowRemovalConfirmation}
+            />
             {availableNoteTypes && availableNoteTypes.length > 0 && (
               <>
                 <p>Additional note types are available for use.</p>

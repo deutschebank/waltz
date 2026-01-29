@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import styles from "./EntityNamedNoteEditPanel.module.css";
+import styles from "./styles/EntityNamedNoteEditPanel.module.css";
 import {Note, NoteTypeEntity} from "../../types/NamedNote";
 import Button from "../common/button/Button";
 import Icon from "../common/Icon";
