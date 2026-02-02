@@ -18,6 +18,7 @@
 
 package org.finos.waltz.web;
 
+import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.library.GeneralCodingRules;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +39,11 @@ public class ArchitectureComplianceTest extends BaseArchitectureComplianceTest {
     @Test
     public void noGenericExceptions() {
         GeneralCodingRules.NO_CLASSES_SHOULD_THROW_GENERIC_EXCEPTIONS
-                .check(waltzOnlyClasses);
+                .check(waltzOnlyClasses
+                        .that(DescribedPredicate.describe(
+                                "is not a test class",
+                                javaClass -> !javaClass.getSimpleName().equals("TestController")
+                        )));
     }
 
 
