@@ -11,9 +11,6 @@ export interface EntityNamedNoteRemovalPanelProps {
   onCancel: () => void;
 }
 
-/**
- * A confirmation panel for removing a named note.
- */
 const EntityNamedNoteRemovalPanel: React.FC<EntityNamedNoteRemovalPanelProps> = ({
   note,
   onConfirm,

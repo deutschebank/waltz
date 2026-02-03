@@ -1,17 +1,13 @@
 import {EntityKind, EntityReference} from "./Entity";
 import {LastUpdatedProvider, ProvenanceProvider} from "./Providers";
 
-export interface NoteTypeEntity {
-  id: number;
-  description: string;
-  name: string;
-  externalId: string;
+export interface NoteTypeEntity extends Omit<EntityReference, "kind" | "entityLifecycleStatus"> {
   applicableEntityKinds: EntityKind[];
   position: number;
   isReadOnly: boolean;
 }
 
-export interface TypeWithOperations {
+export interface NamedNoteWithOperations {
   entity: NoteTypeEntity;
   operations: string[];
 }

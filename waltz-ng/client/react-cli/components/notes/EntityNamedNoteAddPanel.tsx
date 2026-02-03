@@ -12,10 +12,6 @@ export interface EntityNamedNoteAddPanelProps {
   onCancel: () => void;
 }
 
-/**
- * A panel for adding a new named note. It first lists available note types
- * and then shows an edit panel for the selected type.
- */
 const EntityNamedNoteAddPanel: React.FC<EntityNamedNoteAddPanelProps> = ({
   availableNoteTypes = [],
   onCreate,
@@ -32,10 +28,7 @@ const EntityNamedNoteAddPanel: React.FC<EntityNamedNoteAddPanelProps> = ({
     setSelectedType(type);
   }
 
-  /**
-   * Creates a new note object and calls the onCreate prop.
-   * @param updatedText The text content of the new note.
-   */
+  // Creates a new note object and calls the onCreate prop.
   function handleCreateNote(updatedText: string) {
     if (selectedType) {
       const newEvt = {
@@ -54,7 +47,6 @@ const EntityNamedNoteAddPanel: React.FC<EntityNamedNoteAddPanelProps> = ({
 
   return (
     <>
-      {/* Render the edit panel when in EDIT mode with a selected type */}
       {mode === VisualStateModes.EDIT && selectedType && (
         <EntityNamedNoteEditPanel
           note={emptyNote}
@@ -63,7 +55,6 @@ const EntityNamedNoteAddPanel: React.FC<EntityNamedNoteAddPanelProps> = ({
           onCancel={onCancel}
         />
       )}
-      {/* Render the list of available note types when in LIST mode */}
       {mode === VisualStateModes.LIST && (
         <div className={styles.editBox}>
           <h4>
@@ -76,9 +67,9 @@ const EntityNamedNoteAddPanel: React.FC<EntityNamedNoteAddPanelProps> = ({
             {availableNoteTypes.map((type) => (
               <React.Fragment key={type.id}>
                 <dt>
-                  <button className="btn-skinny" onClick={() => onShowEditPanel(type)}>
+                  <Button className="btn-skinny" onClick={() => onShowEditPanel(type)}>
                     <Icon name="sticky-note-o" /> {type.name}
-                  </button>
+                  </Button>
                 </dt>
                 <dd>
                   <div className="small text-muted">{type.description}</div>

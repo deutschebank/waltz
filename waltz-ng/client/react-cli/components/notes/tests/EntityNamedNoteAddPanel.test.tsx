@@ -1,8 +1,8 @@
 import React from "react";
 import {render, fireEvent, screen} from "@testing-library/react";
 import "@testing-library/jest-dom";
-import EntityNamedNoteAddPanel from "./EntityNamedNoteAddPanel";
-import {NoteTypeEntity} from "../../types/NamedNote";
+import EntityNamedNoteAddPanel from "../EntityNamedNoteAddPanel";
+import {NoteTypeEntity} from "../../../types/NamedNote";
 
 describe("EntityNamedNoteAddPanel", () => {
   const mockAvailableNoteTypes: NoteTypeEntity[] = [

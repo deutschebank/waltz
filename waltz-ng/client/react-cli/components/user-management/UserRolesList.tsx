@@ -31,7 +31,6 @@ const UserRolesList: React.FC = () => {
   // Mutation for updating user roles.
   const { mutate: updateUserRolesMutation } = useMutation<number, Error>({
     mutationFn: () => {
-      // Throws an error if no user is selected.
       if (!selectedUser) throw new Error("No user selected");
       const { mutationFn } = userManagementApi.updateRoles(
         selectedUser.userName,
@@ -40,7 +39,6 @@ const UserRolesList: React.FC = () => {
       );
       return mutationFn();
     },
-    // On success, shows a success toast and returns to the user list.
     onSuccess: (res) => {
       addToast({
         type: NotificationTypeEnum.SUCCESS,
@@ -48,7 +46,6 @@ const UserRolesList: React.FC = () => {
       });
       reduxStore.dispatch(setActiveMode(VisualStateModes.LIST));
     },
-    // On error, shows an error toast.
     onError: (error: any) => {
       const message = error.data?.message || error.message || "An unknown error occurred";
       addToast({
@@ -95,7 +92,6 @@ const UserRolesList: React.FC = () => {
   }, [selectedUser, userRoles, userSelectableRoles]);
 
   useEffect(() => {
-    // Initializes userRoles in the Redux store when a user is selected.
     if (selectedUser) {
       reduxStore.dispatch(setUserRoles(selectedUser.roles || []));
     }

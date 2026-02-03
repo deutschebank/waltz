@@ -12,9 +12,6 @@ export interface EntityNamedNoteEditPanelProps {
   onCancel: () => void;
 }
 
-/**
- * A panel for editing a named note.
- */
 const EntityNamedNoteEditPanel: React.FC<EntityNamedNoteEditPanelProps> = ({
   note,
   type,

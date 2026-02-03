@@ -13,9 +13,6 @@ import reduxStore from "../../../redux-store";
 import { CreateUserType } from "../../types/User";
 import { VisualStateModes } from "../../enums/VisualState";
 
-/**
- * CreateUser component provides a form to register a new user.
- */
 const CreateUser: React.FC = () => {
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -30,7 +27,6 @@ const CreateUser: React.FC = () => {
       });
       return mutationFn();
     },
-    // On successful registration, fetches the new user's data and navigates to the detail view.
     onSuccess: async (res) => {
       addToast({
         type: NotificationTypeEnum.SUCCESS,
@@ -41,9 +37,9 @@ const CreateUser: React.FC = () => {
       const registeredUser = await fetchUserFn();
       reduxStore.dispatch(setSelectedUser(registeredUser));
       reduxStore.dispatch(setUserRoles(registeredUser.roles || []));
+      // navigates to the detail view.
       reduxStore.dispatch(setActiveMode(VisualStateModes.DETAIL));
     },
-    // Handles errors during the registration process.
     onError: (error: any) => {
       const message = error.data?.message || error.message || "An unknown error occurred";
       addToast({

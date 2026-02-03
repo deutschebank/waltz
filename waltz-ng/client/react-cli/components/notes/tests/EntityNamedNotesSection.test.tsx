@@ -2,16 +2,16 @@ import React from "react";
 import {render, screen, fireEvent, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import EntityNamedNotesSection from "./EntityNamedNotesSection";
-import {noteApi} from "../../api/note";
-import {noteTypeApi} from "../../api/note-type";
-import {mkRef} from "../../utils/mkRef";
-import {useToasts} from "../../context/toast/ToastContext";
-import {NotificationTypeEnum} from "../../enums/Notification";
+import EntityNamedNotesSection from "../EntityNamedNotesSection";
+import {noteApi} from "../../../api/note";
+import {noteTypeApi} from "../../../api/note-type";
+import {mkRef} from "../../../utils/mkRef";
+import {useToasts} from "../../../context/toast/ToastContext";
+import {NotificationTypeEnum} from "../../../enums/Notification";
 
-jest.mock("../../api/note");
-jest.mock("../../api/note-type");
-jest.mock("../../context/toast/ToastContext", () => ({
+jest.mock("../../../api/note");
+jest.mock("../../../api/note-type");
+jest.mock("../../../context/toast/ToastContext", () => ({
   useToasts: jest.fn(),
 }));
 

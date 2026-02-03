@@ -10,9 +10,6 @@ import { useToasts } from "../../context/toast/ToastContext";
 import { NotificationTypeEnum } from "../../enums/Notification";
 import { VisualStateModes } from "../../enums/VisualState";
 
-/**
- * PasswordUpdate provides a form for an admin to reset a user's password.
- */
 const PasswordUpdate: React.FC = () => {
   const selectedUser = useSliceSelector((state) => state.userManagement.selectedUser);
   const { addToast } = useToasts();
@@ -33,15 +30,14 @@ const PasswordUpdate: React.FC = () => {
       );
       return mutationFn();
     },
-    // On successful password update, shows a success toast and navigates back to the detail view.
     onSuccess: (res) => {
       addToast({
         type: NotificationTypeEnum.SUCCESS,
         message: `Successfully updated password for user: ${selectedUser?.userName}`,
       });
+      // navigates back to the detail view.
       reduxStore.dispatch(setActiveMode(VisualStateModes.DETAIL));
     },
-    // Handles errors during the password update process.
     onError: (error: any) => {
       const message = error.data?.message || error.message || "An unknown error occurred";
       addToast({

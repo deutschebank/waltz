@@ -8,23 +8,18 @@ import Icon from "../common/Icon";
 import { PreviewRow, UserBulkUploadPreviewResponse, UserBulkUploadResponse } from "../../types/User";
 import { VisualStateModes } from "../../enums/VisualState";
 
-// Defines the modes for bulk uploading user roles.
 const UploadModes = {
   ADD: "ADD_ONLY",
   REMOVE: "REMOVE_ONLY",
   REPLACE: "REPLACE",
 };
 
-// Maps upload mode keys to user-friendly labels.
 const uploadModeLabels: { [key: string]: string } = {
   ADD: "Add Only",
   REMOVE: "Remove Only",
   REPLACE: "Replace",
 };
 
-/**
- * UserBulkEditor provides a UI for bulk editing user roles via CSV data.
- */
 const UserBulkEditor: React.FC = () => {
   const { addToast } = useToasts();
   const [uploadMode, setUploadMode] = useState<string>(UploadModes.ADD);
@@ -32,9 +27,7 @@ const UserBulkEditor: React.FC = () => {
   const [rowData, setRowData] = useState<string>("");
   // State for storing the preview data returned from the server.
   const [preview, setPreview] = useState<PreviewRow[]>([]);
-  // State to control the current view mode (EDIT, PREVIEW, RESULT).
   const [mode, setMode] = useState<string>(VisualStateModes.EDIT);
-  // State to store the count of updated entries after a successful upload.
   const [updatedCount, setUpdatedCount] = useState<number>(0);
 
   // Mutation for fetching a preview of the bulk upload.

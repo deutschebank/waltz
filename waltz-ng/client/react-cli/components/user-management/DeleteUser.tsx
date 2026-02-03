@@ -14,9 +14,6 @@ import Button from "../common/button/Button";
 import { useSliceSelector } from "../../hooks/useSliceSelector";
 import { VisualStateModes } from "../../enums/VisualState";
 
-/**
- * DeleteUser component provides a confirmation dialog for deleting a user.
- */
 const DeleteUser: React.FC = () => {
   const selectedUser = useSliceSelector((state) => state.userManagement.selectedUser);
   const { addToast } = useToasts();
@@ -29,7 +26,6 @@ const DeleteUser: React.FC = () => {
       const { mutationFn } = userManagementApi.deleteUser(username);
       return mutationFn();
     },
-    // On successful deletion, shows a success toast, clears user state, and refetches the user list.
     onSuccess: (res, username) => {
       addToast({
         type: NotificationTypeEnum.SUCCESS,
@@ -43,7 +39,6 @@ const DeleteUser: React.FC = () => {
         queryKey: ["user", "findAll"],
       });
     },
-    // Handles errors during the deletion process.
     onError: (error: any) => {
       const message = error.data?.message || error.message || "An unknown error occurred";
       addToast({

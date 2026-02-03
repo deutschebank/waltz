@@ -1,8 +1,6 @@
-// src/components/button/Button.tsx
 import React from "react";
 import styles from "./Button.module.scss";
 
-// Type
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
     onClick?: () => void;

@@ -10,16 +10,11 @@ import UserBulkEditor from "../../components/user-management/UserBulkEditor";
 import Tabs from "../../components/common/tabs/Tabs";
 import {VisualStateModes} from "../../enums/VisualState";
 
-// Defines the tabs for the user management panel.
 const TABS = {
   SINGLE: "single",
   BULK: "bulk",
 };
 
-/**
- * UserManagementPanel is the main component for managing users,
- * providing both single-user and bulk-editing capabilities.
- */
 const UserManagementPanel: React.FC = () => {
   const activeMode = useSliceSelector((state) => state.userManagement.activeMode);
 

@@ -3,37 +3,37 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { configureStore, Store } from "@reduxjs/toolkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import UserRolesList from "./UserRolesList";
-import { useToasts } from "../../context/toast/ToastContext";
-import { roleApi } from "../../api/roles";
-import { userManagementApi } from "../../api/user-management";
-import userManagementSlice from "../../../redux-slices/user-management-slice";
-import { VisualStateModes } from "../../enums/VisualState";
-import reduxStore from "../../../redux-store";
-import { UserManagementState } from "../../types/User";
+import UserRolesList from "../UserRolesList";
+import { useToasts } from "../../../context/toast/ToastContext";
+import { roleApi } from "../../../api/roles";
+import { userManagementApi } from "../../../api/user-management";
+import userManagementSlice from "../../../../redux-slices/user-management-slice";
+import { VisualStateModes } from "../../../enums/VisualState";
+import reduxStore from "../../../../redux-store";
+import { UserManagementState } from "../../../types/User";
 
 // Mock dependencies
-jest.mock("../../context/toast/ToastContext", () => ({
+jest.mock("../../../context/toast/ToastContext", () => ({
     useToasts: jest.fn(),
 }));
 
-jest.mock("../../api/roles", () => ({
+jest.mock("../../../api/roles", () => ({
     findAll: jest.fn(),
 }));
 
-jest.mock("../../api/user-management", () => ({
+jest.mock("../../../api/user-management", () => ({
     userManagementApi: {
        updateRoles: jest.fn()
     },
 }));
 
-jest.mock("../../api/roles", () => ({
+jest.mock("../../../api/roles", () => ({
     roleApi: {
        findAll: jest.fn()
     },
 }));
 
-jest.mock("../../../redux-store", () => ({
+jest.mock("../../../../redux-store", () => ({
     __esModule: true,
     default: {
         getState: jest.fn(),

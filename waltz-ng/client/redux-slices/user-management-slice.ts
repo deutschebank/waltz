@@ -3,7 +3,6 @@ import {UserInfo, UserManagementState} from "../react-cli/types/User";
 import {UserRoles} from "../react-cli/enums/User";
 import {VisualStateModes} from "../react-cli/enums/VisualState";
 
-// Defines the initial state for the user management slice.
 const initialState: UserManagementState = {
   selectedUser: null,
   activeMode: VisualStateModes.LIST,
@@ -11,7 +10,6 @@ const initialState: UserManagementState = {
   searchQry: "",
 };
 
-// Creates a Redux slice for user management with its initial state and reducers.
 export const userManagementSlice = createSlice({
   name: "userManagement",
   initialState,
@@ -35,9 +33,7 @@ export const userManagementSlice = createSlice({
   },
 });
 
-// Exports the action creators for the user management slice.
 export const {setSelectedUser, setActiveMode, setUserRoles, setSearchQry} =
   userManagementSlice.actions;
 
-// Exports the reducer function for the user management slice.
 export default userManagementSlice.reducer;

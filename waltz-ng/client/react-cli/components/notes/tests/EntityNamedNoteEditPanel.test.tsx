@@ -1,8 +1,8 @@
 import React from "react";
 import {render, fireEvent, screen, within} from "@testing-library/react";
 import "@testing-library/jest-dom";
-import EntityNamedNoteEditPanel from "./EntityNamedNoteEditPanel";
-import { NoteTypeEntity } from "../../types/NamedNote";
+import EntityNamedNoteEditPanel from "../EntityNamedNoteEditPanel";
+import { NoteTypeEntity } from "../../../types/NamedNote";
 
 describe("EntityNamedNoteEditPanel", () => {
   const mockNote = {noteText: "Initial note text"};

@@ -1,7 +1,7 @@
 import React from "react";
 import {render, fireEvent, screen} from "@testing-library/react";
 import "@testing-library/jest-dom";
-import EntityNamedNoteRemovalPanel from "./EntityNamedNoteRemovalPanel";
+import EntityNamedNoteRemovalPanel from "../EntityNamedNoteRemovalPanel";
 
 describe("EntityNamedNoteRemovalPanel", () => {
   const mockNote = {noteText: "This is a note to be removed."};

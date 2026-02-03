@@ -20,7 +20,7 @@ import {
   Note,
   NoteWithType,
   NoteTypeEntity,
-  TypeWithOperations,
+  NamedNoteWithOperations,
 } from "../../types/NamedNote";
 import EntityNamedNotesGrid from "./EntityNamedNotesGrid";
 
@@ -28,10 +28,6 @@ type EntityNamedNotesSectionProps = {
   parentEntityRef: EntityReference;
 };
 
-/**
- * A component that displays and manages named notes for a given entity.
- * It allows viewing, adding, updating, and removing notes.
- */
 const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({
   parentEntityRef,
 }) => {
@@ -116,7 +112,7 @@ const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({
    * Combines notes with their corresponding type information.
    */
   const notesWithTypes = useMemo(() => {
-    const typesById = noteTypesWithOps.reduce<Record<string, TypeWithOperations>>(
+    const typesById = noteTypesWithOps.reduce<Record<string, NamedNoteWithOperations>>(
       (acc, d) => {
         acc[d.entity.id] = d;
         return acc;
@@ -168,9 +164,6 @@ const EntityNamedNotesSection: React.FC<EntityNamedNotesSectionProps> = ({
     clearSelected();
   };
 
-  /**
-   * Calls the saveNote mutation to update an existing note.
-   */
   const handleUpdateNote = (updatedText: string) => {
     if (selectedNote) {
       saveNote({
