@@ -198,6 +198,10 @@ public class ProposedFlowWorkflowService {
                     transitionAction,
                     workflowContext);
 
+            if (newState == currentState) {
+                throw new IllegalArgumentException(format("Cannot transition from %s to %s", currentState, newState));
+            }
+
             // if the transition not found, not permitted or new state == current state happen, abort
             // Persist the new state.
             entityWorkflowService.updateStateTransition(username, proposedFlowActionCommand.comment(),

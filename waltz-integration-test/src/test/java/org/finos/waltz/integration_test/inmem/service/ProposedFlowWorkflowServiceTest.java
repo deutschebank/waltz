@@ -78,12 +78,14 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
+import static java.lang.String.format;
 import static org.finos.waltz.common.DateTimeUtilities.nowUtc;
 import static org.finos.waltz.data.proposed_flow.ProposedFlowDao.PROPOSE_FLOW_LIFECYCLE_WORKFLOW;
 import static org.finos.waltz.model.EntityKind.APPLICATION;
 import static org.finos.waltz.model.EntityKind.PROPOSED_FLOW;
 import static org.finos.waltz.model.Operation.REJECT;
 import static org.finos.waltz.model.proposed_flow.ProposedFlowWorkflowState.FULLY_APPROVED;
+import static org.finos.waltz.model.proposed_flow.ProposedFlowWorkflowState.SOURCE_APPROVED;
 import static org.finos.waltz.schema.Tables.ENTITY_WORKFLOW_STATE;
 import static org.finos.waltz.schema.Tables.LOGICAL_FLOW;
 import static org.finos.waltz.schema.tables.Involvement.INVOLVEMENT;
@@ -437,7 +439,7 @@ public class ProposedFlowWorkflowServiceTest extends BaseInMemoryIntegrationTest
 
         // 2.1. Assert -----------------------------------------------------------
         // Assert that the flow is now in SOURCE_APPROVED state
-        assertEquals(ProposedFlowWorkflowState.SOURCE_APPROVED.name(), sourceApprovedFlow.workflowState().state(), "Flow should be in SOURCE_APPROVED state");
+        assertEquals(SOURCE_APPROVED.name(), sourceApprovedFlow.workflowState().state(), "Flow should be in SOURCE_APPROVED state");
 
         // Action command for target approval
         ProposedFlowActionCommand targetApproveCommand = ImmutableProposedFlowActionCommand.builder()
@@ -528,4 +530,98 @@ public class ProposedFlowWorkflowServiceTest extends BaseInMemoryIntegrationTest
                         rejectCommand));
     }
 
+    @Test
+    public void testCannotApproveProposedFlowTwice() throws FlowCreationException, TransitionNotFoundException, TransitionPredicateFailedException {
+        // 1. Arrange ----------------------------------------------------------
+        Reason reason = proposedFlowWorkflowHelper.getReason();
+        EntityReference owningEntity = proposedFlowWorkflowHelper.getOwningEntity();
+        PhysicalSpecification physicalSpecification = proposedFlowWorkflowHelper.getPhysicalSpecification(owningEntity);
+        FlowAttributes flowAttributes = proposedFlowWorkflowHelper.getFlowAttributes();
+        Set<Long> dataTypeIdSet = proposedFlowWorkflowHelper.getDataTypeIdSet();
+
+        // Create a proposed flow command for a new flow (CREATE proposal type)
+        ProposedFlowCommand createCommand = ImmutableProposedFlowCommand.builder()
+                .source(appHelper.createNewApp(mkName(USER_NAME, "appA"), ouIds.a))
+                .target(appHelper.createNewApp(mkName(USER_NAME, "appB"), ouIds.a))
+                // For a CREATE proposal, logicalFlowId and physicalFlowId should not be set initially
+                .reason(reason)
+                .specification(physicalSpecification)
+                .flowAttributes(flowAttributes)
+                .dataTypeIds(dataTypeIdSet)
+                .proposalType(ProposalType.CREATE)
+                .build();
+
+        String userName = mkName(USER_NAME, "user1");
+
+        // Propose the new flow
+        ProposedFlowCommandResponse proposeResponse = proposedFlowWorkflowService.proposeNewFlow(userName, createCommand);
+        Long proposedFlowId = proposeResponse.proposedFlowId();
+        assertNotNull(proposedFlowId, "Proposed flow should be created");
+
+        // Grant the user source and target approver permissions
+        Long personA = personHelper.createPerson(userName);
+
+        long involvementKind = involvementHelper.mkInvolvementKind("rel_abcd");
+        involvementHelper.createInvolvement(personA, involvementKind, createCommand.source());
+
+        InvolvementGroupRecord ig = permissionHelper.setupInvolvementGroup(involvementKind, USER_NAME);
+        permissionHelper.setupPermissionGroupForProposedFlow(createCommand.source(), ig, USER_NAME, Operation.APPROVE);
+        permissionHelper.setupPermissionGroupForProposedFlow(createCommand.source(), ig, USER_NAME, REJECT);
+
+        // Action command for source approval
+        ProposedFlowActionCommand sourceApproveCommand = ImmutableProposedFlowActionCommand.builder()
+                .comment("Approved by source approver")
+                .build();
+
+        // 2. Act --------------------------------------------------------------
+        // Assert that the flow is now in SOURCE_APPROVED state
+        // Simulate a source approver approving the flow
+        ProposedFlowResponse sourceApprovedFlow = proposedFlowWorkflowService.proposedFlowAction(
+                proposedFlowId,
+                APPROVE,
+                userName,
+                sourceApproveCommand);
+
+        // 2.1. Assert -----------------------------------------------------------
+        // Assert that the flow is now in SOURCE_APPROVED state
+        assertEquals(SOURCE_APPROVED.name(), sourceApprovedFlow.workflowState().state(), "Flow should be in SOURCE_APPROVED state");
+
+        //Source approver again approving the flow should fail
+        // 2. Act and Assert ---------------------------------------------------
+        assertThrows(org.finos.waltz.service.workflow_state_machine.exception.TransitionPredicateFailedException.class, () -> {
+            proposedFlowWorkflowService.proposedFlowAction(proposedFlowId, APPROVE, userName, sourceApproveCommand);
+        }, format("Cannot transition from %s to %s", SOURCE_APPROVED, SOURCE_APPROVED));
+
+    }
+
+    @Test
+    public void testCannotApproveProposedFlowSameStatesAndWithoutPermissions() {
+        // 1. Arrange ----------------------------------------------------------
+        Reason reason = proposedFlowWorkflowHelper.getReason();
+        EntityReference owningEntity = proposedFlowWorkflowHelper.getOwningEntity();
+        PhysicalSpecification physicalSpecification = proposedFlowWorkflowHelper.getPhysicalSpecification(owningEntity);
+        FlowAttributes flowAttributes = proposedFlowWorkflowHelper.getFlowAttributes();
+        Set<Long> dataTypeIdSet = proposedFlowWorkflowHelper.getDataTypeIdSet();
+
+        ProposedFlowCommand command = ImmutableProposedFlowCommand.builder()
+                .source(mkRef(APPLICATION, 101))
+                .target(mkRef(APPLICATION, 202))
+                .logicalFlowId(12345)
+                .physicalFlowId(12345)
+                .reason(reason)
+                .specification(physicalSpecification)
+                .flowAttributes(flowAttributes)
+                .dataTypeIds(dataTypeIdSet)
+                .proposalType(ProposalType.valueOf("CREATE"))
+                .build();
+
+        ProposedFlowCommandResponse response = proposedFlowWorkflowService.proposeNewFlow(USER_NAME, command);
+        ProposedFlowActionCommand actionCommand = ImmutableProposedFlowActionCommand.builder().comment("test").build();
+
+        // 2. Act and Assert ---------------------------------------------------
+        assertThrows(org.finos.waltz.service.workflow_state_machine.exception.TransitionPredicateFailedException.class, () -> {
+            proposedFlowWorkflowService.proposedFlowAction(response.proposedFlowId(), APPROVE, USER_NAME, actionCommand);
+        }, format("Cannot transition from %s to %s", SOURCE_APPROVED, SOURCE_APPROVED));
+    }
 }
+
