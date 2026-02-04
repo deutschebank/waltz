@@ -12,16 +12,11 @@ import {
 import Loader from "../common/loader/Loader";
 import reduxStore from "../../../redux-store";
 import {UserInfo} from "../../types/User";
-import {Modes} from "../../enums/User";
+import {VisualStateModes} from "../../enums/VisualState";
 import Button from "../common/button/Button";
 
-/**
- * UserSelectList displays a searchable list of all users.
- */
 const UserSelectList: React.FC = () => {
-  // State for the search query to filter the user list.
   const [searchQry, setSearchQry] = useState<string>("");
-
   // Fetches all users from the server using React Query.
   const {data: fetchedUsers = [], isLoading} = useQuery(userManagementApi.findAll());
 
@@ -38,11 +33,10 @@ const UserSelectList: React.FC = () => {
           return user.userName?.toLowerCase().includes(searchQry.toLowerCase());
         });
 
-  // Handles selecting a user from the list, updating the Redux store.
   const selectUser = (user: UserInfo) => {
     reduxStore.dispatch(setSelectedUser(user));
     reduxStore.dispatch(setUserRoles(user.roles));
-    reduxStore.dispatch(setActiveMode(Modes.DETAIL));
+    reduxStore.dispatch(setActiveMode(VisualStateModes.DETAIL));
   };
 
   // Renders the user list, search input, and loading state.
@@ -53,7 +47,7 @@ const UserSelectList: React.FC = () => {
         <Button
           className="btn btn-skinny"
           data-testid="add-user-btn"
-          onClick={() => reduxStore.dispatch(setActiveMode(Modes.ADD))}
+          onClick={() => reduxStore.dispatch(setActiveMode(VisualStateModes.ADD))}
         >
           <Icon name="plus" /> add a new user
         </Button>

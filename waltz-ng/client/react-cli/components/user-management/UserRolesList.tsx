@@ -12,7 +12,8 @@ import Button from "../common/button/Button";
 import Icon from "../common/Icon";
 import { useSliceSelector } from "../../hooks/useSliceSelector";
 import reduxStore from "../../../redux-store";
-import { Modes, Roles } from "../../enums/User";
+import { VisualStateModes } from "../../enums/VisualState";
+import { UserRoles } from "../../enums/User";
 
 const UserRolesList: React.FC = () => {
   const selectedUser = useSliceSelector((state) => state.userManagement.selectedUser);
@@ -22,10 +23,12 @@ const UserRolesList: React.FC = () => {
   const [comment, setComment] = useState("");
   const [expandedReadOnly, setExpandedReadOnly] = useState(false);
 
+  // Fetches all available roles from the API.
   const { data: allRoles = [] } = useQuery({
     ...roleApi.findAll(),
   });
 
+  // Mutation for updating user roles.
   const { mutate: updateUserRolesMutation } = useMutation<number, Error>({
     mutationFn: () => {
       if (!selectedUser) throw new Error("No user selected");
@@ -41,7 +44,7 @@ const UserRolesList: React.FC = () => {
         type: NotificationTypeEnum.SUCCESS,
         message: `Successfully updated roles for ${selectedUser?.userName}`,
       });
-      reduxStore.dispatch(setActiveMode(Modes.LIST));
+      reduxStore.dispatch(setActiveMode(VisualStateModes.LIST));
     },
     onError: (error: any) => {
       const message = error.data?.message || error.message || "An unknown error occurred";
@@ -52,40 +55,43 @@ const UserRolesList: React.FC = () => {
     },
   });
 
+  // Memoized separation of roles into user-selectable and read-only.
   const [userSelectableRoles, readOnlyRoles] = useMemo(() => {
     const selectable = allRoles.filter((r) => r.userSelectable);
     const nonSelectable = allRoles.filter((r) => !r.userSelectable);
     return [selectable, nonSelectable];
   }, [allRoles]);
 
+  // Memoized list of read-only roles assigned to the selected user.
   const userReadOnlyRoles = useMemo(() => {
     return readOnlyRoles.filter((d) => selectedUser?.roles.includes(d.key));
   }, [readOnlyRoles, selectedUser]);
 
+  // Memoized list of roles to display based on the search query.
   const displayedRoles = useMemo(() => {
     return qry
       ? termSearch(userSelectableRoles, qry, ["name", "key", "value", "description"])
       : userSelectableRoles;
   }, [userSelectableRoles, qry]);
 
+  // Memoized check to see if user-selectable roles have been changed.
   const rolesChanged = useMemo(() => {
     const initialRoles = selectedUser?.roles || [];
     const selectableRoleKeys = userSelectableRoles.map((r) => r.key);
-    const initialSelectableRoles = initialRoles.filter((r: Roles) =>
+    const initialSelectableRoles = initialRoles.filter((r: UserRoles) =>
       selectableRoleKeys.includes(r)
     );
-    const currentSelectableRoles = userRoles.filter((r: Roles) =>
+    const currentSelectableRoles = userRoles.filter((r: UserRoles) =>
       selectableRoleKeys.includes(r)
     );
 
     return (
       initialSelectableRoles.length !== currentSelectableRoles.length ||
-      initialSelectableRoles.some((r: Roles) => !currentSelectableRoles.includes(r))
+      initialSelectableRoles.some((r: UserRoles) => !currentSelectableRoles.includes(r))
     );
   }, [selectedUser, userRoles, userSelectableRoles]);
 
   useEffect(() => {
-    // Initialize userRoles in redux store when a user is selected
     if (selectedUser) {
       reduxStore.dispatch(setUserRoles(selectedUser.roles || []));
     }
@@ -95,22 +101,25 @@ const UserRolesList: React.FC = () => {
     return <NoData>There is no selected user</NoData>;
   }
 
-  const handleSelectRole = (roleKey: Roles) => {
-    const newRoles = userRoles.includes(roleKey as Roles)
-      ? userRoles.filter((r: Roles) => r !== roleKey)
+  // Toggles the selection of a role.
+  const handleSelectRole = (roleKey: UserRoles) => {
+    const newRoles = userRoles.includes(roleKey as UserRoles)
+      ? userRoles.filter((r: UserRoles) => r !== roleKey)
       : [...userRoles, roleKey];
     reduxStore.dispatch(setUserRoles(newRoles));
   };
 
+  // Adds all user-selectable roles to the user.
   const handleAddAll = () => {
     const selectableRoleKeys = userSelectableRoles.map((r) => r.key);
     const rolesToAdd = selectableRoleKeys.filter((k) => !userRoles.includes(k));
     reduxStore.dispatch(setUserRoles([...userRoles, ...rolesToAdd]));
   };
 
+  // Removes all user-selectable roles from the user.
   const handleRemoveAll = () => {
     const selectableRoleKeys = userSelectableRoles.map((r) => r.key);
-    const rolesToKeep = userRoles.filter((k: Roles) => !selectableRoleKeys.includes(k));
+    const rolesToKeep = userRoles.filter((k: UserRoles) => !selectableRoleKeys.includes(k));
     reduxStore.dispatch(setUserRoles(rolesToKeep));
   };
 
@@ -121,9 +130,10 @@ const UserRolesList: React.FC = () => {
         message: `Changes to roles for ${selectedUser.userName} discarded`,
       });
     }
-    reduxStore.dispatch(setActiveMode(Modes.LIST));
+    reduxStore.dispatch(setActiveMode(VisualStateModes.LIST));
   };
 
+  // Renders the user roles list and management UI.
   return (
     <>
       <h4>{selectedUser.userName}</h4>
@@ -133,7 +143,7 @@ const UserRolesList: React.FC = () => {
           className="btn btn-skinny"
           title="Save or discard changes to roles before editing password"
           disabled={rolesChanged}
-          onClick={() => reduxStore.dispatch(setActiveMode(Modes.PASSWORD))}
+          onClick={() => reduxStore.dispatch(setActiveMode(VisualStateModes.PASSWORD))}
         >
           <Icon name="key" /> change the user's password
         </Button>
@@ -249,7 +259,7 @@ const UserRolesList: React.FC = () => {
         </Button>
         <Button
           className="btn btn-danger"
-          onClick={() => reduxStore.dispatch(setActiveMode(Modes.DELETE))}
+          onClick={() => reduxStore.dispatch(setActiveMode(VisualStateModes.DELETE))}
         >
           Delete User
         </Button>

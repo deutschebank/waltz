@@ -16,24 +16,15 @@ type TabsProps = {
   onChange?: (tabId: string) => void;
 };
 
-/**
- * A dynamic and reusable Tabs component.
- * It manages its own state for the selected tab and renders the tabs and their content based on the props.
- */
 const Tabs: React.FC<TabsProps> = ({tabs, defaultTabId, onChange}) => {
-  // State to keep track of the currently selected tab's ID.
-  // It initializes with the defaultTabId prop, or the ID of the first tab if defaultTabId is not provided.
   const [selectedTabId, setSelectedTabId] = useState<string>(defaultTabId ?? tabs[0]?.id);
 
-  // Effect to update the selected tab when the defaultTabId prop changes.
   useEffect(() => {
     if (defaultTabId) {
       setSelectedTabId(defaultTabId);
     }
   }, [defaultTabId]);
 
-  // Handler for when a tab is clicked.
-  // It updates the internal state and calls the onChange callback if it exists.
   const handleTabChange = (tabId: string) => {
     setSelectedTabId(tabId);
     if (onChange) {
@@ -41,7 +32,6 @@ const Tabs: React.FC<TabsProps> = ({tabs, defaultTabId, onChange}) => {
     }
   };
 
-  // Finds the active tab object from the tabs array based on the selectedTabId.
   const activeTab = tabs.find((tab) => tab.id === selectedTabId);
 
   // Renders the tabs and the content of the active tab.

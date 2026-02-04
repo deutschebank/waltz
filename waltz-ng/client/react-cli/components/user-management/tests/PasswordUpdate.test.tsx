@@ -1,29 +1,29 @@
 import React from "react";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import PasswordUpdatePanel from "./PasswordUpdate";
-import { useSliceSelector } from "../../hooks/useSliceSelector";
-import reduxStore from "../../../redux-store";
-import { useToasts } from "../../context/toast/ToastContext";
+import PasswordUpdatePanel from "../PasswordUpdate";
+import { useSliceSelector } from "../../../hooks/useSliceSelector";
+import reduxStore from "../../../../redux-store";
+import { useToasts } from "../../../context/toast/ToastContext";
 import { useMutation } from "@tanstack/react-query";
-import { setActiveMode } from "../../../redux-slices/user-management-slice";
-import { Modes } from "../../enums/User";
-import { NotificationTypeEnum } from "../../enums/Notification";
-import { userManagementApi } from "../../api/user-management";
+import { setActiveMode } from "../../../../redux-slices/user-management-slice";
+import { VisualStateModes } from "../../../enums/VisualState";
+import { NotificationTypeEnum } from "../../../enums/Notification";
+import { userManagementApi } from "../../../api/user-management";
 
 // Mock dependencies
-jest.mock("../../hooks/useSliceSelector");
-jest.mock("../../../redux-store", () => ({
+jest.mock("../../../hooks/useSliceSelector");
+jest.mock("../../../../redux-store", () => ({
     dispatch: jest.fn(),
 }));
-jest.mock("../../context/toast/ToastContext");
-jest.mock("../../api/user-management", () => ({
+jest.mock("../../../context/toast/ToastContext");
+jest.mock("../../../api/user-management", () => ({
     userManagementApi: {
         resetPassword: jest.fn()
     },
 }));
 jest.mock("@tanstack/react-query");
-jest.mock("../../../redux-slices/user-management-slice", () => ({
+jest.mock("../../../../redux-slices/user-management-slice", () => ({
     setActiveMode: jest.fn(),
 }));
 
@@ -142,9 +142,9 @@ describe("PasswordUpdatePanel", () => {
         const cancelButton = screen.getByRole("button", { name: "Cancel" });
         fireEvent.click(cancelButton);
 
-        expect(mockSetActiceMode).toHaveBeenCalledWith(Modes.DETAIL);
+        expect(mockSetActiceMode).toHaveBeenCalledWith(VisualStateModes.DETAIL);
         expect(mockDispatch).toHaveBeenCalledWith(
-            mockSetActiceMode(Modes.DETAIL)
+            mockSetActiceMode(VisualStateModes.DETAIL)
         );
     });
 
@@ -175,7 +175,7 @@ describe("PasswordUpdatePanel", () => {
 
             await waitFor(() => {
                 expect(mockDispatch).toHaveBeenCalledWith(
-                    mockSetActiceMode(Modes.DETAIL)
+                    mockSetActiceMode(VisualStateModes.DETAIL)
                 );
             });
         });

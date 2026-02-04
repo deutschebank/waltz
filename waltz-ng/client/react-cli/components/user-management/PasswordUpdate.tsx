@@ -8,19 +8,12 @@ import { useSliceSelector } from "../../hooks/useSliceSelector";
 import reduxStore from "../../../redux-store";
 import { useToasts } from "../../context/toast/ToastContext";
 import { NotificationTypeEnum } from "../../enums/Notification";
-import { Modes } from "../../enums/User";
+import { VisualStateModes } from "../../enums/VisualState";
 
-/**
- * PasswordUpdate provides a form for an admin to reset a user's password.
- */
 const PasswordUpdate: React.FC = () => {
-  // Retrieves the currently selected user from the Redux store.
   const selectedUser = useSliceSelector((state) => state.userManagement.selectedUser);
-  // Hook for displaying toast notifications.
   const { addToast } = useToasts();
-  // State for the new password input.
   const [newPassword, setNewPassword] = useState("");
-  // State for the password confirmation input.
   const [passwordCheck, setPasswordCheck] = useState("");
 
   // Mutation for handling the password reset API call.
@@ -37,15 +30,14 @@ const PasswordUpdate: React.FC = () => {
       );
       return mutationFn();
     },
-    // On successful password update, shows a success toast and navigates back to the detail view.
     onSuccess: (res) => {
       addToast({
         type: NotificationTypeEnum.SUCCESS,
         message: `Successfully updated password for user: ${selectedUser?.userName}`,
       });
-      reduxStore.dispatch(setActiveMode(Modes.DETAIL));
+      // navigates back to the detail view.
+      reduxStore.dispatch(setActiveMode(VisualStateModes.DETAIL));
     },
-    // Handles errors during the password update process.
     onError: (error: any) => {
       const message = error.data?.message || error.message || "An unknown error occurred";
       addToast({
@@ -55,16 +47,13 @@ const PasswordUpdate: React.FC = () => {
     },
   });
 
-  // Renders a message if no user is selected.
   if (!selectedUser) {
     return <NoData>No user selected to update password for.</NoData>;
   }
 
-  // Determines if the reset button should be disabled based on password inputs.
   const disabled =
     !newPassword || newPassword.trim() === "" || newPassword !== passwordCheck;
 
-  // Handles the submission of the password reset form.
   const handleResetPassword = () => {
     resetPasswordMutation(newPassword);
   };
@@ -123,7 +112,7 @@ const PasswordUpdate: React.FC = () => {
           </Button>
           <Button
             className="btn btn-skinny"
-            onClick={() => reduxStore.dispatch(setActiveMode(Modes.DETAIL))}
+            onClick={() => reduxStore.dispatch(setActiveMode(VisualStateModes.DETAIL))}
           >
             Cancel
           </Button>

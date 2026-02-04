@@ -12,15 +12,10 @@ import { NotificationTypeEnum } from "../../enums/Notification";
 import NoData from "../common/no-data/NoData";
 import Button from "../common/button/Button";
 import { useSliceSelector } from "../../hooks/useSliceSelector";
-import { Modes } from "../../enums/User";
+import { VisualStateModes } from "../../enums/VisualState";
 
-/**
- * DeleteUser component provides a confirmation dialog for deleting a user.
- */
 const DeleteUser: React.FC = () => {
-  // Retrieves the currently selected user from the Redux store.
   const selectedUser = useSliceSelector((state) => state.userManagement.selectedUser);
-  // Hook for displaying toast notifications.
   const { addToast } = useToasts();
   // Hook to access the query client for cache invalidation.
   const queryClient = useQueryClient();
@@ -31,7 +26,6 @@ const DeleteUser: React.FC = () => {
       const { mutationFn } = userManagementApi.deleteUser(username);
       return mutationFn();
     },
-    // On successful deletion, shows a success toast, clears user state, and refetches the user list.
     onSuccess: (res, username) => {
       addToast({
         type: NotificationTypeEnum.SUCCESS,
@@ -39,13 +33,12 @@ const DeleteUser: React.FC = () => {
       });
       reduxStore.dispatch(setSelectedUser(null));
       reduxStore.dispatch(setUserRoles([]));
-      reduxStore.dispatch(setActiveMode(Modes.LIST));
+      reduxStore.dispatch(setActiveMode(VisualStateModes.LIST));
       // Invalidate the user list query to refetch the data
       queryClient.invalidateQueries({
         queryKey: ["user", "findAll"],
       });
     },
-    // Handles errors during the deletion process.
     onError: (error: any) => {
       const message = error.data?.message || error.message || "An unknown error occurred";
       addToast({
@@ -55,12 +48,10 @@ const DeleteUser: React.FC = () => {
     },
   });
 
-  // Renders a message if no user is selected.
   if (!selectedUser) {
     return <NoData>No user selected</NoData>;
   }
 
-  // Handles the confirmation of the delete action.
   const handleDelete = () => {
     deleteUserMutation(selectedUser.userName);
   };
@@ -75,7 +66,7 @@ const DeleteUser: React.FC = () => {
       </Button>
       <Button
         className="btn btn-skinny"
-        onClick={() => reduxStore.dispatch(setActiveMode(Modes.DETAIL))}
+        onClick={() => reduxStore.dispatch(setActiveMode(VisualStateModes.DETAIL))}
       >
         Cancel
       </Button>

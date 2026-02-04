@@ -100,6 +100,20 @@ export const measurableRatingPath = {
     getPrimaryRatingsViewBySelector: () => `${measurableRatingBaseUrl}/primary-ratings/view`,
 };
 
+export const notesBaseUrl = `${BASE_URL}/entity-named-note`;
+export const notesPath = {
+  save: (ref: EntityReference, noteTypeId: number) => `${notesBaseUrl}/entity-ref/${ref.kind}/${ref.id}/${noteTypeId}`,
+  remove: (ref: EntityReference, noteTypeId: number) => `${notesBaseUrl}/entity-ref/${ref.kind}/${ref.id}/${noteTypeId}`,
+  findForEntityReference: (ref: EntityReference) => `${notesBaseUrl}/entity-ref/${ref.kind}/${ref.id}`,
+};
+
+export const notesTypeBaseUrl = `${BASE_URL}/entity-named-note-type`;
+export const notesTypePath = {
+  getByExternalId: (externalId: string) => `${notesTypeBaseUrl}/external-id/${externalId}`,
+  findForRefAndUser: (ref: EntityReference) => `${notesTypeBaseUrl}/by-ref/${ref.kind}/${ref.id}`,
+};
+
+
 export const orgUnitBaseUrl = `${BASE_URL}/org-unit`;
 export const orgUnitPath = {
     loadAll: () => orgUnitBaseUrl,

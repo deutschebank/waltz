@@ -1,12 +1,12 @@
-import { fetchJSON, execute } from "./api";
-import { userPath } from "../constants/path";
+import {fetchJSON, execute} from "./api";
+import {userPath} from "../constants/path";
 import {
   CreateUserType,
   UserInfo,
   UserBulkUploadPreviewResponse,
   UserBulkUploadResponse,
 } from "../types/User";
-import { Roles } from "../enums/User";
+import {UserRoles} from "../enums/User";
 
 const findAll = () => ({
   queryKey: ["user", "findAll"],
@@ -30,7 +30,7 @@ const getByUserId = (userId: string) => ({
   enabled: !!userId,
 });
 
-const updateRoles = (userName: string, roles: Roles[], comment: string) => ({
+const updateRoles = (userName: string, roles: UserRoles[], comment: string) => ({
   mutationKey: ["user", "updateRoles", userName],
   mutationFn: async (): Promise<number> => {
     return await execute(userPath.updateRoles(userName), "POST", {
@@ -49,8 +49,8 @@ const register = (newUser: CreateUserType) => ({
 
 const resetPassword = (
   userName: string,
-  newPassword: any,
-  currentPassword: any
+  newPassword: string,
+  currentPassword: string | null
 ) => ({
   mutationKey: ["user", "resetPassword", userName],
   mutationFn: async (): Promise<boolean> => {
@@ -62,14 +62,14 @@ const resetPassword = (
   },
 });
 
-const bulkUploadPreview = (mode: string, rows: any = []) => ({
+const bulkUploadPreview = (mode: string, rows: string) => ({
   mutationKey: ["user", "bulkUploadPreview", mode],
   mutationFn: async (): Promise<UserBulkUploadPreviewResponse> => {
     return await execute(userPath.bulkUploadPreview(mode), "POST", rows);
   },
 });
 
-const bulkUpload = (mode: string, rows: any = []) => ({
+const bulkUpload = (mode: string, rows: string) => ({
   mutationKey: ["user", "bulkUpload", mode],
   mutationFn: async (): Promise<UserBulkUploadResponse> => {
     return await execute(userPath.bulkUpload(mode), "POST", rows);

@@ -2,21 +2,21 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
-import UserSelectList from "./UserSelectList";
-import { userManagementApi } from "../../api/user-management";
-import reduxStore from "../../../redux-store";
-import { Modes } from "../../enums/User";
+import UserSelectList from "../UserSelectList";
+import { userManagementApi } from "../../../api/user-management";
+import reduxStore from "../../../../redux-store";
+import { VisualStateModes } from "../../../enums/VisualState";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Mock the API module
-jest.mock("../../api/user-management", () => ({
+jest.mock("../../../api/user-management", () => ({
     userManagementApi: {
        findAll: jest.fn()
     },
 }));
 
 // Mock the Redux store
-jest.mock("../../../redux-store", () => ({
+jest.mock("../../../../redux-store", () => ({
     dispatch: jest.fn(),
 }));
 
@@ -137,7 +137,7 @@ describe("UserSelectList", () => {
         });
         expect(reduxStore.dispatch).toHaveBeenCalledWith({
             type: "userManagement/setActiveMode",
-            payload: Modes.DETAIL,
+            payload: VisualStateModes.DETAIL,
         });
     });
 
@@ -154,7 +154,7 @@ describe("UserSelectList", () => {
 
         expect(reduxStore.dispatch).toHaveBeenCalledWith({
             type: "userManagement/setActiveMode",
-            payload: Modes.ADD,
+            payload: VisualStateModes.ADD,
         });
     });
 });

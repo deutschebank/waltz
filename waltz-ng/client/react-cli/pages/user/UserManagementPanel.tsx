@@ -8,36 +8,27 @@ import PasswordUpdate from "../../components/user-management/PasswordUpdate";
 import UserRolesList from "../../components/user-management/UserRolesList";
 import UserBulkEditor from "../../components/user-management/UserBulkEditor";
 import Tabs from "../../components/common/tabs/Tabs";
-import {Modes} from "../../enums/User";
+import {VisualStateModes} from "../../enums/VisualState";
 
-// Defines the tabs for the user management panel.
 const TABS = {
   SINGLE: "single",
   BULK: "bulk",
 };
 
-/**
- * UserManagementPanel is the main component for managing users,
- * providing both single-user and bulk-editing capabilities.
- */
 const UserManagementPanel: React.FC = () => {
-  // Retrieves the active mode from the Redux store to determine which single-user component to render.
   const activeMode = useSliceSelector((state) => state.userManagement.activeMode);
 
-  /**
-   * Renders the appropriate component for single-user management based on the active mode.
-   */
   const renderSingleUserContent = () => {
     switch (activeMode) {
-      case Modes.LIST:
+      case VisualStateModes.LIST:
         return <UserSelectList />;
-      case Modes.DETAIL:
+      case VisualStateModes.DETAIL:
         return <UserRolesList />;
-      case Modes.ADD:
+      case VisualStateModes.ADD:
         return <CreateUser />;
-      case Modes.PASSWORD:
+      case VisualStateModes.PASSWORD:
         return <PasswordUpdate />;
-      case Modes.DELETE:
+      case VisualStateModes.DELETE:
         return <DeleteUser />;
       default:
         return <UserSelectList />;

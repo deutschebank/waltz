@@ -1,12 +1,4 @@
-export enum Modes {
-  LIST = "LIST",
-  DETAIL = "DETAIL",
-  ADD = "ADD",
-  PASSWORD = "PASSWORD",
-  DELETE = "DELETE",
-}
-
-export enum Roles {
+export enum UserRoles {
   ADMIN = "ADMIN",
   AGGREGATE_OVERLAY_DIAGRAM_EDITOR = "AGGREGATE_OVERLAY_DIAGRAM_EDITOR",
   APP_EDITOR = "APP_EDITOR",
