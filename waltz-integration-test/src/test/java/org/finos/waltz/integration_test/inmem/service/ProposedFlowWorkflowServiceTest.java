@@ -51,7 +51,6 @@ import org.finos.waltz.model.proposed_flow.ProposedFlowActionCommand;
 import org.finos.waltz.model.proposed_flow.ProposedFlowCommand;
 import org.finos.waltz.model.proposed_flow.ProposedFlowCommandResponse;
 import org.finos.waltz.model.proposed_flow.ProposedFlowResponse;
-import org.finos.waltz.model.proposed_flow.ProposedFlowWorkflowState;
 import org.finos.waltz.model.proposed_flow.Reason;
 import org.finos.waltz.schema.tables.records.InvolvementGroupRecord;
 import org.finos.waltz.service.changelog.ChangeLogService;
@@ -590,7 +589,7 @@ public class ProposedFlowWorkflowServiceTest extends BaseInMemoryIntegrationTest
         // 2. Act and Assert ---------------------------------------------------
         assertThrows(org.finos.waltz.service.workflow_state_machine.exception.TransitionPredicateFailedException.class, () -> {
             proposedFlowWorkflowService.proposedFlowAction(proposedFlowId, APPROVE, userName, sourceApproveCommand);
-        }, format("Cannot transition from %s to %s", SOURCE_APPROVED, SOURCE_APPROVED));
+        }, format("A transition for the action '%s' already exists for this proposed flow.", APPROVE));
 
     }
 
@@ -621,7 +620,6 @@ public class ProposedFlowWorkflowServiceTest extends BaseInMemoryIntegrationTest
         // 2. Act and Assert ---------------------------------------------------
         assertThrows(org.finos.waltz.service.workflow_state_machine.exception.TransitionPredicateFailedException.class, () -> {
             proposedFlowWorkflowService.proposedFlowAction(response.proposedFlowId(), APPROVE, USER_NAME, actionCommand);
-        }, format("Cannot transition from %s to %s", SOURCE_APPROVED, SOURCE_APPROVED));
+        }, format("A transition for the action '%s' already exists for this proposed flow.", APPROVE));
     }
 }
-

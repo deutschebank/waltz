@@ -198,10 +198,6 @@ public class ProposedFlowWorkflowService {
                     transitionAction,
                     workflowContext);
 
-            if (newState == currentState) {
-                throw new IllegalArgumentException(format("Cannot transition from %s to %s", currentState, newState));
-            }
-
             // if the transition not found, not permitted or new state == current state happen, abort
             // Persist the new state.
             entityWorkflowService.updateStateTransition(username, proposedFlowActionCommand.comment(),
@@ -226,6 +222,10 @@ public class ProposedFlowWorkflowService {
 
             // Refresh Return Object
             proposedFlow = proposedFlowDao.getProposedFlowResponseById(proposedFlowId);
+        } catch (TransitionPredicateFailedException e) {
+            LOG.error("Error Occurred during transition: {} ", e.getMessage());
+            String errorMessage = String.format("A transition for the action '%s' already exists for this proposed flow.", transitionAction.name());
+            throw new TransitionPredicateFailedException(errorMessage);
         } catch (Exception e) {
             LOG.error("Error Occurred : {} ", e.getMessage());
             throw e;
