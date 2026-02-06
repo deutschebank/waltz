@@ -1,6 +1,6 @@
 package org.finos.waltz.web;
 
-public interface HttpStatus {
+public interface HttpStatusSpark {
 
     int NOT_FOUND_404 = 404;
     int BAD_REQUEST_400 = 400;
