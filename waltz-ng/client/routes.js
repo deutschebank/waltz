@@ -142,7 +142,7 @@ function configureStateChangeListener($transitions, $window, $state, serviceBrok
         const infoPromise = serviceBroker
             .execute(CORE_API.AccessLogStore.write, [name, transition.params()]);
 
-        /*if (__ENV__ === "prod") {
+        if (__ENV__ === "prod") {
             infoPromise.then(r => {
                 if (r.data.revision !== __REVISION__) {
                     console.log(
@@ -153,7 +153,7 @@ function configureStateChangeListener($transitions, $window, $state, serviceBrok
                     $window.location.reload();
                 }
             })
-        }*/
+        }
     });
 }
 
