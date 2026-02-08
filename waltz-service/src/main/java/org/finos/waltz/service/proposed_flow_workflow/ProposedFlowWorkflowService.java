@@ -222,10 +222,12 @@ public class ProposedFlowWorkflowService {
 
             // Refresh Return Object
             proposedFlow = proposedFlowDao.getProposedFlowResponseById(proposedFlowId);
+
         } catch (TransitionPredicateFailedException e) {
             LOG.error("Error Occurred during transition: {} ", e.getMessage());
-            String errorMessage = String.format("A transition for the action '%s' already exists for this proposed flow.", transitionAction.name());
+            String errorMessage = String.format("Cannot perform '%s'. The flow may have been updated or you lack permissions.", transitionAction.name());
             throw new TransitionPredicateFailedException(errorMessage);
+
         } catch (Exception e) {
             LOG.error("Error Occurred : {} ", e.getMessage());
             throw e;

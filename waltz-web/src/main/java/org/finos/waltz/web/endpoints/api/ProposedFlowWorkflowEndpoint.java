@@ -23,6 +23,7 @@ import spark.Response;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static org.finos.waltz.common.Checks.checkNotNull;
 import static org.finos.waltz.service.workflow_state_machine.proposed_flow.ProposedFlowWorkflowTransitionAction.PROPOSE;
@@ -75,16 +76,22 @@ public class ProposedFlowWorkflowEndpoint implements Endpoint {
         return proposedFlowWorkflowService.getProposedFlows(readIdSelectionOptionsFromBody(request));
     }
 
-    public ProposedFlowResponse proposedFlowAction(Request request, Response response) throws IOException, FlowCreationException, TransitionNotFoundException, TransitionPredicateFailedException {
+    public Object proposedFlowAction(Request request, Response response) throws IOException, FlowCreationException, TransitionNotFoundException {
         String action = checkNotNull(request.params("action"), "Action not specified");
         ProposedFlowWorkflowTransitionAction proposedFlowAction = checkNotNull(findByVerb(action), "Invalid action");
         ProposedFlowActionCommand proposedFlowActionCommand = readBody(request, ProposedFlowActionCommand.class);
 
-        return proposedFlowWorkflowService.proposedFlowAction(
-                WebUtilities.getLong(request, "id"),
-                proposedFlowAction,
-                WebUtilities.getUsername(request),
-                proposedFlowActionCommand);
+        try {
+            return proposedFlowWorkflowService.proposedFlowAction(
+                    WebUtilities.getLong(request, "id"),
+                    proposedFlowAction,
+                    WebUtilities.getUsername(request),
+                    proposedFlowActionCommand);
+        } catch (TransitionPredicateFailedException e) {
+            LOG.warn("Transition failed for proposed flow action: {}", e.getMessage());
+            response.status(400); // Bad Request
+            return Map.of("message", e.getMessage());
+        }
     }
 
     public ProposeFlowPermission getUserPermissionsForEntityRef(Request request, Response response) throws IOException, InsufficientPrivelegeException {

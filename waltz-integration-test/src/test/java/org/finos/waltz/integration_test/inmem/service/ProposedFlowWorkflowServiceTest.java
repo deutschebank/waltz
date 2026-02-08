@@ -589,7 +589,7 @@ public class ProposedFlowWorkflowServiceTest extends BaseInMemoryIntegrationTest
         // 2. Act and Assert ---------------------------------------------------
         assertThrows(org.finos.waltz.service.workflow_state_machine.exception.TransitionPredicateFailedException.class, () -> {
             proposedFlowWorkflowService.proposedFlowAction(proposedFlowId, APPROVE, userName, sourceApproveCommand);
-        }, format("A transition for the action '%s' already exists for this proposed flow.", APPROVE));
+        }, format("Cannot perform '%s'. The flow may have been updated or you lack permissions.", APPROVE));
 
     }
 
@@ -620,6 +620,6 @@ public class ProposedFlowWorkflowServiceTest extends BaseInMemoryIntegrationTest
         // 2. Act and Assert ---------------------------------------------------
         assertThrows(org.finos.waltz.service.workflow_state_machine.exception.TransitionPredicateFailedException.class, () -> {
             proposedFlowWorkflowService.proposedFlowAction(response.proposedFlowId(), APPROVE, USER_NAME, actionCommand);
-        }, format("A transition for the action '%s' already exists for this proposed flow.", APPROVE));
+        }, format("Cannot perform '%s'. The flow may have been updated or you lack permissions.", APPROVE));
     }
 }
