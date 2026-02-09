@@ -126,6 +126,28 @@ function _execute(method, url, data) {
     return mkPromise(method, url, data);
 }
 
+async function _executeV2(method, url, data) {
+    try {
+        const response = await mkPromise(method, url, data);
+        return {
+            status: "success",
+            data: response.data
+        };
+    } catch (e) {
+        if (e.data && e.data.message) {
+            return {
+                status: "error",
+                message: e.data.message
+            };
+        } else {
+            return {
+                status: "error",
+                message: "An unknown error occurred"
+            };
+        }
+    }
+}
+
 
 const appCache = new Cache("App");
 const viewCache = new Cache("View");
@@ -140,6 +162,7 @@ function initRemote(cache) {
         fetchAppDatum: (method, url, data, config) => _fetchData(cache, method, url, data, null, config),
         fetchAppList: (method, url, data, config) => _fetchData(cache, method, url, data, [], config),
         execute: (method, url, data) => _execute(method, url, data),
+        executeV2: (method, url, data) => _executeV2(method, url, data),
         clear: () => viewCache.clear(),
     };
 }
