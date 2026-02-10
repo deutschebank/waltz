@@ -27,9 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
 import java.io.*;
 import java.net.URL;
@@ -57,7 +54,6 @@ public class StaticResourcesEndpointController {
     @GetMapping("/**")
     public Object register(HttpServletRequest request) {
         LOG.debug("Registering static resources");
-
         String resolvedPath = resolvePath(request);
 
         if (resolvedPath == null) {
@@ -97,7 +93,6 @@ public class StaticResourcesEndpointController {
         }
     }
 
-
     /**
      * We want to add a cache-control: max-age value to all resources except html.
      * This is because the html resources have references to 'cache-busted' js files
@@ -119,6 +114,7 @@ public class StaticResourcesEndpointController {
      * index.html need to have a <base href="/[site_context]/" /> tag in the head section to ensure
      * html5 mode works correctly in AngularJS.  This method will ensure the existing <base href="/" /> tag
      * is replace with one that includes the correct site context as deployed.
+     *
      * @param request
      * @param resolvedPath
      * @param resourceStream
@@ -135,12 +131,12 @@ public class StaticResourcesEndpointController {
                 String line = lower(lines.get(i));
 
                 if (line.contains("<base href=")) {
-                    LOG.info("Found <base> tag: " + line + ", adding context path: " + request.getContextPath());
+                    LOG.info("Found <base> tag: " + line + ", adding context path: " + request.getRequestURI());
                     line = line.replaceFirst(
                             "<base href=(['\"])/(['\"])\\s*/>",
                             format(
-                                    "\t<base href=\"%s/\" />",
-                                    request.getContextPath()));
+                                    "\t<base href=\"%s\" />",
+                                    request.getRequestURI()));
                     LOG.info("Updated <base> tag: " + line);
                     lines.set(i, line);
 

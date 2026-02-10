@@ -151,7 +151,7 @@ public class Main {
             String message = "Not found exception" + e.getMessage();
             LOG.error(message, e);
             reportException(
-                    HttpStatus.NOT_FOUND_404,
+                    HttpStatusSpark.NOT_FOUND_404,
                     e.getCode(),
                     message,
                     res,
@@ -162,7 +162,7 @@ public class Main {
             String message = "Not found exception" + e.getMessage();
             LOG.error(message, e);
             reportException(
-                    HttpStatus.NOT_FOUND_404,
+                    HttpStatusSpark.NOT_FOUND_404,
                     "NO_DATA",
                     message,
                     res,
@@ -173,7 +173,7 @@ public class Main {
             String message = "Update failed exception:" + e.getMessage();
             LOG.error(message, e);
             reportException(
-                    HttpStatus.BAD_REQUEST_400,
+                    HttpStatusSpark.BAD_REQUEST_400,
                     e.getCode(),
                     message,
                     res,
@@ -184,7 +184,7 @@ public class Main {
             String message = "Duplicate detected: " + e.getMessage();
             LOG.error(message, e);
             reportException(
-                    HttpStatus.CONFLICT_409,
+                    HttpStatusSpark.CONFLICT_409,
                     "DUPLICATE",
                     message,
                     res,
@@ -195,7 +195,7 @@ public class Main {
             String message = "Data integrity violation detected: " + e.getMessage();
             LOG.error(message, e);
             reportException(
-                    HttpStatus.CONFLICT_409,
+                    HttpStatusSpark.CONFLICT_409,
                     "DATA_INTEGRITY",
                     message,
                     res,
@@ -206,7 +206,7 @@ public class Main {
             String message = format("Data Access Exception: %s [%s]", e.getCause(), e.getClass().getName());
             LOG.error(message, e);
             reportException(
-                    HttpStatus.BAD_REQUEST_400,
+                    HttpStatusSpark.BAD_REQUEST_400,
                     e.sqlState(),
                     message,
                     resp,
@@ -217,7 +217,7 @@ public class Main {
             String message = "Illegal Argument Exception: " + e.getMessage();
             LOG.error(message, e);
             reportException(
-                    HttpStatus.BAD_REQUEST_400,
+                    HttpStatusSpark.BAD_REQUEST_400,
                     "ILLEGAL ARGUMENT",
                     message,
                     resp,
@@ -228,7 +228,7 @@ public class Main {
             String message = "Web exception: " + e.getMessage();
             LOG.error(message, e);
             reportException(
-                    HttpStatus.INTERNAL_SERVER_ERROR_500,
+                    HttpStatusSpark.INTERNAL_SERVER_ERROR_500,
                     e.getCode(),
                     message,
                     res,
@@ -237,7 +237,7 @@ public class Main {
 
         EndpointUtilities.addExceptionHandler(NotAuthorizedException.class, (e, req, res) -> {
             reportException(
-                    HttpStatus.FORBIDDEN_403,
+                    HttpStatusSpark.FORBIDDEN_403,
                     "NOT_AUTHORIZED",
                     e.getMessage(),
                     res,
@@ -246,7 +246,7 @@ public class Main {
 
         EndpointUtilities.addExceptionHandler(InsufficientPrivelegeException.class, (e, req, resp) ->
                 reportException(
-                        HttpStatus.FORBIDDEN_403,
+                        HttpStatusSpark.FORBIDDEN_403,
                         "NOT_AUTHORIZED",
                         e.getMessage(),
                         resp,
@@ -256,7 +256,7 @@ public class Main {
             String message = "Generic Exception: " + e.getMessage() + " / " + e.getClass().getCanonicalName();
             LOG.error(message, e);
             reportException(
-                    HttpStatus.INTERNAL_SERVER_ERROR_500,
+                    HttpStatusSpark.INTERNAL_SERVER_ERROR_500,
                     "unknown",
                     message,
                     res,

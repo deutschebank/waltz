@@ -88,17 +88,6 @@ public class AuthConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll()
                 )
-                .exceptionHandling(exception -> exception
-                        .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            Map<String, String> jsonMap = new HashMap<>();
-                            jsonMap.put("message", "You do not have permission to perform that operation");
-                            jsonMap.put("id", "NOT_AUTHORIZED");
-                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                            response.setContentType("application/json");
-                            response.setCharacterEncoding("UTF-8");
-                            response.getWriter().write(mapper.writeValueAsString(jsonMap));
-                        })
-                )
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
 

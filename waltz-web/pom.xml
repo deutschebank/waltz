@@ -24,7 +24,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>waltz-web</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>waltz-web</name>
     <url>http://maven.apache.org</url>
 
@@ -168,6 +168,29 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>5.2.0</version> <!-- Use the latest version -->
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>com.auth0</groupId>
@@ -175,17 +198,30 @@
         </dependency>
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/build</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>version.properties</include>
+                </includes>
+            </resource>
+        </resources>
         <finalName>waltz-web</finalName>
+
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
-                <configuration>
-                    <archiveClasses>true</archiveClasses>
-                    <webResources>
-                    </webResources>
-                </configuration>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <!-- Build the front end -->
@@ -228,47 +264,22 @@
                     <skip>${skip.npm}</skip>
                 </configuration>
             </plugin>
-            <!-- AntRun to execute the Jakarta migration Ant task -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>jakarta-migration</id>
-                        <phase>package</phase>
-                        <configuration>
-                            <target>
-                                <!-- Define the migration task -->
-                                <taskdef name="jakarta-migration"
-                                         classname="org.apache.tomcat.jakartaee.MigrationTask"
-                                         classpathref="maven.plugin.classpath"/>
-
-                                <!-- Run the migration on the WAR output -->
-                                <jakarta-migration
-                                        src="${project.build.directory}${file.separator}${project.build.finalName}.war"
-                                        dest="${project.build.directory}${file.separator}${project.build.finalName}-jakarta.war"/>
-                            </target>
-                        </configuration>
-                        <goals>
-
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>jakartaee-migration</artifactId>
-                        <version>1.0.9</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
             <plugin>
                 <!-- Copy the front end into the static folder for JARs-->
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
+                    <execution>
+                        <id>process-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                        <configuration>
+                            <useDefaultDelimiters>true</useDefaultDelimiters>
+                        </configuration>
+                    </execution>
+
                     <execution>
                         <id>copy-js</id>
                         <phase>prepare-package</phase>
@@ -285,46 +296,7 @@
                             </resources>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>copy-config</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/classes</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>build</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>
-                                        org.finos.waltz.web.Main
-                                    </mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                        </configuration>
-                    </execution>
+
                 </executions>
             </plugin>
         </plugins>
