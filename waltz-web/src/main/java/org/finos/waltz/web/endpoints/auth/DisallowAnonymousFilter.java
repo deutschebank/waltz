@@ -22,11 +22,19 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.finos.waltz.service.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
+
+import java.io.IOException;
 
 import static spark.Spark.halt;
 
@@ -51,7 +59,7 @@ public class DisallowAnonymousFilter extends WaltzFilter {
     }
 
 
-    @Override
+    /*@Override
     public void handle(Request request, Response response) throws Exception {
         String authorizationHeader = request.headers("Authorization");
 
@@ -61,6 +69,27 @@ public class DisallowAnonymousFilter extends WaltzFilter {
             String token = authorizationHeader.replaceFirst("Bearer ", "");
             DecodedJWT decodedJWT = verifier.verify(token);
             AuthenticationUtilities.setUser(request, decodedJWT.getSubject());
+            AuthenticationUtilities.setUserForSB((HttpServletRequest)request.raw(),decodedJWT.getSubject());
+        }
+    }*/
+
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException
+    {
+        LOG.info("Start of DisallowAnonymousFilter#doFilter()");
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+        String authorizationHeader = httpRequest.getHeader("Authorization");
+        LOG.info("value of authorizationHeader : {}", authorizationHeader);
+
+        if (authorizationHeader == null) {
+            halt("Anonymous not allowed");
+        } else {
+            String token = authorizationHeader.replaceFirst("Bearer ", "");
+            DecodedJWT decodedJWT = verifier.verify(token);
+            //AuthenticationUtilities.setUser(request, decodedJWT.getSubject());
+            LOG.info("subject value from DisallowAnonymousFilter : {}", decodedJWT.getSubject());
+            AuthenticationUtilities.setUserForSB(httpRequest,decodedJWT.getSubject());
+            LOG.info("End of DisallowAnonymousFilter ............");
         }
     }
 

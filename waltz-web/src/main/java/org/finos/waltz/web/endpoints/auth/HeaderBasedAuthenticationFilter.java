@@ -18,13 +18,15 @@
 
 package org.finos.waltz.web.endpoints.auth;
 
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.finos.waltz.common.StringUtilities;
-import org.finos.waltz.service.settings.SettingsService;
 import org.finos.waltz.model.settings.NamedSettings;
+import org.finos.waltz.service.settings.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import spark.Request;
-import spark.Response;
+
+import java.io.IOException;
 
 import static org.finos.waltz.common.StringUtilities.notEmpty;
 
@@ -34,6 +36,7 @@ import static org.finos.waltz.common.StringUtilities.notEmpty;
  * http headers of a request.  The header name is either `remote-user`
  * or is specified by a settings: `server.authentication.filter.headerbased.param`
  */
+
 public class HeaderBasedAuthenticationFilter extends WaltzFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(HeaderBasedAuthenticationFilter.class);
@@ -41,21 +44,19 @@ public class HeaderBasedAuthenticationFilter extends WaltzFilter {
     private final String paramName;
     private final String testingOverride = System.getProperty("waltz.test.user");
 
-
     public HeaderBasedAuthenticationFilter(SettingsService settingsService) {
         super(settingsService);
-
-        paramName = getSettingValue(NamedSettings.headerBasedAuthenticationFilterParam)
+        paramName = settingsService.getValue(NamedSettings.headerBasedAuthenticationFilterParam)
                 .orElseGet(() -> {
                     LOG.warn("HeaderBasedAuthenticationFilter is configured but no header parameter has been provided in the settings table (key is: 'server.authentication.filter.headerbased.param').  Defaulting to 'remote-user'.");
                     return "remote-user";
                 });
 
-        LOG.info("Using header param: '" + paramName + "' for authentication purposes");
+        LOG.info("Using header param: '{}' for authentication purposes",paramName);
     }
 
 
-    @Override
+    /*@Override
     public void handle(Request request,
                        Response response) throws Exception {
 
@@ -67,9 +68,27 @@ public class HeaderBasedAuthenticationFilter extends WaltzFilter {
 
         if (notEmpty(userParam)) {
             AuthenticationUtilities.setUser(request, userParam);
+            AuthenticationUtilities.setUserForSB((HttpServletRequest)request.raw(),userParam);
         } else {
             AuthenticationUtilities.setUserAsAnonymous(request);
+            AuthenticationUtilities.setUserAsAnonymousForSB((HttpServletRequest)request.raw());
         }
-    }
+    }*/
 
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        LOG.info("Start of HeaderBasedAuthenticationFilter#doFilter()");
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+        String userParam = StringUtilities.ifEmpty(
+                testingOverride, httpRequest.getHeader(paramName));
+
+        LOG.trace("User according to header: {}", userParam);
+
+        if (notEmpty(userParam)) {
+            AuthenticationUtilities.setUserForSB(httpRequest, userParam);
+        } else {
+            AuthenticationUtilities.setUserAsAnonymousForSB(httpRequest);
+        }
+        LOG.info("End of HeaderBasedAuthenticationFilter#doFilter()");
+        filterChain.doFilter(servletRequest, servletResponse);
+    }
 }

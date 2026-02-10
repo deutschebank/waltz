@@ -210,4 +210,6 @@ public abstract class DirectQueryBasedDataExtractor implements DataExtractor {
         });
     }
 
+
+
 }

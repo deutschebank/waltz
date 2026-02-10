@@ -18,6 +18,7 @@
 
 package org.finos.waltz.web.endpoints.auth;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.finos.waltz.model.user.UserUtilities;
 import spark.Request;
 
@@ -29,17 +30,33 @@ public class AuthenticationUtilities {
         request.attribute(USER_KEY, UserUtilities.ANONYMOUS_USERNAME);
     }
 
+    public static void setUserAsAnonymousForSB(HttpServletRequest request) {
+        request.setAttribute(USER_KEY, UserUtilities.ANONYMOUS_USERNAME);
+    }
+
     public static void setUser(Request request, String user) {
         request.attribute(USER_KEY, user);
+    }
+
+    public static void setUserForSB(HttpServletRequest request, String user) {
+        request.setAttribute(USER_KEY, user);
     }
 
     public static String getUsername(Request request) {
         return (String) request.attribute(USER_KEY);
     }
 
+    public static String getUsernameForSB(HttpServletRequest request) {
+        return (String) request.getAttribute(USER_KEY);
+    }
+
 
     public static boolean isAnonymous(Request request) {
         return UserUtilities.ANONYMOUS_USERNAME.equalsIgnoreCase((String) request.attribute(USER_KEY));
+    }
+
+    public static boolean isAnonymousForSB(HttpServletRequest request) {
+        return UserUtilities.ANONYMOUS_USERNAME.equalsIgnoreCase((String) request.getAttribute(USER_KEY));
     }
 
 }

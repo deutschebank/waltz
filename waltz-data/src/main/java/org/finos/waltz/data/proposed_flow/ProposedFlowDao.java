@@ -24,6 +24,7 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record3;
+import org.jooq.Record1;
 import org.jooq.Result;
 import org.jooq.CommonTableExpression;
 import org.jooq.SelectConditionStep;
