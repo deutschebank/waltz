@@ -2,18 +2,18 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useToasts } from "../../context/toast/ToastContext";
-import { NotificationTypeEnum } from "../../enums/Notification";
+import { useToasts } from "../../../context/toast/ToastContext";
+import { NotificationTypeEnum } from "../../../enums/Notification";
 import {
     setActiveMode,
     setSelectedUser,
     setUserRoles,
-} from "../../../redux-slices/user-management-slice";
-import { userManagementApi } from "../../api/user-management";
-import reduxStore from "../../../redux-store";
-import { Modes } from "../../enums/User";
-import { useSliceSelector } from "../../hooks/useSliceSelector";
-import DeleteUser from "./DeleteUser";
+} from "../../../../redux-slices/user-management-slice";
+import { userManagementApi } from "../../../api/user-management";
+import reduxStore from "../../../../redux-store";
+import { VisualStateModes } from "../../../enums/VisualState";
+import { useSliceSelector } from "../../../hooks/useSliceSelector";
+import DeleteUser from "../DeleteUser";
 
 // Mock external modules
 jest.mock("@tanstack/react-query", () => ({
@@ -21,21 +21,21 @@ jest.mock("@tanstack/react-query", () => ({
     useQueryClient: jest.fn(),
 }));
 
-jest.mock("../../context/toast/ToastContext", () => ({
+jest.mock("../../../context/toast/ToastContext", () => ({
     useToasts: jest.fn(),
 }));
 
-jest.mock("../../../redux-store", () => ({
+jest.mock("../../../../redux-store", () => ({
     dispatch: jest.fn(),
 }));
 
-jest.mock("../../api/user-management", () => ({
+jest.mock("../../../api/user-management", () => ({
     userManagementApi: {
         deleteUser: jest.fn()
     },
 }));
 
-jest.mock("../../hooks/useSliceSelector", () => ({
+jest.mock("../../../hooks/useSliceSelector", () => ({
     useSliceSelector: jest.fn(),
 }));
 
@@ -157,7 +157,7 @@ describe("DeleteUser", () => {
             );
             expect(reduxStore.dispatch).toHaveBeenCalledWith(setUserRoles([]));
             expect(reduxStore.dispatch).toHaveBeenCalledWith(
-                setActiveMode(Modes.LIST)
+                setActiveMode(VisualStateModes.LIST)
             );
             expect(mockInvalidateQueries).toHaveBeenCalledWith({
                 queryKey: ["user", "findAll"],
@@ -242,7 +242,7 @@ describe("DeleteUser", () => {
         );
 
         expect(reduxStore.dispatch).toHaveBeenCalledWith(
-            setActiveMode(Modes.DETAIL)
+            setActiveMode(VisualStateModes.DETAIL)
         );
     });
 });

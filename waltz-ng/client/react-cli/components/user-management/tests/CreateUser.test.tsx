@@ -2,32 +2,33 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { useMutation } from "@tanstack/react-query";
-import { useToasts } from "../../context/toast/ToastContext";
-import { NotificationTypeEnum } from "../../enums/Notification";
+import { NotificationTypeEnum } from "../../../enums/Notification";
 import {
     setSelectedUser,
     setUserRoles,
     setActiveMode,
-} from "../../../redux-slices/user-management-slice";
-import { userManagementApi } from "../../api/user-management";
-import reduxStore from "../../../redux-store";
-import CreateUser from "./CreateUser";
-import { Modes, Roles } from "../../enums/User";
+} from "../../../../redux-slices/user-management-slice";
+import { userManagementApi } from "../../../api/user-management";
+import reduxStore from "../../../../redux-store";
+import CreateUser from "../CreateUser";
+import { UserRoles } from "../../../enums/User";
+import { VisualStateModes } from "../../../enums/VisualState";
+import { useToasts } from "../../../context/toast/ToastContext";
 
 // Mock external modules
 jest.mock("@tanstack/react-query", () => ({
     useMutation: jest.fn(),
 }));
 
-jest.mock("../../context/toast/ToastContext", () => ({
+jest.mock("../../../context/toast/ToastContext", () => ({
     useToasts: jest.fn(),
 }));
 
-jest.mock("../../../redux-store", () => ({
+jest.mock("../../../../redux-store", () => ({
     dispatch: jest.fn(),
 }));
 
-jest.mock("../../api/user-management", () => ({
+jest.mock("../../../api/user-management", () => ({
     userManagementApi: {
         register: jest.fn(),
         getByUserId: jest.fn(),
@@ -268,16 +269,16 @@ describe("CreateUser", () => {
             expect(reduxStore.dispatch).toHaveBeenCalledWith(
                 setSelectedUser({
                     userId: "testUser",
-                    roles: [Roles.ADMIN],
+                    roles: [UserRoles.ADMIN],
                     name: "testUser",
                     userName: "testUser",
                 })
             );
             expect(reduxStore.dispatch).toHaveBeenCalledWith(
-                setUserRoles([Roles.ADMIN])
+                setUserRoles([UserRoles.ADMIN])
             );
             expect(reduxStore.dispatch).toHaveBeenCalledWith(
-                setActiveMode(Modes.DETAIL)
+                setActiveMode(VisualStateModes.DETAIL)
             );
         });
     });
@@ -339,7 +340,7 @@ describe("CreateUser", () => {
         fireEvent.click(cancelButton);
 
         expect(reduxStore.dispatch).toHaveBeenCalledWith(
-            setActiveMode(Modes.LIST)
+            setActiveMode(VisualStateModes.LIST)
         );
     });
 });

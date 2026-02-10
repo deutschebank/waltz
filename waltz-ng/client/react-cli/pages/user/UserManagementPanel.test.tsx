@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import UserManagementPanel from "./UserManagementPanel";
 import { useSliceSelector } from "../../hooks/useSliceSelector";
-import { Modes } from "../../enums/User";
+import { VisualStateModes } from "../../enums/VisualState";
 
 // Mock child components to isolate the UserManagementPanel
 jest.mock(
@@ -50,7 +50,7 @@ describe("UserManagementPanel", () => {
     });
 
     it("should render correctly with the 'Individual User Admin' tab selected by default", () => {
-        mockUseSliceSelector.mockReturnValue(Modes.LIST);
+        mockUseSliceSelector.mockReturnValue(VisualStateModes.LIST);
         render(<UserManagementPanel />);
 
         // Check if tabs are rendered
@@ -72,7 +72,7 @@ describe("UserManagementPanel", () => {
     });
 
     it("should switch to the 'Bulk User Admin' tab and render UserBulkEditor", () => {
-        mockUseSliceSelector.mockReturnValue(Modes.LIST);
+        mockUseSliceSelector.mockReturnValue(VisualStateModes.LIST);
         render(<UserManagementPanel />);
 
         const bulkTab = screen.getByTestId("bulk");
@@ -88,11 +88,11 @@ describe("UserManagementPanel", () => {
 
     // Test cases for different modes in single user tab
     const singleUserModes = [
-        { mode: Modes.LIST, component: "UserSelectList" },
-        { mode: Modes.DETAIL, component: "UserRolesList" },
-        { mode: Modes.ADD, component: "CreateUser" },
-        { mode: Modes.PASSWORD, component: "PasswordUpdate" },
-        { mode: Modes.DELETE, component: "DeleteUser" },
+        { mode: VisualStateModes.LIST, component: "UserSelectList" },
+        { mode: VisualStateModes.DETAIL, component: "UserRolesList" },
+        { mode: VisualStateModes.ADD, component: "CreateUser" },
+        { mode: VisualStateModes.PASSWORD, component: "PasswordUpdate" },
+        { mode: VisualStateModes.DELETE, component: "DeleteUser" },
     ];
 
     singleUserModes.forEach(({ mode, component }) => {
@@ -116,7 +116,7 @@ describe("UserManagementPanel", () => {
     });
 
     it("should switch back to 'Individual User Admin' tab from 'Bulk User Admin' tab", () => {
-        mockUseSliceSelector.mockReturnValue(Modes.LIST);
+        mockUseSliceSelector.mockReturnValue(VisualStateModes.LIST);
         render(<UserManagementPanel />);
 
         const individualTab = screen.getByTestId("single");

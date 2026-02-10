@@ -27,3 +27,15 @@
                             primary-entity-ref="$ctrl.parentEntityRef">
     </waltz-svelte-component>
 </waltz-dynamic-section>
+
+<!-- if we are rendering a react component,
+     for pure angular components we are including them via $compile -->
+<waltz-dynamic-section ng-if="$ctrl.section.reactComponent"
+                       parent-entity-ref="$ctrl.parentEntityRef"
+                       class="waltz-dynamic-section waltz-dynamic-section-render-mode-standard waltz-dynamic-section-${section.id}"
+                       section="$ctrl.section"
+                       on-remove="$ctrl.onRemove">
+    <waltz-react-component component="$ctrl.section.reactComponent"
+                            primary-entity-ref="$ctrl.parentEntityRef">
+    </waltz-react-component>
+</waltz-dynamic-section>

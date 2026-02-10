@@ -22,9 +22,6 @@ npm-debug.log
 pom.xml.versionsBackup
 /waltz-test-common/screenshots/
 /waltz-ng/mocha-test-results.txt
-<<<<<<< HEAD
 *.DS_Store
 package-lock.json
-=======
 dependency-reduced-pom.xml
->>>>>>> 759935a2ce5e2cb55dfad3a700a70ec115cd3586

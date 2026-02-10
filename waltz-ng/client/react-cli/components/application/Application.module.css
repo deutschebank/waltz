@@ -1,0 +1,23 @@
+.appGroupList {
+    display: inline-flex;
+    flex-wrap: wrap;
+
+    .pill {
+        background: #fefefe;
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+        margin-right: 0.5rem;
+        border: 1px solid #e1e1e1;
+        padding: 0.5rem;
+    }
+
+    .pill:hover {
+        background: #fafafa;
+    }
+}
+
+.showMore {
+    cursor: pointer;
+    color: #337ab7;
+    align-self: center;
+}

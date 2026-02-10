@@ -1,0 +1,16 @@
+.quotedNote {
+    border-style: solid;
+    border-color: #f8868a;
+    background-color: #fcf3f5;
+    padding: 0.5em;
+    margin-top: 0.5em;
+}
+
+.removalBox {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d93f44;
+    background-color: #fae9ee;
+    padding: 1.5em 2em;
+    border-radius: 2px;
+}

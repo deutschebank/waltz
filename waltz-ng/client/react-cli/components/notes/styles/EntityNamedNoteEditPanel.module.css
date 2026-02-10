@@ -1,0 +1,21 @@
+textarea {
+    width: 100%;
+    font-family: monospace;
+}
+
+.preview {
+    border-style: solid;
+    border-color: #d7d8da;
+    background-color: #f3fbfc;
+    padding: 0.5em;
+    margin-left: 0.5em;
+}
+
+.editBox {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #59a1f1;
+    background-color: #e9f7fa;
+    padding: 1.5em 2em;
+    border-radius: 2px;
+}

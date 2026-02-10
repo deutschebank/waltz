@@ -1,27 +1,25 @@
-import { Roles } from "../enums/User";
-
+import { UserRoles } from "../enums/User";
 export interface Role {
-  key: Roles;
+  key: UserRoles;
   name: string;
   description: string;
   userSelectable?: boolean;
   isCustom?: boolean;
 }
 
-export interface IUser {
+export interface UserInfo {
   userId?: string;
   name?: string;
   userName: string;
-  roles: Roles[];
+  roles: UserRoles[];
   comment?: string;
 }
 
-export interface ICreateUser {
+export interface CreateUserType {
   userName: string;
   password: string;
 }
 
-// Defines the structure for a preview row.
 export interface PreviewRow {
   givenUser: string;
   givenRole: string;
@@ -29,20 +27,20 @@ export interface PreviewRow {
   resolvedUser: string | null;
   resolvedRole: string | null;
   resolvedComment: string | null;
+  status: string | null;
 }
 
-export type UserBulkResponse<T> = {
-  data: T; // Array of user objects
+export type UserBulkUploadPreviewResponse = {
+  data: PreviewRow[];
 };
 
-// Defines the shape of the user management state.
+export type UserBulkUploadResponse = {
+  data: number;
+};
+
 export interface UserManagementState {
-  // The currently selected user, or null if none is selected.
-  selectedUser: IUser | null;
-  // The active mode of the user management panel (e.g., LIST, DETAIL, ADD).
+  selectedUser: UserInfo | null;
   activeMode: string;
-  // The roles associated with the selected user.
-  userRoles: Roles[];
-  // The search query for filtering users or roles.
+  userRoles: UserRoles[];
   searchQry: string;
 }

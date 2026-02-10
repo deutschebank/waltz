@@ -16,7 +16,7 @@ export default function BreadCrumbs({crumbs}: BreadCrumbsProps) {
                         return <li key={idx}>
                             {crumb.href && <a href={crumb.href}>{crumb?.text}</a>}
                             {!crumb.href && crumb.state && <ViewLink state={crumb.state}>{crumb?.text}</ViewLink>}
-                            {!crumb.href && !crumb.state && <p>{crumb?.text}</p>}
+                            {!crumb.href && !crumb.state && <div>{crumb?.text}</div>}
                         </li>
                     })
                 }

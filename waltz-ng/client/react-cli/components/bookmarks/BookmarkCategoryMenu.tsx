@@ -1,0 +1,70 @@
+import React, {useState} from "react";
+import Icon from "../common/Icon";
+import { BookmarkKinds } from "../../types/Bookmark";
+import Button from "../common/button/Button";
+interface BookmarkCategoryMenuProps {
+  bookmarkKinds: BookmarkKinds[];
+  onKindSelect: (kind: BookmarkKinds | null) => void; 
+}
+
+/**
+ * Renders a menu of bookmark categories that can be used for filtering.
+ */
+const BookmarkCategoryMenu: React.FC<BookmarkCategoryMenuProps> = ({
+  bookmarkKinds,
+  onKindSelect,
+}) => {
+  // State to keep track of the currently selected category.
+  const [selected, setSelected] = useState<BookmarkKinds | null>(null);
+
+  /**
+   * Compares two bookmark kinds for equality.
+   * They are considered equal if they are the same object or have the same 'key' property.
+   */
+  const eq = (k1: BookmarkKinds | null, k2: BookmarkKinds | null) => {
+    if (k1 === null || k2 === null) { 
+      return false;
+    }
+    return k1 === k2 || k1.key === k2.key;
+  };
+
+  const handleKindSelected = (k: BookmarkKinds) => {
+    const newSelected = eq(selected, k) ? null : k;
+    setSelected(newSelected);
+    onKindSelect(newSelected);
+  };
+
+  return (
+    <ul className="list-group">
+      {bookmarkKinds.map((bookmarkKind) => (
+        <li
+          key={bookmarkKind.key}
+          className={`list-group-item ${eq(selected, bookmarkKind) ? "selected" : ""} ${
+            bookmarkKind.count === 0 ? "text-muted" : ""
+          }`}
+        >
+          {bookmarkKind.count > 0 ? (
+            <Button
+              className="btn-skinny text-left"
+              style={{width: "100%"}}
+              onClick={() => handleKindSelected(bookmarkKind)}
+            >
+              <Icon name={bookmarkKind.icon} /> {bookmarkKind.name}
+              {eq(selected, bookmarkKind) && (
+                <span className="pull-right">
+                  <Icon name="close" />
+                </span>
+              )}
+            </Button>
+          ) : (
+            <span>
+              <Icon name={bookmarkKind.icon} /> {bookmarkKind.name}
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+export default BookmarkCategoryMenu;

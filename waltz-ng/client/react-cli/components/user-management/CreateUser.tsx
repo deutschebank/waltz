@@ -10,30 +10,23 @@ import {
 import { userManagementApi } from "../../api/user-management";
 import Button from "../common/button/Button";
 import reduxStore from "../../../redux-store";
-import { Modes } from "../../enums/User";
-import { ICreateUser } from "../../types/User";
+import { CreateUserType } from "../../types/User";
+import { VisualStateModes } from "../../enums/VisualState";
 
-/**
- * CreateUser component provides a form to register a new user.
- */
 const CreateUser: React.FC = () => {
-  // State for the new user's username.
   const [userName, setUserName] = useState<string>("");
-  // State for the new user's password.
   const [password, setPassword] = useState<string>("");
-  // Hook for displaying toast notifications.
   const { addToast } = useToasts();
 
   // Mutation for handling the user registration API call.
-  const registerMutation = useMutation<boolean, Error, ICreateUser>({
-    mutationFn: ({ userName, password }: ICreateUser) => {
+  const registerMutation = useMutation<boolean, Error, CreateUserType>({
+    mutationFn: ({ userName, password }: CreateUserType) => {
       const { mutationFn } = userManagementApi.register({
         userName,
         password,
       });
       return mutationFn();
     },
-    // On successful registration, fetches the new user's data and navigates to the detail view.
     onSuccess: async (res) => {
       addToast({
         type: NotificationTypeEnum.SUCCESS,
@@ -44,9 +37,9 @@ const CreateUser: React.FC = () => {
       const registeredUser = await fetchUserFn();
       reduxStore.dispatch(setSelectedUser(registeredUser));
       reduxStore.dispatch(setUserRoles(registeredUser.roles || []));
-      reduxStore.dispatch(setActiveMode(Modes.DETAIL));
+      // navigates to the detail view.
+      reduxStore.dispatch(setActiveMode(VisualStateModes.DETAIL));
     },
-    // Handles errors during the registration process.
     onError: (error: any) => {
       const message = error.data?.message || error.message || "An unknown error occurred";
       addToast({
@@ -56,10 +49,8 @@ const CreateUser: React.FC = () => {
     },
   });
 
-  // Determines if the registration button should be disabled.
   const disabled = !userName.trim() || !password.trim();
 
-  // Handles the submission of the registration form.
   const handleRegister = () => {
     registerMutation.mutate({ userName, password });
   };
@@ -115,7 +106,7 @@ const CreateUser: React.FC = () => {
           </Button>
           <Button
             className="btn btn-skinny"
-            onClick={() => reduxStore.dispatch(setActiveMode(Modes.LIST))}
+            onClick={() => reduxStore.dispatch(setActiveMode(VisualStateModes.LIST))}
           >
             Cancel
           </Button>
