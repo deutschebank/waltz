@@ -134,7 +134,7 @@
                 mode = Modes.LIST;
             })
             .catch(e => {
-                displayError("Failed to " + name + " proposed flow.");
+                displayError(e.error);
                 mode = Modes.LIST;
             });
     }

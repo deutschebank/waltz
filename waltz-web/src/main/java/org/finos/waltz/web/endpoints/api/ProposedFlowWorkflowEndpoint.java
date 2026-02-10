@@ -88,7 +88,12 @@ public class ProposedFlowWorkflowEndpoint implements Endpoint {
                     WebUtilities.getUsername(request),
                     proposedFlowActionCommand);
         } catch (TransitionPredicateFailedException e) {
-            LOG.warn("Transition failed for proposed flow action: {}", e.getMessage());
+            LOG.error("Transition failed for proposed flow action: {}", e.getMessage());
+            response.status(400); // Bad Request
+            return Map.of("message", e.getMessage());
+        } catch (Exception e) {
+            String errorMessage = String.format("Failed to '%s' proposed flow.", proposedFlowAction);
+            LOG.error(errorMessage, e);
             response.status(400); // Bad Request
             return Map.of("message", e.getMessage());
         }
