@@ -81,10 +81,11 @@ public class ProposedFlowWorkflowEndpoint implements Endpoint {
         String action = checkNotNull(request.params("action"), "Action not specified");
         ProposedFlowWorkflowTransitionAction proposedFlowAction = checkNotNull(findByVerb(action), "Invalid action");
         ProposedFlowActionCommand proposedFlowActionCommand = readBody(request, ProposedFlowActionCommand.class);
+        Long proposedFlowId = WebUtilities.getLong(request, "id");
         String errorMessage = "";
         try {
             return proposedFlowWorkflowService.proposedFlowAction(
-                    WebUtilities.getLong(request, "id"),
+                    proposedFlowId,
                     proposedFlowAction,
                     WebUtilities.getUsername(request),
                     proposedFlowActionCommand);
@@ -93,7 +94,7 @@ public class ProposedFlowWorkflowEndpoint implements Endpoint {
             LOG.error(errorMessage, e);
             response.status(400); // Bad Request
 
-            ProposedFlowResponse existingFlow = proposedFlowWorkflowService.getProposedFlowResponseById(WebUtilities.getLong(request, "id"));
+            ProposedFlowResponse existingFlow = proposedFlowWorkflowService.getProposedFlowResponseById(proposedFlowId);
 
             return ImmutableProposedFlowResponse.builder()
                     .from(existingFlow)
@@ -106,7 +107,7 @@ public class ProposedFlowWorkflowEndpoint implements Endpoint {
             LOG.error(errorMessage, e);
             response.status(500); // Internal Server Error
 
-            ProposedFlowResponse existingFlow = proposedFlowWorkflowService.getProposedFlowResponseById(WebUtilities.getLong(request, "id"));
+            ProposedFlowResponse existingFlow = proposedFlowWorkflowService.getProposedFlowResponseById(proposedFlowId);
             if (existingFlow != null) {
                 return ImmutableProposedFlowResponse.builder()
                         .from(existingFlow)
@@ -116,7 +117,7 @@ public class ProposedFlowWorkflowEndpoint implements Endpoint {
             } else {
                 // Cannot build a full response as the original flow could not be found.
                 // Throwing a new exception is the only option as we cannot satisfy the method's return contract.
-                throw new IllegalStateException("Could not retrieve proposed flow with id " + WebUtilities.getLong(request, "id") + " to build error response.", e);
+                throw new IllegalStateException("Could not retrieve proposed flow with id " + proposedFlowId + " to build error response.", e);
             }
         }
     }
