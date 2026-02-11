@@ -223,12 +223,7 @@ public class ProposedFlowWorkflowService {
             // Refresh Return Object
             proposedFlow = proposedFlowDao.getProposedFlowResponseById(proposedFlowId);
 
-        } catch (TransitionPredicateFailedException e) {
-            LOG.error("Error Occurred during transition: {} ", e.getMessage());
-            String errorMessage = String.format("Cannot perform '%s'. The flow may have been updated or you lack permissions.", transitionAction.name());
-            throw new TransitionPredicateFailedException(errorMessage);
-
-        } catch (Exception e) {
+        }  catch (Exception e) {
             LOG.error("Error Occurred : {} ", e.getMessage());
             throw e;
         }
