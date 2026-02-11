@@ -90,7 +90,7 @@ public class ProposedFlowWorkflowEndpoint implements Endpoint {
                     WebUtilities.getUsername(request),
                     proposedFlowActionCommand);
         } catch (TransitionPredicateFailedException e) {
-            errorMessage = String.format("Cannot perform '%s'. The flow may have been updated or you lack permissions.", proposedFlowAction);
+            errorMessage = String.format("'%s' Failed. The workflow may have been updated or you no longer have permissions to approve this item.", proposedFlowAction);
             LOG.error(errorMessage, e);
             response.status(400); // Bad Request
 
