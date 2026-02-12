@@ -12,13 +12,14 @@
 
     $: pillColor = pillDefs[pillKey].color;
     $: pillText = pillDefs[pillKey].name;
+    $: pillTextColor = pillDefs[pillKey].textColor;
 </script>
 
 {#if pillDefs && pillKey}
     <div class:pill={!cleanPill}
          class:pill-clean={cleanPill}
          class:clickable={clickable}
-         style="--pillColor: {pillColor}"
+         style="--pillColor: {pillColor} ; --pillTextColor: {pillTextColor}"
          title={pillText}>
         {pillText}
         <small>
@@ -47,7 +48,7 @@
         border-radius: 0rem;
         padding: 0.25rem 0.5rem;
         width: max-content;
-        color: #000000;
+        color: var(--pillTextColor);
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;

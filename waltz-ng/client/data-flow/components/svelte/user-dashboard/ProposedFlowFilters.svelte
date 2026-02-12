@@ -13,7 +13,7 @@
     export let proposerPillCounts = {};
 
     let showFilters = false;
-    let filterDropdownEl;
+    let filterDropdownElement;
 
     const updateStateFilters = (filterKey) => {
         const selectedStates = $filters.state.includes(filterKey);
@@ -74,7 +74,7 @@
     }
 
     function handleClickOutside(event) {
-        if (showFilters && filterDropdownEl && !filterDropdownEl.contains(event.target)) {
+        if (showFilters && filterDropdownElement && !filterDropdownElement.contains(event.target)) {
             showFilters = false;
         }
     }
@@ -84,7 +84,7 @@
 
 <svelte:window on:click={handleClickOutside}/>
 
-<div class="filter-dropdown" bind:this={filterDropdownEl}>
+<div class="filter-dropdown" bind:this={filterDropdownElement}>
     <button class="filter-dropdown-btn" on:click={toggleFilters}>
         {showFilters ? "Hide Filters" : "Show Filters"}
     </button>
