@@ -3,7 +3,6 @@ package org.finos.waltz.web.endpoints.api;
 import org.finos.waltz.common.exception.FlowCreationException;
 import org.finos.waltz.common.exception.InsufficientPrivelegeException;
 import org.finos.waltz.model.EntityReference;
-import org.finos.waltz.model.proposed_flow.ImmutableProposedFlowResponse;
 import org.finos.waltz.model.proposed_flow.ProposeFlowPermission;
 import org.finos.waltz.model.proposed_flow.ProposedFlowActionCommand;
 import org.finos.waltz.model.proposed_flow.ProposedFlowCommand;
@@ -11,7 +10,6 @@ import org.finos.waltz.model.proposed_flow.ProposedFlowCommandResponse;
 import org.finos.waltz.model.proposed_flow.ProposedFlowResponse;
 import org.finos.waltz.service.proposed_flow_workflow.ProposedFlowWorkflowService;
 import org.finos.waltz.service.workflow_state_machine.exception.TransitionNotFoundException;
-import org.finos.waltz.service.workflow_state_machine.exception.TransitionPredicateFailedException;
 import org.finos.waltz.service.workflow_state_machine.proposed_flow.ProposedFlowWorkflowTransitionAction;
 import org.finos.waltz.web.WebUtilities;
 import org.finos.waltz.web.endpoints.Endpoint;
@@ -26,7 +24,6 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.finos.waltz.common.Checks.checkNotNull;
-import static org.finos.waltz.model.command.CommandOutcome.FAILURE;
 import static org.finos.waltz.service.workflow_state_machine.proposed_flow.ProposedFlowWorkflowTransitionAction.PROPOSE;
 import static org.finos.waltz.service.workflow_state_machine.proposed_flow.ProposedFlowWorkflowTransitionAction.findByVerb;
 import static org.finos.waltz.web.WebUtilities.getEntityReference;
@@ -77,49 +74,16 @@ public class ProposedFlowWorkflowEndpoint implements Endpoint {
         return proposedFlowWorkflowService.getProposedFlows(readIdSelectionOptionsFromBody(request));
     }
 
-    public ProposedFlowResponse proposedFlowAction(Request request, Response response) throws IOException, FlowCreationException, TransitionNotFoundException, TransitionPredicateFailedException {
+    public ProposedFlowResponse proposedFlowAction(Request request, Response response) throws IOException, FlowCreationException, TransitionNotFoundException {
         String action = checkNotNull(request.params("action"), "Action not specified");
         ProposedFlowWorkflowTransitionAction proposedFlowAction = checkNotNull(findByVerb(action), "Invalid action");
         ProposedFlowActionCommand proposedFlowActionCommand = readBody(request, ProposedFlowActionCommand.class);
-        Long proposedFlowId = WebUtilities.getLong(request, "id");
-        String errorMessage = "";
-        try {
-            return proposedFlowWorkflowService.proposedFlowAction(
-                    proposedFlowId,
-                    proposedFlowAction,
-                    WebUtilities.getUsername(request),
-                    proposedFlowActionCommand);
-        } catch (TransitionPredicateFailedException e) {
-            errorMessage = String.format("%s Failed. The workflow may have been updated or you no longer have permissions to approve this item.", proposedFlowAction);
-            LOG.error(errorMessage, e);
-            response.status(400); // Bad Request
 
-            ProposedFlowResponse existingFlow = proposedFlowWorkflowService.getProposedFlowResponseById(proposedFlowId);
-
-            return ImmutableProposedFlowResponse.builder()
-                    .from(existingFlow)
-                    .outcome(FAILURE)
-                    .message(errorMessage)
-                    .id(WebUtilities.getLong(request, "id"))
-                    .build();
-        } catch (Exception e) {
-            errorMessage = String.format("Failed to '%s' proposed flow.", proposedFlowAction);
-            LOG.error(errorMessage, e);
-            response.status(500); // Internal Server Error
-
-            ProposedFlowResponse existingFlow = proposedFlowWorkflowService.getProposedFlowResponseById(proposedFlowId);
-            if (existingFlow != null) {
-                return ImmutableProposedFlowResponse.builder()
-                        .from(existingFlow)
-                        .outcome(FAILURE)
-                        .message(errorMessage)
-                        .build();
-            } else {
-                // Cannot build a full response as the original flow could not be found.
-                // Throwing a new exception is the only option as we cannot satisfy the method's return contract.
-                throw new IllegalStateException("Could not retrieve proposed flow with id " + proposedFlowId + " to build error response.", e);
-            }
-        }
+        return proposedFlowWorkflowService.proposedFlowAction(
+                WebUtilities.getLong(request, "id"),
+                proposedFlowAction,
+                WebUtilities.getUsername(request),
+                proposedFlowActionCommand);
     }
 
     public ProposeFlowPermission getUserPermissionsForEntityRef(Request request, Response response) throws IOException, InsufficientPrivelegeException {

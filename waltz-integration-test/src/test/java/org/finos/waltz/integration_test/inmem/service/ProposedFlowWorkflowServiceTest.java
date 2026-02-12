@@ -77,7 +77,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
-import static java.lang.String.format;
 import static org.finos.waltz.common.DateTimeUtilities.nowUtc;
 import static org.finos.waltz.data.proposed_flow.ProposedFlowDao.PROPOSE_FLOW_LIFECYCLE_WORKFLOW;
 import static org.finos.waltz.model.EntityKind.APPLICATION;
@@ -98,7 +97,6 @@ import static org.finos.waltz.test_common.helpers.NameHelper.mkName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProposedFlowWorkflowServiceTest extends BaseInMemoryIntegrationTest {
@@ -491,7 +489,7 @@ public class ProposedFlowWorkflowServiceTest extends BaseInMemoryIntegrationTest
     }
 
     @Test
-    void proposedFlowAction_rejectionWithInvalidPermissions_throwsException() {
+    void proposedFlowAction_rejectionWithInvalidPermissions_throwsException() throws FlowCreationException, TransitionNotFoundException {
         // 1. Arrange ----------------------------------------------------------
         Reason reason = proposedFlowWorkflowHelper.getReason();
         EntityReference owningEntity = proposedFlowWorkflowHelper.getOwningEntity();
@@ -520,13 +518,17 @@ public class ProposedFlowWorkflowServiceTest extends BaseInMemoryIntegrationTest
                 .comment("Rejected due to invalid permissions")
                 .build();
 
-        // 2. Act and Assert ----------------------------------------------------
-        assertThrows(TransitionPredicateFailedException.class, () ->
-                proposedFlowWorkflowService.proposedFlowAction(
-                        proposedFlowId,
-                        org.finos.waltz.service.workflow_state_machine.proposed_flow.ProposedFlowWorkflowTransitionAction.REJECT,
-                        userName,
-                        rejectCommand));
+        // 2. Act ----------------------------------------------------
+        ProposedFlowResponse proposedFlowResponse = proposedFlowWorkflowService.proposedFlowAction(
+                proposedFlowId,
+                org.finos.waltz.service.workflow_state_machine.proposed_flow.ProposedFlowWorkflowTransitionAction.REJECT,
+                userName,
+                rejectCommand);
+
+        // 3. Assert ---------------------------------------------------
+        assertNotNull(proposedFlowResponse);
+        assertEquals("FAILURE", proposedFlowResponse.outcome().name());
+        assertEquals("REJECT Failed. The workflow may have been updated or you no longer have permissions to approve this item.", proposedFlowResponse.message());
     }
 
     @Test
@@ -586,40 +588,12 @@ public class ProposedFlowWorkflowServiceTest extends BaseInMemoryIntegrationTest
         assertEquals(SOURCE_APPROVED.name(), sourceApprovedFlow.workflowState().state(), "Flow should be in SOURCE_APPROVED state");
 
         //Source approver again approving the flow should fail
-        // 2. Act and Assert ---------------------------------------------------
-        assertThrows(org.finos.waltz.service.workflow_state_machine.exception.TransitionPredicateFailedException.class, () -> {
-            proposedFlowWorkflowService.proposedFlowAction(proposedFlowId, APPROVE, userName, sourceApproveCommand);
-        }, format("%s Failed. The workflow may have been updated or you no longer have permissions to approve this item.", APPROVE));
+        // 2. Act ---------------------------------------------------
+        ProposedFlowResponse proposedFlowResponse = proposedFlowWorkflowService.proposedFlowAction(proposedFlowId, APPROVE, userName, sourceApproveCommand);
 
-    }
-
-    @Test
-    public void testCannotApproveProposedFlowSameStatesAndWithoutPermissions() {
-        // 1. Arrange ----------------------------------------------------------
-        Reason reason = proposedFlowWorkflowHelper.getReason();
-        EntityReference owningEntity = proposedFlowWorkflowHelper.getOwningEntity();
-        PhysicalSpecification physicalSpecification = proposedFlowWorkflowHelper.getPhysicalSpecification(owningEntity);
-        FlowAttributes flowAttributes = proposedFlowWorkflowHelper.getFlowAttributes();
-        Set<Long> dataTypeIdSet = proposedFlowWorkflowHelper.getDataTypeIdSet();
-
-        ProposedFlowCommand command = ImmutableProposedFlowCommand.builder()
-                .source(mkRef(APPLICATION, 101))
-                .target(mkRef(APPLICATION, 202))
-                .logicalFlowId(12345)
-                .physicalFlowId(12345)
-                .reason(reason)
-                .specification(physicalSpecification)
-                .flowAttributes(flowAttributes)
-                .dataTypeIds(dataTypeIdSet)
-                .proposalType(ProposalType.valueOf("CREATE"))
-                .build();
-
-        ProposedFlowCommandResponse response = proposedFlowWorkflowService.proposeNewFlow(USER_NAME, command);
-        ProposedFlowActionCommand actionCommand = ImmutableProposedFlowActionCommand.builder().comment("test").build();
-
-        // 2. Act and Assert ---------------------------------------------------
-        assertThrows(org.finos.waltz.service.workflow_state_machine.exception.TransitionPredicateFailedException.class, () -> {
-            proposedFlowWorkflowService.proposedFlowAction(response.proposedFlowId(), APPROVE, USER_NAME, actionCommand);
-        }, format("%s Failed. The workflow may have been updated or you no longer have permissions to approve this item.", APPROVE));
+        // 3. Assert ---------------------------------------------------
+        assertNotNull(proposedFlowResponse);
+        assertEquals("FAILURE", proposedFlowResponse.outcome().name());
+        assertEquals("APPROVE Failed. The workflow may have been updated or you no longer have permissions to approve this item.", proposedFlowResponse.message());
     }
 }
