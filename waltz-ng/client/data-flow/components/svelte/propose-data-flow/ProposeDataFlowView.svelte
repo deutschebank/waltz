@@ -104,7 +104,7 @@
             });
     }
 
-    $: incompleteRecord = !($logicalFlow && $physicalFlow && $physicalSpecification && $proposalReason && (!_.isEmpty($dataTypes) || $skipDataTypes));
+    $: incompleteRecord = !($logicalFlow && $physicalFlow && $physicalSpecification && $proposalReason && !_.isEmpty($dataTypes));
     $: onDestroy(()=>resetStore())
 </script>
 

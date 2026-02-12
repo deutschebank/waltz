@@ -49,7 +49,7 @@ function controller(serviceBroker) {
             .loadViewData(CORE_API.SettingsStore.findAll, [])
             .then(r => {
                 vm.settings = r.data;
-                vm.dataFlowProposalsEnabled= isDataFlowProposalsEnabled(vm.settings)
+                vm.dataFlowProposalsEnabled = isDataFlowProposalsEnabled(vm.settings)
             });
 
         serviceBroker.loadViewData(CORE_API.PhysicalSpecificationStore.findPermissionsForSpec, [vm.specification.id])
