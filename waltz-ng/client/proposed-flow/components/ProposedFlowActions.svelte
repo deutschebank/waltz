@@ -262,7 +262,7 @@
         <!-- SUBMIT -->
         <button type="submit" class={mkButtonClasses(activeAction)}>
             <Icon name={activeAction.icon} />
-            {activeAction.display}
+            Yes
         </button>
 
         <!-- CANCEL -->

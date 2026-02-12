@@ -47,7 +47,7 @@
         border-radius: 0rem;
         padding: 0.25rem 0.5rem;
         width: max-content;
-        color: var(--pillColor);
+        color: #000000;
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
