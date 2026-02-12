@@ -135,7 +135,6 @@ public class PersonDao {
                 .fetch(personMapper);
     }
 
-
     public List<String> findAllEmails(){
         return dsl.select(PERSON.EMAIL)
                 .from(PERSON)

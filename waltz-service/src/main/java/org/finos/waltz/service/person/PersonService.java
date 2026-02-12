@@ -131,7 +131,6 @@ public class PersonService {
         return personDao.findActivePeopleByEmails(emails);
     }
 
-
     public List<Person> getByUserEmails(Collection<String> emails) {
         checkNotNull(emails, "emails cannot be null");
         return personDao.getByUserEmails(emails);
