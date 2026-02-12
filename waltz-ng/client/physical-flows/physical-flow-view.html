@@ -67,7 +67,9 @@
                             ng-click="(ctrl.mentions | isEmpty) && ctrl.showReason(true)">
                        Propose Delete
                     </button>
-                    <button class="btn btn-xs btn-warning"
+                    <button
+                            ng-if="!ctrl.dataFlowProposalsEnabled"
+                            class="btn btn-xs btn-warning"
                             ng-disabled="! (ctrl.mentions | isEmpty)"
                             ng-click="ctrl.onShowMarkAsDuplicate()">
                         Cleanup Duplicates
