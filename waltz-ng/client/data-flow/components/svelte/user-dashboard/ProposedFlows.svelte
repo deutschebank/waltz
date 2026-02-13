@@ -11,15 +11,18 @@
     const actionStatusPillDefs = {
         PENDING_APPROVALS: {
             name: "Pending Approvals",
-            color: "#8e8e56"
+            color: "#8e8e56",
+            textColor: "#000000"
         },
         SOURCE_APPROVED: {
             name: "Source Approved",
-            color: "#74a259"
+            color: "#74a259",
+            textColor: "#000000"
         },
         TARGET_APPROVED: {
             name: "Target Approved",
-            color: "#74a259"
+            color: "#74a259",
+            textColor: "#000000"
         }
     }
     const actionStatuses = Object.keys(actionStatusPillDefs);
@@ -27,19 +30,23 @@
     const historicalStatusPillDefs = {
         FULLY_APPROVED: {
             name: "Fully Approved",
-            color: "#5bb65d"
+            color: "#5bb65d",
+            textColor: "#000000"
         },
         SOURCE_REJECTED: {
             name: "Source Rejected",
-            color: "#c1664f"
+            color: "#c1664f",
+            textColor: "#000000"
         },
         TARGET_REJECTED: {
             name: "Target Rejected",
-            color: "#c1664f"
+            color: "#c1664f",
+            textColor: "#000000"
         },
         CANCELLED: {
             name: "Cancelled",
-            color: "#c16644"
+            color: "#c16644",
+            textColor: "#000000"
         }
     }
     const historicalStatuses = Object.keys(historicalStatusPillDefs)
@@ -47,26 +54,31 @@
     const changeTypePillDefs = {
         CREATE: {
             name: "Create",
-            color: "#267dda"
+            color: "#267dda",
+            textColor: "#000000"
         },
         EDIT: {
             name: "Edit",
-            color: "#716b9e"
+            color: "#716b9e",
+            textColor: "#000000"
         },
         DELETE: {
             name: "Delete",
-            color: "#da524b"
+            color: "#da524b",
+            textColor: "#000000"
         }
     }
 
     const proposerTypePillDefs = {
         USER: {
             name: "Proposed By You",
-            color: "#000000"
+            color: "#000000",
+            textColor: "#000000"
         },
         OTHERS: {
             name: "For Approval",
-            color: "#000000"
+            color: "#000000",
+            textColor: "#000000"
         }
     }
 
