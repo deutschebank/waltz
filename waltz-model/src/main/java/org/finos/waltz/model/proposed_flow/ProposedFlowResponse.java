@@ -3,7 +3,6 @@ package org.finos.waltz.model.proposed_flow;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.finos.waltz.model.Nullable;
-import org.finos.waltz.model.command.Command;
 import org.finos.waltz.model.command.CommandOutcome;
 import org.finos.waltz.model.entity_workflow.EntityWorkflowState;
 import org.finos.waltz.model.entity_workflow.EntityWorkflowTransition;
@@ -15,7 +14,7 @@ import java.util.List;
 @Value.Immutable
 @JsonSerialize(as = ImmutableProposedFlowResponse.class)
 @JsonDeserialize(as = ImmutableProposedFlowResponse.class)
-public abstract class ProposedFlowResponse implements Command {
+public abstract class ProposedFlowResponse {
 
     public abstract Long id();
 
