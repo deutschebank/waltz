@@ -125,8 +125,13 @@
         mode = Modes.LOADING;
         return Promise
             .resolve(proposeDataFlowRemoteStore.transitionProposedFlow(proposedFlow.id, updateCmd))
-            .then(() => {
-                toasts.success("Proposed flow " + verb + " successfully");
+            .then((r) => {
+                if(r.data.outcome === "SUCCESS") {
+                    toasts.success("Proposed flow " + verb + " successfully");
+                }
+                if(r.data.outcome === "FAILURE"){
+                    displayError(r.data.message);
+                }
                 if(refreshState) {
                     refreshState();
                 }
@@ -134,7 +139,6 @@
                 mode = Modes.LIST;
             })
             .catch(e => {
-                displayError("Failed to " + name + " proposed flow.");
                 mode = Modes.LIST;
             });
     }
