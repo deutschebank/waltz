@@ -36,8 +36,10 @@ import org.finos.waltz.model.command.ImmutableCommandResponse;
 import org.finos.waltz.model.entity_search.EntitySearchOptions;
 import org.finos.waltz.model.physical_specification.DataFormatKindValue;
 import org.finos.waltz.model.physical_specification.ImmutablePhysicalSpecification;
+import org.finos.waltz.model.physical_specification.ImmutablePhysicalSpecificationEditResponse;
 import org.finos.waltz.model.physical_specification.PhysicalSpecification;
 import org.finos.waltz.model.physical_specification.PhysicalSpecificationDeleteCommand;
+import org.finos.waltz.model.physical_specification.PhysicalSpecificationEditResponse;
 import org.finos.waltz.service.changelog.ChangeLogService;
 import org.jooq.Record1;
 import org.jooq.Select;
@@ -233,6 +235,21 @@ public class PhysicalSpecificationService {
         return specDecoratorDao.findDataTypeByPhysicalFlowId(id);
     }
 
+    public PhysicalSpecificationEditResponse validateSpecificationForEdit(long specificationId) {
+        List<Long> logicalFlowIds = specificationDao.getLogicalFlowIdsBySpecificationId(specificationId);
+
+        if (logicalFlowIds.size() > 1) {
+            return ImmutablePhysicalSpecificationEditResponse.builder()
+                    .outcome(CommandOutcome.FAILURE)
+                    .message("Can not edit physical flow as this specification is attached to multiple logical flows.")
+                    .build();
+        } else {
+            return ImmutablePhysicalSpecificationEditResponse.builder()
+                    .outcome(CommandOutcome.SUCCESS)
+                    .message("SUCCESS")
+                    .build();
+        }
+    }
 
     // -- HELPERS
 
