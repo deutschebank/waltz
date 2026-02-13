@@ -141,7 +141,7 @@
                 <NoData type="error">
                     {$duplicateProposeFlowMessage}
                     <br>
-                    <a href={$existingProposeFlowId} target="_blank" rel="noreferrer">Go to Flow</a>
+                    <a href={$existingProposeFlowId} rel="noreferrer">Go to Flow</a>
                 </NoData>
             </div>
         {/if}
