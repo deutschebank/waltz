@@ -432,7 +432,7 @@ public class PhysicalSpecificationServiceTest extends BaseInMemoryIntegrationTes
 
         assertEquals(CommandOutcome.FAILURE, response.outcome());
         assertEquals(
-                "Can not edit physical flow as this specification is attached to multiple logical flows.",
+                "Action not allowed. Physical spec is shared with multiple physical flows with different source or target.",
                 response.message().get());
     }
 

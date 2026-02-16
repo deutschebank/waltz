@@ -241,7 +241,7 @@ public class PhysicalSpecificationService {
         if (logicalFlowIds.size() > 1) {
             return ImmutablePhysicalSpecificationEditResponse.builder()
                     .outcome(CommandOutcome.FAILURE)
-                    .message("Can not edit physical flow as this specification is attached to multiple logical flows.")
+                    .message("Action not allowed. Physical spec is shared with multiple physical flows with different source or target.")
                     .build();
         } else {
             return ImmutablePhysicalSpecificationEditResponse.builder()
