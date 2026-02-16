@@ -11,6 +11,8 @@
     export let clickable = true;
 
     let qry = null;
+    let sortColumn = null;
+    let sortDirection = null;
 
 
     function getColVal(col, row) {
@@ -39,6 +41,25 @@
         ? rowData
         : termSearch(rowData, qry, _.map(columnDefs, d => d.field));
 
+    $: {
+        let base = _.isEmpty(qry)
+            ? rowData
+            : termSearch(rowData, qry, _.map(columnDefs, d => d.field));
+
+        if (!sortColumn || !sortDirection) {
+            filteredRows = base;
+        } else {
+            const fieldParts = sortColumn.split(".");
+            filteredRows = _.orderBy(base, [r => {
+                const v = _.get(r, fieldParts, null);
+                if (_.isString(v)) return v.toLowerCase();
+                if (_.isFinite(v)) return v;
+                if (_.isDate(v)) return new Date(v);
+                return "";
+            }], [sortDirection === 'asc' ? 'asc' : 'desc']);
+        }
+    }
+
     $: totalAllocatedWidth = _.sumBy(columnDefs, d => _.get(d, "width", 0));
 
     $: unallocatedColumns = _.filter(columnDefs, d => _.isEmpty(d.width));
@@ -46,6 +67,31 @@
     $: unallocatedWidth = _.isEmpty(unallocatedColumns)
         ? 0
         : (100 - totalAllocatedWidth) / unallocatedColumns.length;
+
+    function toggleSort(col) {
+        if (col.sortable === false) return;
+
+        const field = col.field;
+
+        if (sortColumn !== field) {
+            sortColumn = field;
+            sortDirection = 'asc';
+            return;
+        }
+
+        if (sortDirection === 'asc') {
+            sortDirection = 'desc';
+        } else if (sortDirection === 'desc') {
+            sortDirection = null;
+            sortColumn = null;
+        } else {
+            sortDirection = 'asc';
+        }
+    }
+
+    function isSortable(col) {
+        return col?.sortable ?? false;
+    }
 
 </script>
 
@@ -76,7 +122,25 @@
                 <thead>
                 <tr>
                     {#each columnDefs as col}
-                        <th>{col.name}</th>
+                        <th class:sortable={isSortable(col)}
+                            on:click={() => isSortable(col) ? toggleSort(col) : null}
+                            title={isSortable(col) ? "Click to sort" : null}>
+                            <span>{col.name}</span>
+                            <div class="sort-icon">
+                                {#if isSortable(col)}
+                                    {#if sortColumn === col.field}
+                                        {#if sortDirection === 'asc'}
+                                            <Icon name="arrow-down-short-wide"/>
+                                        {:else if sortDirection === 'desc'}
+                                            <Icon name="arrow-down-wide-short"/>
+                                        {/if}
+                                    {/if}
+                                    {#if sortColumn !== col.field}
+                                        <Icon name="sort"/>
+                                    {/if}
+                                {/if}
+                            </div>
+                        </th>
                     {/each}
                 </tr>
                 </thead>
@@ -125,5 +189,16 @@
         top: 0;
         background-color: white;
         z-index: 1;
+    }
+
+    th.sortable {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .sort-icon {
+        display: inline-block;
+        margin-left: 6px;
+        vertical-align: middle;
     }
 </style>

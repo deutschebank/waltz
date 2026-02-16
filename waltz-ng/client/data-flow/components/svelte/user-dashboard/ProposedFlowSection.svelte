@@ -19,7 +19,7 @@ export let changeTypePillDefs = {};
 export let proposerTypePillDefs = {};
 export let currentTabText;
 
-// works for only two sections if we add another than a new method may be required
+// works for only two sections if we add another, then a new method may be required
 onMount(() => {
    const ephemeralFilters = $tempFilters;
    $tempFilters = $filters;
@@ -44,7 +44,8 @@ const columnDefs = [
                 id: row.id
             },
             openInNewTab: true
-        })
+        }),
+        sortable: true
     },
     {
         field: "flowDef.source.name",
@@ -59,7 +60,8 @@ const columnDefs = [
             openInNewTab: true,
             isEntityLink: true,
             entityKind: row.flowDef.source?.kind
-        })
+        }),
+        sortable: true
     },
     {
         field: "flowDef.target.name",
@@ -74,7 +76,8 @@ const columnDefs = [
             openInNewTab: true,
             isEntityLink: true,
             entityKind: row.flowDef.target.kind
-        })
+        }),
+        sortable: true
     },
     {
         field: "dataTypes",
@@ -91,7 +94,8 @@ const columnDefs = [
         cellRendererProps: row => ({
             pillKey: row.workflowState?.state,
             pillDefs: statusPillDefs
-        })
+        }),
+        sortable: true
     },
     {
         field: "flowDef.proposalType",
@@ -100,15 +104,40 @@ const columnDefs = [
         cellRendererProps: row => ({
             pillKey: row.flowDef.proposalType,
             pillDefs: changeTypePillDefs
-        })
+        }),
+        sortable: true
     },
     { field: "flowDef.reason.description", name: "Proposal Reason" },
-    { field: "createdBy", name: "Created By" },
-    { field: "createdAt", name: "Created At" },
-    { field: "sourceApprovedBy", name: "Source Approver"},
-    { field: "sourceApprovedAt", name: "Source Approved At"},
-    { field: "targetApprovedBy", name: "Target Approver"},
-    { field: "targetApprovedAt", name: "Target Approved At"}
+    { 
+        field: "createdBy", 
+        name: "Created By",
+        sortable: true 
+    },
+    {
+        field: "createdAt",
+        name: "Created At",
+        sortable: true
+    },
+    { 
+        field: "sourceApprovedBy", 
+        name: "Source Approver",
+        sortable: true
+    },
+    {
+        field: "sourceApprovedAt",
+        name: "Source Approved At",
+        sortable: true
+    },
+    {
+        field: "targetApprovedBy",
+        name: "Target Approver",
+        sortable: true
+    },
+    {
+        field: "targetApprovedAt",
+        name: "Target Approved At",
+        sortable: true
+    }
 ];
 
 $: gridData = flows && flows.length
