@@ -28,6 +28,7 @@ import org.jooq.SQLDialect;
 import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -67,19 +68,16 @@ public class DIBaseConfiguration {
     @Value("${database.pool.min:2}")
     private int dbPoolMin;
 
-    @Value("${spring.datasource.hikari.maximumPoolSize:10}")
-    private int dbExecutorPoolMax;
-
-    @Value("${spring.datasource.hikari.minimumIdle:2}")
-    private int dbExecutorPoolMin;
-
     @Value("${jooq.dialect}")
     private String dialect;
 
     @Value("${database.performance.query.slow.threshold:10}")
     private int databasePerformanceQuerySlowThreshold;
 
-   /* @Bean
+    @Value("${log.connection.pool.status:false}")
+    private boolean logConnectionPoolStatus;
+
+    @Bean
     public DataSource dataSource() {
 
         HikariConfig dsConfig = new HikariConfig();
@@ -89,17 +87,18 @@ public class DIBaseConfiguration {
         dsConfig.setDriverClassName(dbDriver);
         dsConfig.setMaximumPoolSize(dbPoolMax);
         dsConfig.setMinimumIdle(dbPoolMin);
-        dsConfig.setPoolName("WAZLTZ-DB-POOL");
         return new HikariDataSource(dsConfig);
     }
-*/
+
 
     @Bean
     public DBExecutorPoolInterface dbExecutorPool() {
-        return new DBExecutorPool(dbExecutorPoolMin, dbExecutorPoolMax);
+        return new DBExecutorPool(dbPoolMin, dbPoolMax);
     }
 
+
     @Bean
+    @Autowired
     public DSLContext dsl(DataSource dataSource) {
         try {
             SQLDialect.valueOf(dialect);
@@ -124,7 +123,7 @@ public class DIBaseConfiguration {
                 .set(dslSettings)
                 .set(
                     //new SlowDatabaseConnectionSimulator(2000),
-                    new SlowQueryListener(databasePerformanceQuerySlowThreshold),
+                    new SlowQueryListener(databasePerformanceQuerySlowThreshold, dataSource, logConnectionPoolStatus),
                     new SpringExceptionTranslationExecuteListener(new SQLStateSQLExceptionTranslator()));
 
         return DSL.using(configuration);
