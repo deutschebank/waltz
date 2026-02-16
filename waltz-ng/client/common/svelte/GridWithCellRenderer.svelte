@@ -15,28 +15,6 @@
     let sortDirection = null;
 
 
-    function getColVal(col, row) {
-        const rawVal = _.get(
-            row,
-            col.field.split("."),
-            "-") || "-";
-
-        return col.maxLength
-            ? truncateMiddle(rawVal, col.maxLength)
-            : rawVal;
-    }
-
-
-    function getColTitle(col, row) {
-        return col.maxLength
-            ? _.get(
-                row,
-                col.field.split("."),
-                "-")
-            : null; // not truncated, therefore no title needed
-    }
-
-
     $: filteredRows = _.isEmpty(qry)
         ? rowData
         : termSearch(rowData, qry, _.map(columnDefs, d => d.field));
@@ -91,6 +69,27 @@
 
     function isSortable(col) {
         return col?.sortable ?? false;
+    }
+
+    function getColVal(col, row) {
+        const rawVal = _.get(
+            row,
+            col.field.split("."),
+            "-") || "-";
+
+        return col.maxLength
+            ? truncateMiddle(rawVal, col.maxLength)
+            : rawVal;
+    }
+
+
+    function getColTitle(col, row) {
+        return col.maxLength
+            ? _.get(
+                row,
+                col.field.split("."),
+                "-")
+            : null; // not truncated, therefore no title needed
     }
 
 </script>
