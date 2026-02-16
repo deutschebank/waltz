@@ -8,7 +8,7 @@ Waltz is built using [Maven](https://maven.apache.org/).
 
 - [Git](https://git-scm.com/)
 - [Maven 3](https://maven.apache.org/)
-- [JDK 8+](http://www.oracle.com/technetwork/java/javase/overview/index.html) (see note below)
+- [JDK 17](http://www.oracle.com/technetwork/java/javase/overview/index.html) (see note below)
 - [Node](https://nodejs.org/en/)
   - [NPM](https://www.npmjs.com/) v6+
 - [Sass](http://sass-lang.com/)
@@ -17,10 +17,11 @@ Waltz is built using [Maven](https://maven.apache.org/).
   - [Postgres](https://www.postgresql.org/)
 - [Liquibase](http://www.liquibase.org/) (recommended but not essential)
 - [_jOOQ Pro_](https://www.jooq.org/download/) (if using Microsoft SQL Server) 
+- Tomcat 10
 
 
 **Note**:
-When developing on JDK 9+ please ensure all class imports are explicit.
+When developing on JDK 17 please ensure all class imports are explicit.
 This is to prevent collisions between `java.lang.Record` and `org.jooq.Record` which can cause compilation errors (see issue: [#6678](https://github.com/finos/waltz/issues/6678))
 
 
@@ -30,7 +31,7 @@ It is recommended that you clone the repository on GitHub to maintain your own f
 
 ## Preparing the database
 
-For **Postgres** create a new daabase
+For **Postgres** create a new database
 ```
 create database waltz;
 ```
