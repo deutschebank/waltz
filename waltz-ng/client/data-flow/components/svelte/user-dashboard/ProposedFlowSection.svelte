@@ -43,7 +43,7 @@ const columnDefs = [
             ctx: {
                 id: row.id
             },
-            openInNewTab: true
+            openInNewTab: false
         }),
         sortable: true
     },
@@ -57,7 +57,7 @@ const columnDefs = [
             ctx: {
                 id: row.flowDef.source?.id
             },
-            openInNewTab: true,
+            openInNewTab: false,
             isEntityLink: true,
             entityKind: row.flowDef.source?.kind
         }),
@@ -73,7 +73,7 @@ const columnDefs = [
             ctx: {
                 id: row.flowDef.target?.id
             },
-            openInNewTab: true,
+            openInNewTab: false,
             isEntityLink: true,
             entityKind: row.flowDef.target.kind
         }),
@@ -90,36 +90,28 @@ const columnDefs = [
     {
         field: "workflowState.state",
         name: "Status",
-        cellRendererComponent: Pill,
-        cellRendererProps: row => ({
-            pillKey: row.workflowState?.state,
-            pillDefs: statusPillDefs
-        }),
+        cellRenderer: params => `<strong>${statusPillDefs[params.workflowState?.state].name}</strong>`,
         sortable: true
     },
     {
         field: "flowDef.proposalType",
-        name: "Change",
-        cellRendererComponent: Pill,
-        cellRendererProps: row => ({
-            pillKey: row.flowDef.proposalType,
-            pillDefs: changeTypePillDefs
-        }),
+        name: "Change Type",
+        cellRenderer: params => `<strong>${changeTypePillDefs[params.flowDef?.proposalType].name}</strong>`,
         sortable: true
     },
     { field: "flowDef.reason.description", name: "Proposal Reason" },
-    { 
-        field: "createdBy", 
+    {
+        field: "createdBy",
         name: "Created By",
-        sortable: true 
+        sortable: true
     },
     {
         field: "createdAt",
         name: "Created At",
         sortable: true
     },
-    { 
-        field: "sourceApprovedBy", 
+    {
+        field: "sourceApprovedBy",
         name: "Source Approver",
         sortable: true
     },
