@@ -413,4 +413,47 @@ public class PhysicalSpecificationServiceTest extends BaseInMemoryIntegrationTes
 
     }
 
+    @Test
+    public void validateSpecificationForEdit_shouldFailWhenSpecUsedByMultipleLogicalFlows() {
+        EntityReference a = appHelper.createNewApp("a", ouIds.a);
+        EntityReference b = appHelper.createNewApp("b", ouIds.a1);
+        EntityReference c = appHelper.createNewApp("c", ouIds.b);
+
+        String specName = mkName("validateFail");
+        Long specId = psHelper.createPhysicalSpec(a, specName);
+
+        LogicalFlow flow1 = lfHelper.createLogicalFlow(a, b);
+        LogicalFlow flow2 = lfHelper.createLogicalFlow(a, c);
+
+        pfHelper.createPhysicalFlow(flow1.entityReference().id(), specId, specName + "1");
+        pfHelper.createPhysicalFlow(flow2.entityReference().id(), specId, specName + "2");
+
+        PhysicalSpecificationEditResponse response = psSvc.validateSpecificationForEdit(specId);
+
+        assertEquals(CommandOutcome.FAILURE, response.outcome());
+        assertEquals(
+                "Can not edit physical flow as this specification is attached to multiple logical flows.",
+                response.message().get());
+    }
+
+    @Test
+    public void validateSpecificationForEdit_shouldSucceedWhenSpecUsedBySingleLogicalFlow() {
+        EntityReference a = appHelper.createNewApp("a", ouIds.a);
+        EntityReference b = appHelper.createNewApp("b", ouIds.a1);
+
+        String specName = mkName("validateSuccess");
+        Long specId = psHelper.createPhysicalSpec(a, specName);
+
+        LogicalFlow flow = lfHelper.createLogicalFlow(a, b);
+
+        // Multiple physical flows, but on the same logical flow
+        pfHelper.createPhysicalFlow(flow.entityReference().id(), specId, specName + "1");
+        pfHelper.createPhysicalFlow(flow.entityReference().id(), specId, specName + "2");
+
+        PhysicalSpecificationEditResponse response = psSvc.validateSpecificationForEdit(specId);
+
+        assertEquals(CommandOutcome.SUCCESS, response.outcome());
+        assertEquals("SUCCESS", response.message().get());
+    }
+
 }
