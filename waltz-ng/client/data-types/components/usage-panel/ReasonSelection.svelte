@@ -43,8 +43,11 @@
         }
     });
 
-    function save() {
+    function save(event) {
         if (proposalType === PROPOSAL_TYPES.DELETE) {
+            if (event?.submitter?.dataset?.action !== "submit") {
+                return;
+            }
             $deleteFlowReason = workingCopy;
             proposeDeleteFlow()
         } else if (proposalType === PROPOSAL_TYPES.EDIT) {
@@ -135,6 +138,7 @@
             {/if}
             <div style="display: flex; justify-content: flex-end;margin: 0;gap: 0.5rem">
                 <button class="btn btn-sm btn-primary"
+                        data-action="submit"
                         disabled={!workingCopy?.rating?.length || $existingProposeFlowId}>
                     Submit
                 </button>
