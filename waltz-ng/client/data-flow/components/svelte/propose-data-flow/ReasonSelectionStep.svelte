@@ -29,7 +29,6 @@
 
     function save() {
         if (!workingCopy.rating?.length) {
-            $proposalReason = null;
             return;
         }
         $proposalReason = workingCopy;
@@ -56,6 +55,12 @@
         activeMode = Modes.SELECT;
     }
 
+
+    function onReasonSelect(item) {
+        workingCopy.rating = item ? [item] : [];
+        dispatch("select", { ratingSchemeItems: workingCopy.rating });
+    }
+
     $: ratingSchemeCall = ratingSchemeStore.loadAll();
     $: done = workingCopy.rating[0] && true;
 
@@ -63,15 +68,9 @@
     $: ratingScheme = $ratingSchemeCall?.data.filter(t => t.externalId === ratingSchemeExtId)[0];
     $: ratingItems = (ratingScheme?.ratings ?? []).map(r => ({
         ...r,
-        displayText: `${r?.name ?? ""}-${r?.description ?? ""}`
+        displayText: `${r?.name ?? ""} - ${r?.description ?? ""}`
     }));
     $: selectedReason = workingCopy.rating?.[0] ?? null;
-
-
-    function onReasonSelect(item) {
-        workingCopy.rating = item ? [item] : [];
-        dispatch("select", { ratingSchemeItems: workingCopy.rating });
-    }
 
 </script>
 
