@@ -20,15 +20,9 @@
         : termSearch(rowData, qry, _.map(columnDefs, d => d.field));
 
     $: {
-        let base = _.isEmpty(qry)
-            ? rowData
-            : termSearch(rowData, qry, _.map(columnDefs, d => d.field));
-
-        if (!sortColumn || !sortDirection) {
-            filteredRows = base;
-        } else {
+        if (sortColumn && sortDirection) {
             const fieldParts = sortColumn.split(".");
-            filteredRows = _.orderBy(base, [r => {
+            filteredRows = _.orderBy(filteredRows, [r => {
                 const v = _.get(r, fieldParts, null);
                 if (_.isString(v)) return v.toLowerCase();
                 if (_.isFinite(v)) return v;
