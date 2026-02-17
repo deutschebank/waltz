@@ -54,6 +54,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PhysicalSpecificationServiceTest extends BaseInMemoryIntegrationTest {
 
+    private static final String PHYSCIAL_SPECIFICATION_EDIT_ACTION = "EDIT";
 
     @Autowired
     private PhysicalSpecificationService psSvc;
@@ -75,6 +76,7 @@ public class PhysicalSpecificationServiceTest extends BaseInMemoryIntegrationTes
 
     @Autowired
     private DataTypeDecoratorService dtdSvc;
+
 
 
     @Test
@@ -432,7 +434,7 @@ public class PhysicalSpecificationServiceTest extends BaseInMemoryIntegrationTes
 
         assertEquals(CommandOutcome.FAILURE, response.outcome());
         assertEquals(
-                "Action not allowed. Physical spec is shared with multiple physical flows with different source or target.",
+                String.format("%s not allowed. Physical spec is shared with multiple physical flows with different source or target.", PHYSCIAL_SPECIFICATION_EDIT_ACTION),
                 response.message().get());
     }
 

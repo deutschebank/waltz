@@ -67,7 +67,7 @@ public class PhysicalSpecificationService {
     private final PhysicalSpecificationSearchDao specificationSearchDao;
     private final PhysicalSpecDecoratorDao specDecoratorDao;
     private final PhysicalSpecificationIdSelectorFactory idSelectorFactory = new PhysicalSpecificationIdSelectorFactory();
-
+    private static final String PHYSCIAL_SPECIFICATION_EDIT_ACTION = "EDIT";
 
     @Autowired
     public PhysicalSpecificationService(ChangeLogService changeLogService,
@@ -241,7 +241,7 @@ public class PhysicalSpecificationService {
         if (logicalFlowIds.size() > 1) {
             return ImmutablePhysicalSpecificationEditResponse.builder()
                     .outcome(CommandOutcome.FAILURE)
-                    .message("Action not allowed. Physical spec is shared with multiple physical flows with different source or target.")
+                    .message(String.format("%s not allowed. Physical spec is shared with multiple physical flows with different source or target.", PHYSCIAL_SPECIFICATION_EDIT_ACTION))
                     .build();
         } else {
             return ImmutablePhysicalSpecificationEditResponse.builder()
