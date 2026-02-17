@@ -4,7 +4,7 @@
     import { formatDate, stateMeta, sortByField } from "../utils";
 
     export let proposedFlow;
-    export let person = []; // Expect an array of people
+    export let personsArray = []; // Expect an array of people
 
     $: workflowTransitionList = proposedFlow?.workflowTransitionList
         ? sortByField(proposedFlow.workflowTransitionList, 'lastUpdatedAt', 'asc')
@@ -12,8 +12,8 @@
 
     // Helper to find the person object corresponding to an email
     const getPersonByEmail = (email) => {
-        if (!person || !email) return null;
-        return person.find(p => p.email === email);
+        if (!personsArray || !email) return null;
+        return personsArray.find(p => p.email === email);
     };
 
     let openIdx = null;

@@ -27,7 +27,7 @@ import { CORE_API } from "../common/services/core-api-utils";
 
 const initialState = {
     proposedFlow: null,
-    person:null,
+    personsArray:null,
     FlowWizard,
     ProposedFlowDetails,
     ProposedFlowActions,
@@ -77,7 +77,8 @@ function controller($q,
                 CORE_API.ProposedFlowStore.getByUserEmails,
                 [emails]) // Note: arguments are wrapped in an array
             .then(r => {
-                vm.person = r.data});
+                vm.personsArray = r.data;
+            });
     };
 
     vm.$onInit = () => {
