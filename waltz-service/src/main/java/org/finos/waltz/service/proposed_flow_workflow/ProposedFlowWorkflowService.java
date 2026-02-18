@@ -230,7 +230,7 @@ public class ProposedFlowWorkflowService {
             proposedFlow = proposedFlowDao.getProposedFlowResponseById(proposedFlowId);
 
         } catch (TransitionPredicateFailedException e) {
-            errorMessage = String.format("%s Failed. The workflow may have been updated or you no longer have permissions to approve this item.", transitionAction);
+            errorMessage = String.format("%s Failed. The workflow may have been updated or you no longer have permissions to %s this item.", transitionAction, transitionAction.getVerb());
             LOG.error(errorMessage, e);
             outcome = FAILURE;
             builder.message(errorMessage).outcome(outcome);
