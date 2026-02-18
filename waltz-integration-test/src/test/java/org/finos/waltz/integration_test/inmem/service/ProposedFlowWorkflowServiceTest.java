@@ -528,7 +528,7 @@ public class ProposedFlowWorkflowServiceTest extends BaseInMemoryIntegrationTest
         // 3. Assert ---------------------------------------------------
         assertNotNull(proposedFlowResponse);
         assertEquals("FAILURE", proposedFlowResponse.outcome().name());
-        assertEquals("REJECT Failed. The workflow may have been updated or you no longer have permissions to approve this item.", proposedFlowResponse.message());
+        assertEquals("REJECT Failed. The workflow may have been updated or you no longer have permissions to reject this item.", proposedFlowResponse.message());
     }
 
     @Test
