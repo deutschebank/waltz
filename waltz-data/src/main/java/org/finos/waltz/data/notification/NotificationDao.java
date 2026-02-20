@@ -18,6 +18,7 @@
 
 package org.finos.waltz.data.notification;
 
+import org.finos.waltz.data.person.PersonDao;
 import org.finos.waltz.data.proposed_flow.ProposedFlowDao;
 import org.finos.waltz.model.EntityKind;
 import org.finos.waltz.model.ReleaseLifecycleStatus;
@@ -50,6 +51,7 @@ public class NotificationDao {
 
     private final DSLContext dsl;
     private final ProposedFlowDao proposedFlowDao;
+    private final PersonDao personDao;
 
 
     private static final RecordMapper<Record, NotificationSummary> TO_DOMAIN_MAPPER = r -> {
@@ -63,11 +65,12 @@ public class NotificationDao {
 
 
     @Autowired
-    public NotificationDao(DSLContext dsl, ProposedFlowDao proposedFlowDao) {
+    public NotificationDao(DSLContext dsl, ProposedFlowDao proposedFlowDao, PersonDao personDao) {
         checkNotNull(dsl, "dsl cannot be null");
         checkNotNull(proposedFlowDao, "proposedFlowDao cannot be null");
         this.dsl = dsl;
         this.proposedFlowDao = proposedFlowDao;
+        this.personDao = personDao;
     }
 
 
@@ -102,21 +105,14 @@ public class NotificationDao {
                 .resultQuery(dsl.renderInlined(attestationCount.unionAll(surveyCount)))
                 .fetch(TO_DOMAIN_MAPPER));
 
-        findPersonIdByEmail(userId)
-                .ifPresent(personId -> summaries.add(
+        personDao.getByUserEmail(userId).id().ifPresent(
+                p -> summaries.add(
                         ImmutableNotificationSummary.builder()
-                            .kind(EntityKind.PROPOSED_FLOW)
-                            .count((int) proposedFlowDao.fetchCountPendingActionFlowsForPersonWhereSourceOrTargetApprover(personId))
-                            .build()));
+                                .kind(EntityKind.PROPOSED_FLOW)
+                                .count((int) proposedFlowDao.fetchCountPendingActionFlowsForPersonWhereSourceOrTargetApprover(p))
+                                .build()));
 
         return summaries;
     }
 
-    private Optional<Long> findPersonIdByEmail(String email) {
-        return Optional.ofNullable(dsl
-                .select(PERSON.ID)
-                .from(PERSON)
-                .where(PERSON.EMAIL.eq(email))
-                .fetchOne(PERSON.ID));
-    }
 }
