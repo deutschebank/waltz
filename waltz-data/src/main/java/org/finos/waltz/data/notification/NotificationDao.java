@@ -18,6 +18,7 @@
 
 package org.finos.waltz.data.notification;
 
+import org.finos.waltz.data.proposed_flow.ProposedFlowDao;
 import org.finos.waltz.model.EntityKind;
 import org.finos.waltz.model.ReleaseLifecycleStatus;
 import org.finos.waltz.model.notification.ImmutableNotificationSummary;
@@ -33,7 +34,9 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.finos.waltz.common.Checks.checkNotNull;
 import static org.finos.waltz.common.ListUtilities.asList;
@@ -46,6 +49,7 @@ public class NotificationDao {
     private static final Field<Integer> COUNT = DSL.count().as("count");
 
     private final DSLContext dsl;
+    private final ProposedFlowDao proposedFlowDao;
 
 
     private static final RecordMapper<Record, NotificationSummary> TO_DOMAIN_MAPPER = r -> {
@@ -59,9 +63,11 @@ public class NotificationDao {
 
 
     @Autowired
-    public NotificationDao(DSLContext dsl) {
+    public NotificationDao(DSLContext dsl, ProposedFlowDao proposedFlowDao) {
         checkNotNull(dsl, "dsl cannot be null");
+        checkNotNull(proposedFlowDao, "proposedFlowDao cannot be null");
         this.dsl = dsl;
+        this.proposedFlowDao = proposedFlowDao;
     }
 
 
@@ -92,12 +98,25 @@ public class NotificationDao {
                         SurveyInstanceStatus.IN_PROGRESS.name())))
                 .and(SURVEY_TEMPLATE.STATUS.eq(ReleaseLifecycleStatus.ACTIVE.name()));
 
+        List<NotificationSummary> summaries = new ArrayList<>(dsl
+                .resultQuery(dsl.renderInlined(attestationCount.unionAll(surveyCount)))
+                .fetch(TO_DOMAIN_MAPPER));
 
-        Select<Record2<String, Integer>> qry = attestationCount
-                .unionAll(surveyCount);
+        findPersonIdByEmail(userId)
+                .ifPresent(personId -> summaries.add(
+                        ImmutableNotificationSummary.builder()
+                            .kind(EntityKind.PROPOSED_FLOW)
+                            .count((int) proposedFlowDao.fetchCountPendingActionFlowsForPersonWhereSourceOrTargetApprover(personId))
+                            .build()));
 
-        return dsl
-                .resultQuery(dsl.renderInlined(qry))
-                .fetch(TO_DOMAIN_MAPPER);
+        return summaries;
+    }
+
+    private Optional<Long> findPersonIdByEmail(String email) {
+        return Optional.ofNullable(dsl
+                .select(PERSON.ID)
+                .from(PERSON)
+                .where(PERSON.EMAIL.eq(email))
+                .fetchOne(PERSON.ID));
     }
 }
